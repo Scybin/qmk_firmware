@@ -1,3 +1,1 @@
 #define TAPPING_TERM 200  // 200ms tapping term
-
-RGBLIGHT_DEFAULT_HUE 169
