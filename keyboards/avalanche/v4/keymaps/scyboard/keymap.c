@@ -1,10 +1,5 @@
-// Copyright 2022 Viatly Volkov (@vlkv)
+// Copyright 2025 Andrew Houghton (@Scybin)
 // SPDX-License-Identifier: GPL-2.0-or-later
-
-/*
-qmk compile -kb avalanche/v4 -km via
-qmk flash -kb avalanche/v4 -km via
-*/
 
 #include QMK_KEYBOARD_H
 
@@ -29,6 +24,7 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_LALT_DF2] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, DF(2)),
 };
 
+// Layer keymap
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT(
                      KC_ESC,            KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
@@ -53,6 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 };
 
+// RGB Settings
 #ifdef RGBLIGHT_ENABLE
 void keyboard_post_init_user(void) {
   rgblight_enable_noeeprom(); // Enables RGB, without saving settings
@@ -61,6 +58,7 @@ void keyboard_post_init_user(void) {
 }
 #endif
 
+// Draw OLED
 #ifdef OLED_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) { return OLED_ROTATION_180; }
 
