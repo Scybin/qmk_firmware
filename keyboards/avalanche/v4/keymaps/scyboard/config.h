@@ -1,1 +1,2 @@
-#define TAPPING_TERM 175  // 175ms tapping term
+#define TAPPING_TERM 200  // 200ms tapping term
+
