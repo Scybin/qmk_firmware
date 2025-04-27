@@ -48,9 +48,9 @@ void dance_layer_finished(tap_dance_state_t *state, void *user_data) {
 // Tap dance actions
 tap_dance_action_t tap_dance_actions[] = {
     [SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
-    [LOSRS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer_finished, NULL, (void *)(uintptr_t)3), // Layer OSRS
-    [LBASE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer_finished, NULL, (void *)(uintptr_t)0), // Layer BASE
-    [LLIGHT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer_finished, NULL, (void *)(uintptr_t)1), // Layer LIGHT
+    [LOSRS] = ACTION_TAP_DANCE_FN_ADVANCED_USER(NULL, dance_layer_finished, NULL, (void *)(uintptr_t)3), // Layer OSRS
+    [LBASE] = ACTION_TAP_DANCE_FN_ADVANCED_USER(NULL, dance_layer_finished, NULL, (void *)(uintptr_t)0), // Layer BASE
+    [LLIGHT] = ACTION_TAP_DANCE_FN_ADVANCED_USER(NULL, dance_layer_finished, NULL, (void *)(uintptr_t)1), // Layer LIGHT
 };
 
 // Layer keymap
