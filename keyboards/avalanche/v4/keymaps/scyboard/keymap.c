@@ -3,6 +3,16 @@
 
 #include QMK_KEYBOARD_H
 
+// Function to process key press and key release events
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        uprintf("Key %d pressed\n", keycode);
+    } else {
+        uprintf("Key %d released\n", keycode);
+    }
+    return true;
+}
+
 // Layers
 enum layer {
     BASE,
@@ -90,7 +100,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 void matrix_init_user(void) {
     rgblight_init();                             // Initialize RGB lighting
     rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);   // Set to static light mode
-    rgblight_sethsv(170, 255, 255);              // Set color to blue (hue=85, max saturation, max value)
+    rgblight_sethsv(170, 255, 255);              // Set color to blue (hue=170, max saturation, max value)
 }
 
 // Draw OLED
