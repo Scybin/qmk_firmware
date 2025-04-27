@@ -11,18 +11,47 @@ enum layer {
     OSRS,
 };
 
-// Tap Dance declarations
+// Tap Dance function declarations and definitions
 enum {
     TD_SHIFT_CAPS,
-    TD_LALT_DF0,
-    TD_LALT_DF2,
+    TD_LBASE = 0,
+    TD_LOSRS,
 };
 
-// Tap Dance functions
+void dance_layer1_finished(qk_tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        tap_code(KC_LALT);  // Sends Left Alt on single tap
+    } else if (state->count == 2) {
+        layer_clear();       // Clear all layers
+        layer_on(BASE);         // Turn on Layer BASE
+    }
+}
+
+void dance_layer1_reset(qk_tap_dance_state_t *state, void *user_data) {
+    if (state->count == 2) {
+        // Reset when the key is released
+    }
+}
+
+void dance_layer2_finished(qk_tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        tap_code(KC_LALT);  // Sends Left Alt on single tap
+    } else if (state->count == 2) {
+        layer_clear();       // Clear all layers
+        layer_on(OSRS);         // Turn on Layer OSRS
+    }
+}
+
+void dance_layer2_reset(qk_tap_dance_state_t *state, void *user_data) {
+    if (state->count == 2) {
+        // Reset when the key is released
+    }
+}
+
 tap_dance_action_t tap_dance_actions[] = {
     [TD_SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
-    [TD_LALT_DF0] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, DF(0)),
-    [TD_LALT_DF2] = ACTION_TAP_DANCE_DOUBLE(KC_LALT, DF(2)),
+    [TD_LBASE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer1_finished, dance_layer1_reset),
+    [TD_LOSRS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer2_finished, dance_layer2_reset),
 };
 
 // Layer keymap
