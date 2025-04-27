@@ -1,5 +1,13 @@
 #include QMK_KEYBOARD_H
 
+// Bitmap for "scyboard" (example for a 128x32 OLED screen)
+static const char PROGMEM scyboard_logo[] = {
+    0xFF, 0x81, 0xBD, 0xA5, 0xA5, 0xBD, 0x81, 0xFF,
+    0xFF, 0x81, 0xBD, 0xA5, 0xA5, 0xBD, 0x81, 0xFF,
+    0xFF, 0x81, 0xBD, 0xA5, 0xA5, 0xBD, 0x81, 0xFF,
+    0xFF, 0x81, 0xBD, 0xA5, 0xA5, 0xBD, 0x81, 0xFF
+};
+
 bool oled_task_user(void) {
     // Static variables to store the last pressed key's information
     static uint8_t last_row = 0;
@@ -10,11 +18,11 @@ bool oled_task_user(void) {
     // Custom OLED logic
     if (is_keyboard_master()) {
         oled_clear();
-        oled_write_P(PSTR("sycboard\n"), false);
-        oled_set_cursor(0, 2);
 
         uint8_t current_layer = biton32(layer_state);
 
+        // Display the current layer at the top row
+        oled_set_cursor(0, 0);
         oled_write_P(PSTR("Layer: "), false);
 
         // Map the current layer to its name
@@ -39,8 +47,8 @@ bool oled_task_user(void) {
                 break;
         }
 
-        // Move cursor two rows below the "Layer" text
-        oled_set_cursor(0, 4);
+        // Move cursor one row below the "Layer" text
+        oled_set_cursor(0, 2);
 
         // Iterate through the matrix to find a pressed key
         bool current_key_found = false;
@@ -72,8 +80,8 @@ bool oled_task_user(void) {
             oled_write_P(PSTR("Row: None Col: None"), false);
         }
 
-        // Move cursor two rows below the row and column display
-        oled_set_cursor(0, 6);
+        // Move cursor one row below the row and column display
+        oled_set_cursor(0, 4);
 
         // Display the keycode
         if (key_pressed) {
@@ -86,7 +94,7 @@ bool oled_task_user(void) {
     } else {
         // Slave OLED display
         oled_clear();
-        oled_write_P(PSTR("Slave OLED\n"), false);
+        oled_write_raw_P(scyboard_logo, sizeof(scyboard_logo));
     }
 
     return false; // Return false to prevent fallback to default logic
