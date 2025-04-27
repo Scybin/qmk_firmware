@@ -4,6 +4,8 @@
 #define TAPPING_TERM 200  // 200ms tapping term
 
 // RGB Matrix configuration
+#define RGB_MATRIX_ENABLE
+#define RGB_MATRIX_LED_COUNT 64  // Replace 64 with the actual number of LEDs
 #ifdef RGB_MATRIX_ENABLE
 #    define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_SOLID_COLOR  // Default mode for RGB Matrix
 #    define RGB_MATRIX_STARTUP_HUE 170                      // Default hue (blue)
@@ -15,9 +17,6 @@
 #    define RGB_MATRIX_LED_PROCESS_LIMIT 4                  // Limit LED processing for performance
 #    define RGB_MATRIX_LED_FLUSH_LIMIT 26                   // Limit LED flush rate for performance
 #endif
-
-     #define RGB_MATRIX_ENABLE
-     #define RGB_MATRIX_LED_COUNT 64  // Replace 64 with the actual number of LEDs
 
 // OLED configuration
 #ifdef OLED_ENABLE
