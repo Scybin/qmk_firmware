@@ -113,17 +113,15 @@ void matrix_init_user(void) {
 // Custom OLED task
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
+        // Set up the first OLED
+        oled_set_i2c_address(0x3C);  // Select the first OLED by its address
         oled_clear();
-
-        oled_write_P(PSTR("scyboard"), false);
+        oled_write_P(PSTR("First OLED: Scyboard"), false);
 
         oled_set_cursor(0, 1);
-
         uint8_t current_layer = biton32(layer_state);
 
         oled_write_P(PSTR("Layer: "), false);
-
-        // Map the current layer to its name
         switch (current_layer) {
             case 0:
                 oled_write_P(PSTR("BASE"), false);
@@ -138,6 +136,11 @@ bool oled_task_user(void) {
                 oled_write_P(PSTR("OSRS"), false);
                 break;
         }
+
+        // Now set up the second OLED
+        oled_set_i2c_address(0x3D);  // Select the second OLED by its address
+        oled_clear();
+        oled_write_P(PSTR("Second OLED: TEST123"), false);
     }
 
     return false;
