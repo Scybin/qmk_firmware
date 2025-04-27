@@ -51,7 +51,7 @@ void dance_layer2_reset(tap_dance_state_t *state, void *user_data) {
 
 void dance_layer3_finished(tap_dance_state_t *state, void *user_data) {
     if (state->count == 1) {
-        rgb_toggle();
+        rgblight_toggle();
     } else if (state->count == 2) {
         layer_clear();
         layer_on(1);         // Turn on Layer LIGHT
