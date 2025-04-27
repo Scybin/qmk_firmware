@@ -110,34 +110,6 @@ void matrix_init_user(void) {
     rgblight_sethsv(170, 255, 255);              // Set color to blue (hue, sat, val)
 }
 
-// Function to initialize the OLED for I2C address 1
-void oled_init_display_1(void) {
-    oled_set_i2c_address(OLED_I2C_ADDRESS_1);
-    oled_clear();
-}
-
-// Function to initialize the OLED for I2C address 2
-void oled_init_display_2(void) {
-    oled_set_i2c_address(OLED_I2C_ADDRESS_2);
-    oled_clear();
-}
-
-#include QMK_KEYBOARD_H
-
-// Function to initialize OLED with address 1 (0x3C)
-void oled_init_display_1(void) {
-    oled_set_driver(OLED_DRIVER_TYPE);  // Initialize the OLED driver
-    oled_clear();  // Clear display before writing
-    oled_set_i2c_address(OLED_I2C_ADDRESS_1);
-}
-
-// Function to initialize OLED with address 2 (0x3D)
-void oled_init_display_2(void) {
-    oled_set_driver(OLED_DRIVER_TYPE);  // Initialize the OLED driver
-    oled_clear();  // Clear display before writing
-    oled_set_i2c_address(OLED_I2C_ADDRESS_2);
-}
-
 // Custom OLED task
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
@@ -167,5 +139,8 @@ bool oled_task_user(void) {
                 break;
         }
     }
+
+    return false;
+}
 
     return false;
