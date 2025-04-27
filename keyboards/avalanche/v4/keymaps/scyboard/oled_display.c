@@ -1,25 +1,25 @@
-// oled_display.c
 #include "oled_display.h"  // Include header for OLED logic
 #include QMK_KEYBOARD_H
 
-// Override the default oled_task_user to customize OLED behavior
+// Define the oled_task_user function to show custom content on the OLED display
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
-        // Clear the OLED display
+        // Clear the OLED display to refresh it
         oled_clear();
 
-        // Display "scyboard" at the top
+        // Display "scyboard" at the top (in the first row)
         oled_write_P(PSTR("scyboard"), false);
 
-        // Move to the second line
-        oled_set_cursor(0, 1);
+        // Move to the second line of the OLED
+        oled_set_cursor(0, 1); 
 
-        // Get the current layer
+        // Get the current active layer using biton32
         uint8_t current_layer = biton32(layer_state);
 
-        // Display the layer name
-        oled_write_P(PSTR("Layer: "), false);
+        // Display the layer name based on the current layer
+        oled_write_P(PSTR("Layer: "), false);  // Display the text "Layer: "
 
+        // Custom mapping of layers to their names
         switch (current_layer) {
             case 0:
                 oled_write_P(PSTR("BASE"), false);
@@ -35,5 +35,6 @@ bool oled_task_user(void) {
                 break;
         }
     }
+
     return false;  // Return false to indicate the OLED update was handled
 }

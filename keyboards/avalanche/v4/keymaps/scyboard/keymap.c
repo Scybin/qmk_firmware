@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
-#include "oled_display.h"  // Include the header for custom OLED logic
+#include "oled_display.h"  // Include the custom OLED header
 
 // Layers
 enum layer {
