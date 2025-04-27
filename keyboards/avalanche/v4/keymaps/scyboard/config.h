@@ -1,24 +1,20 @@
 #pragma once
 
-// Override the default RGBLight mode
-#undef RGBLIGHT_DEFAULT_MODE
-#define RGBLIGHT_DEFAULT_MODE RGBLIGHT_MODE_STATIC_LIGHT
-
 // Tapping configuration
 #define TAPPING_TERM 200  // 200ms tapping term
 
-// RGB lighting configuration
-#define RGBLIGHT_SAT_STEP 8    // Controls the saturation change step
-#define RGBLIGHT_VAL_STEP 8    // Controls the value change step
-
-// Disable unused RGB lighting modes
-#undef RGBLIGHT_MODE_BREATHING
-#undef RGBLIGHT_MODE_RAINBOW_MOOD
-#undef RGBLIGHT_MODE_RAINBOW_SWIRL
-#undef RGBLIGHT_MODE_SNAKE
-#undef RGBLIGHT_MODE_STATIC_GRADIENT
-#undef RGBLIGHT_MODE_RGB_TEST
-#undef RGBLIGHT_MODE_ALTERNATING
+// RGB Matrix configuration
+#ifdef RGB_MATRIX_ENABLE
+#    define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_SOLID_COLOR  // Default mode for RGB Matrix
+#    define RGB_MATRIX_STARTUP_HUE 170                      // Default hue (blue)
+#    define RGB_MATRIX_STARTUP_SAT 255                      // Default saturation
+#    define RGB_MATRIX_STARTUP_VAL 255                      // Default brightness
+#    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 150               // Limit maximum brightness
+#    define RGB_MATRIX_FRAMEBUFFER_EFFECTS                  // Enable framebuffer effects
+#    define RGB_MATRIX_KEYPRESSES                           // Enable reactive effects based on keypresses
+#    define RGB_MATRIX_LED_PROCESS_LIMIT 4                  // Limit LED processing for performance
+#    define RGB_MATRIX_LED_FLUSH_LIMIT 26                   // Limit LED flush rate for performance
+#endif
 
 // OLED configuration
 #ifdef OLED_ENABLE
