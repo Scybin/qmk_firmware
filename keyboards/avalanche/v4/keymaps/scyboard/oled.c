@@ -1,16 +1,18 @@
 #include "oled.h"
 #include QMK_KEYBOARD_H
 #include <stdio.h>
+#include <drivers/oled/oled_driver.h>
 
-// OLED setup for a 128x64 display
-void oled_init(void) {
-    // Initialize the OLED screen here
+// Initialize the OLED screen
+bool oled_init(oled_rotation_t rotation) {
     oled_init_ports();
     oled_on();
     oled_clear();
+    return true;  // Return true to indicate successful initialization
 }
 
-void oled_task_user(void) {
+// OLED task to display "scyboard"
+bool oled_task_user(void) {
     // Only run this function if the keyboard is the master
     if (is_keyboard_master()) {
         // Clear the display before rendering
@@ -21,4 +23,6 @@ void oled_task_user(void) {
 
         // Optionally, you can add more information here (like layer or keypress data)
     }
+
+    return true;  // Return true to indicate successful execution
 }
