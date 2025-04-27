@@ -143,10 +143,12 @@ bool oled_task_user(void) {
         // Move cursor one row below the row and column display
         oled_set_cursor(0, 4);
 
-        // Display the keycode
+        // Display the keycode and its name
         if (key_pressed) {
-            char keycode_str[16];
-            snprintf(keycode_str, sizeof(keycode_str), "KC: 0x%X", last_keycode);
+            char keycode_str[32];
+            char key_name[16];
+            get_u16_str(last_keycode, key_name); // Use QMK's built-in function to get the key name
+            snprintf(keycode_str, sizeof(keycode_str), "KC: 0x%X - %s", last_keycode, key_name);
             oled_write(keycode_str, false);
         } else {
             oled_write_P(PSTR("KC: None"), false);
