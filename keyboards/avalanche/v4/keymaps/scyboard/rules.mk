@@ -3,7 +3,6 @@ MOUSEKEY_ENABLE = yes                # Mouse key support
 TAP_DANCE_ENABLE = yes               # Tap dance functionality
 RGBLIGHT_ENABLE = no                 # RGB lighting
 RGB_MATRIX_ENABLE = yes              # RGB matrix
-RGB_MATRIX_DRIVER = WS2812			 # RGB matrix driver
 OLED_ENABLE = no                     # OLED support
 
 # Optimization settings
