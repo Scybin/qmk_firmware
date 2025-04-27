@@ -151,6 +151,15 @@ bool oled_task_user(void) {
         } else {
             oled_write_P(PSTR("KC: None"), false);
         }
+
+        // Move cursor two rows below the keycode tracker
+        oled_set_cursor(0, 6);
+
+        // Display the WPM (Words Per Minute)
+        char wpm_str[16];
+        snprintf(wpm_str, sizeof(wpm_str), "WPM: %d", get_current_wpm());
+        oled_write(wpm_str, false);
+
     } else {
         // Slave OLED display
         oled_clear();
