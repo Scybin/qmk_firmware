@@ -94,8 +94,9 @@ void matrix_init_user(void) {
     rgblight_sethsv(170, 255, 255);              // Set color to blue (hue=170, max saturation, max value)
 }
 
+// This will call your renamed OLED task function
 void oled_task(void) {
-    oled_task_user();  // Call the OLED task
+    scyboard_oled_task_user();  // Call the renamed OLED task function
 }
 
 // Draw OLED
