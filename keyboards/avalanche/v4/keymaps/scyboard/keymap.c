@@ -126,10 +126,3 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                      _______, _______, _______,   _______,    _______, _______, _______, _______,   _______, _______
     ),                                                                            
 };
-
-// RGB Settings
-void matrix_init_user(void) {
-    rgblight_init();
-    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-    rgblight_sethsv(170, 255, 255);              // Set color to blue (hue, sat, val)
-}
