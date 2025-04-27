@@ -36,13 +36,28 @@ bool oled_task_user(void) {
         // Move cursor two rows below the "Layer" text
         oled_set_cursor(0, 4);
 
-        // Display the keycode of the currently pressed key
-        if (matrix_is_on()) {
-            uint16_t keycode = get_highest_layer(layer_state);
-            char keycode_str[8];
-            snprintf(keycode_str, sizeof(keycode_str), "KC: %d", keycode);
-            oled_write(keycode_str, false);
-        } else {
+        // Iterate through the matrix to find a pressed key
+        bool key_found = false;
+        for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
+            for (uint8_t col = 0; col < MATRIX_COLS; col++) {
+                if (matrix_is_on(row, col)) {
+                    key_found = true;
+
+                    // Display the row and column of the pressed key
+                    char keycode_str[16];
+                    snprintf(keycode_str, sizeof(keycode_str), "Row: %d Col: %d", row, col);
+                    oled_write(keycode_str, false);
+
+                    break; // Exit inner loop
+                }
+            }
+            if (key_found) {
+                break; // Exit outer loop
+            }
+        }
+
+        // If no key is pressed, display "KC: None"
+        if (!key_found) {
             oled_write_P(PSTR("KC: None"), false);
         }
     } else {
