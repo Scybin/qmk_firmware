@@ -110,18 +110,36 @@ void matrix_init_user(void) {
     rgblight_sethsv(170, 255, 255);              // Set color to blue (hue, sat, val)
 }
 
+// Function to initialize the OLED for I2C address 1
+void oled_init_display_1(void) {
+    oled_set_i2c_address(OLED_I2C_ADDRESS_1);
+    oled_clear();
+}
+
+// Function to initialize the OLED for I2C address 2
+void oled_init_display_2(void) {
+    oled_set_i2c_address(OLED_I2C_ADDRESS_2);
+    oled_clear();
+}
+
 // Custom OLED task
 bool oled_task_user(void) {
+    // Only show OLED on the master keyboard (if you have a split keyboard)
     if (is_keyboard_master()) {
-        // Set up the first OLED
-        oled_set_i2c_address(0x3C);  // Select the first OLED by its address
-        oled_clear();
-        oled_write_P(PSTR("First OLED: Scyboard"), false);
-
+        // First OLED display (0x3C)
+        oled_init_display_1();
+        
+        // Display header text on the first OLED
+        oled_write_P(PSTR("scyboard"), false);
+        
+        // Set cursor position for the next line
         oled_set_cursor(0, 1);
-        uint8_t current_layer = biton32(layer_state);
 
+        // Display current layer information on the first OLED
+        uint8_t current_layer = biton32(layer_state);
         oled_write_P(PSTR("Layer: "), false);
+
+        // Display the name of the current layer on the first OLED
         switch (current_layer) {
             case 0:
                 oled_write_P(PSTR("BASE"), false);
@@ -136,12 +154,16 @@ bool oled_task_user(void) {
                 oled_write_P(PSTR("OSRS"), false);
                 break;
         }
+        
+        // Second OLED display (0x3D)
+        oled_init_display_2();
 
-        // Now set up the second OLED
-        oled_set_i2c_address(0x3D);  // Select the second OLED by its address
-        oled_clear();
-        oled_write_P(PSTR("Second OLED: TEST123"), false);
+        // Display some different text on the second OLED
+        oled_write_P(PSTR("scyboard - 2"), false);
     }
+
+    return false;
+}
 
     return false;
 }
