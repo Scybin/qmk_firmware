@@ -1,26 +1,31 @@
-# Feature configuration
-MOUSEKEY_ENABLE = no                  # Mouse key support
-TAP_DANCE_ENABLE = yes                # Tap dance functionality
-RGBLIGHT_ENABLE = yes                 # RGB lighting
-OLED_ENABLE = yes                     # OLED support
-WPM_ENABLE = no                       # Words per minute tracking
+# Feature Configuration
+TAP_DANCE_ENABLE = yes
+RGBLIGHT_ENABLE = yes
+OLED_ENABLE = yes
+WPM_ENABLE = no
+MOUSEKEY_ENABLE = no
+EXTRAKEY_ENABLE = no
+CONSOLE_ENABLE = no
+COMMAND_ENABLE = no
+UNICODE_ENABLE = no
 
-# Disable unused RGBLight modes
+# Disable Unused RGBLight Modes
 RGBLIGHT_EFFECT_BREATHING = no
-RGBLIGHT_EFFECT_RAINBOW_MOOD = no
+# RGBLIGHT_EFFECT_RAINBOW_MOOD = no
 RGBLIGHT_EFFECT_RAINBOW_SWIRL = no
 RGBLIGHT_EFFECT_SNAKE = no
 RGBLIGHT_EFFECT_STATIC_GRADIENT = no
+RGBLIGHT_MODE_KNIGHT = no
 RGBLIGHT_EFFECT_RGB_TEST = no
 RGBLIGHT_EFFECT_ALTERNATING = no
 
-# Include custom source files
-SRC += oled.c                         # Include the custom OLED logic
+# Custom Source Files
+SRC += oled.c
 
-# Optimization settings
-LINK_TIME_OPTIMIZATION_ENABLE = yes   # Link-time optimization
-EXTRAFLAGS += -flto                   # Additional flags
-									  
-# Disable unused features			  
-#define NO_ACTION_MACRO               # Macro actions
-#define NO_ACTION_FUNCTION            # Function actions
+# Optimization Settings
+LINK_TIME_OPTIMIZATION_ENABLE = yes
+EXTRAFLAGS += -flto
+
+# Disable Unused Features
+#define NO_ACTION_MACRO
+#define NO_ACTION_FUNCTION
