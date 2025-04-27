@@ -91,7 +91,6 @@ void matrix_init_user(void) {
     rgblight_init();                             // Initialize RGB lighting
     rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);   // Set to static light mode
     rgblight_sethsv(170, 255, 255);              // Set color to blue (hue=85, max saturation, max value)
-    rgblight_set_level(255);                     // Set brightness level to max
 }
 
 // Draw OLED
