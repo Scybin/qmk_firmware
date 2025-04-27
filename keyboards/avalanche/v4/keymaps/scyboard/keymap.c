@@ -113,6 +113,7 @@ void matrix_init_user(void) {
 // Custom OLED task
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
+        // Master OLED display
         oled_clear();
 
         oled_write_P(PSTR("scyboard"), false);
@@ -138,6 +139,12 @@ bool oled_task_user(void) {
                 oled_write_P(PSTR("OSRS"), false);
                 break;
         }
+    } else {
+        // Slave OLED display
+        oled_clear();
+
+        oled_set_cursor(0, 0);
+        oled_write_P(PSTR("test"), false);
     }
 
     return false;
