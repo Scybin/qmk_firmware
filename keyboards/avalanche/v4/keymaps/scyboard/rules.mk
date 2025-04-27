@@ -1,8 +1,7 @@
 # Feature configuration
 MOUSEKEY_ENABLE = yes                # Mouse key support
 TAP_DANCE_ENABLE = yes               # Tap dance functionality
-RGBLIGHT_ENABLE = no                 # RGB lighting
-RGB_MATRIX_ENABLE = yes              # RGB matrix
+RGBLIGHT_ENABLE = yes                 # RGB lighting
 OLED_ENABLE = no                     # OLED support
 
 # Optimization settings
