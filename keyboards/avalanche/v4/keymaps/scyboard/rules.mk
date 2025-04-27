@@ -1,14 +1,15 @@
 # Feature configuration
-MOUSEKEY_ENABLE = yes                # Enable mouse key support
-TAP_DANCE_ENABLE = yes               # Enable tap dance functionality
-RGBLIGHT_ENABLE = no                 # Disable RGB lighting
-RGB_MATRIX_ENABLE = yes              # Enable RGB matrix effects
-OLED_ENABLE = no                     # Disable OLED support
+MOUSEKEY_ENABLE = yes                # Mouse key support
+TAP_DANCE_ENABLE = yes               # Tap dance functionality
+RGBLIGHT_ENABLE = no                 # RGB lighting
+RGB_MATRIX_ENABLE = yes              # RGB matrix
+RGB_MATRIX_DRIVER = WS2812_DRIVER    # RGB Matrix driver
+OLED_ENABLE = no                     # OLED support
 
 # Optimization settings
-LINK_TIME_OPTIMIZATION_ENABLE = yes  # Enable link-time optimization for smaller firmware size
-EXTRAFLAGS += -flto                  # Additional flags for link-time optimization
+LINK_TIME_OPTIMIZATION_ENABLE = yes  # Link-time optimization
+EXTRAFLAGS += -flto                  # Additional flags
 
 # Disable unused features
-#define NO_ACTION_MACRO              # Disable macro actions
-#define NO_ACTION_FUNCTION           # Disable function actions
+#define NO_ACTION_MACRO              # Macro actions
+#define NO_ACTION_FUNCTION           # Function actions
