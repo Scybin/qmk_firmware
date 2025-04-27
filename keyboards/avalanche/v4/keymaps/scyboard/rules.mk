@@ -1,5 +1,5 @@
 # Feature configuration
-MOUSEKEY_ENABLE = yes                 # Mouse key support
+MOUSEKEY_ENABLE = no                  # Mouse key support
 TAP_DANCE_ENABLE = yes                # Tap dance functionality
 RGBLIGHT_ENABLE = yes                 # RGB lighting
 OLED_ENABLE = yes                     # OLED support
