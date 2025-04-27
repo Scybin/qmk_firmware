@@ -12,7 +12,7 @@ bool oled_init(oled_rotation_t rotation) {
 }
 
 // OLED task to display "scyboard"
-bool scyboard_oled_task_user(void) {
+bool oled_task_user(void) {
     // Only run this function if the keyboard is the master
     if (is_keyboard_master()) {
         // Clear the display before rendering

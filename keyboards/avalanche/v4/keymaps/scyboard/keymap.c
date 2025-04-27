@@ -94,9 +94,20 @@ void matrix_init_user(void) {
     rgblight_sethsv(170, 255, 255);              // Set color to blue (hue=170, max saturation, max value)
 }
 
-// This will call your renamed OLED task function
-void oled_task(void) {
-    scyboard_oled_task_user();  // Call the renamed OLED task function
+// Modify the existing `oled_task_user` function
+bool oled_task_user(void) {
+    // Only display something on the OLED if it's available and the keyboard is the master
+    if (is_keyboard_master()) {
+        // Clear the OLED display
+        oled_clear();
+
+        // Display the word "scyboard"
+        oled_write_P(PSTR("scyboard"), false);
+
+        // Optionally, you could add more information like layer state, battery status, etc.
+    }
+
+    return false;  // Return false to indicate that the OLED update was handled successfully
 }
 
 // Draw OLED
