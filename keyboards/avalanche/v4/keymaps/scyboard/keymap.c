@@ -13,8 +13,8 @@ enum layer {
 
 // Tap Dance function declarations and definitions
 enum {
-    TD_SHIFT_CAPS,
-    TD_LOSRS = 0,
+    TD_SHIFT_CAPS = 1,
+    TD_LOSRS,
     TD_LBASE,
 };
 
@@ -23,7 +23,7 @@ void dance_layer1_finished(tap_dance_state_t *state, void *user_data) {
         tap_code(KC_LALT);  // Sends Left Alt on single tap
     } else if (state->count == 2) {
         layer_clear();       // Clear all layers
-        layer_on(3);         // Turn on Layer BASE
+        layer_on(3);         // Turn on Layer OSRS
     }
 }
 
@@ -38,7 +38,7 @@ void dance_layer2_finished(tap_dance_state_t *state, void *user_data) {
         tap_code(KC_LALT);  // Sends Left Alt on single tap
     } else if (state->count == 2) {
         layer_clear();       // Clear all layers
-        layer_on(0);         // Turn on Layer OSRS
+        layer_on(0);         // Turn on Layer BASE
     }
 }
 
