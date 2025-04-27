@@ -29,56 +29,28 @@ enum {
     LLIGHT,
 };
 
-void dance_layer1_finished(tap_dance_state_t *state, void *user_data) {
+// Generalized tap dance function
+void dance_layer_finished(tap_dance_state_t *state, void *user_data) {
+    uint8_t layer = (uint8_t)(uintptr_t)user_data; // Retrieve the layer from user_data
+
     if (state->count == 1) {
-        tap_code(KC_LALT);
+        if (layer == 1) {
+            rgblight_enable(); // Turn on RGB lighting for LLIGHT
+        } else {
+            tap_code(KC_LALT); // Default single-tap action for other layers
+        }
     } else if (state->count == 2) {
         layer_clear();
-        layer_on(3);         // Turn on Layer OSRS
+        layer_on(layer); // Switch to the specified layer on double-tap
     }
 }
 
-void dance_layer1_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 2) {
- 
-    }
-}
-
-void dance_layer2_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        tap_code(KC_LALT);
-    } else if (state->count == 2) {
-        layer_clear();
-        layer_on(0);         // Turn on Layer BASE
-    }
-}
-
-void dance_layer2_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 2) {
-     
-    }
-}
-
-void dance_layer3_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        rgblight_toggle();
-    } else if (state->count == 2) {
-        layer_clear();
-        layer_on(1);         // Turn on Layer LIGHT
-    }
-}
-
-void dance_layer3_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 2) {
-     
-    }
-}
-
+// Tap dance actions
 tap_dance_action_t tap_dance_actions[] = {
     [SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
-    [LOSRS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer1_finished, dance_layer1_reset),
-    [LBASE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer2_finished, dance_layer2_reset),
-    [LLIGHT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer3_finished, dance_layer3_reset),
+    [LOSRS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer_finished, NULL, (void *)(uintptr_t)3), // Layer OSRS
+    [LBASE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer_finished, NULL, (void *)(uintptr_t)0), // Layer BASE
+    [LLIGHT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer_finished, NULL, (void *)(uintptr_t)1), // Layer LIGHT
 };
 
 // Layer keymap
