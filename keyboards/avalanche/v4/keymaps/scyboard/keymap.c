@@ -4,6 +4,11 @@
 #include QMK_KEYBOARD_H
 #include "oled.h"
 
+// Wrapper for custom OLED logic
+bool oled_task_kb(void) {
+    return oled_task_user(); // Call your custom logic in oled.c
+}
+
 // Name layers
 enum layer {
     BASE,
