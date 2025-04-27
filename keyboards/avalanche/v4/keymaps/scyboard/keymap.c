@@ -14,8 +14,8 @@ enum layer {
 // Tap Dance function declarations and definitions
 enum {
     TD_SHIFT_CAPS,
-    TD_LBASE = 0,
-    TD_LOSRS,
+    TD_LOSRS = 0,
+    TD_LBASE,
 };
 
 void dance_layer1_finished(qk_tap_dance_state_t *state, void *user_data) {
@@ -23,7 +23,7 @@ void dance_layer1_finished(qk_tap_dance_state_t *state, void *user_data) {
         tap_code(KC_LALT);  // Sends Left Alt on single tap
     } else if (state->count == 2) {
         layer_clear();       // Clear all layers
-        layer_on(BASE);         // Turn on Layer BASE
+        layer_on(0);         // Turn on Layer BASE
     }
 }
 
@@ -38,7 +38,7 @@ void dance_layer2_finished(qk_tap_dance_state_t *state, void *user_data) {
         tap_code(KC_LALT);  // Sends Left Alt on single tap
     } else if (state->count == 2) {
         layer_clear();       // Clear all layers
-        layer_on(OSRS);         // Turn on Layer OSRS
+        layer_on(3);         // Turn on Layer OSRS
     }
 }
 
@@ -50,8 +50,8 @@ void dance_layer2_reset(qk_tap_dance_state_t *state, void *user_data) {
 
 tap_dance_action_t tap_dance_actions[] = {
     [TD_SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
-    [TD_LBASE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer1_finished, dance_layer1_reset),
-    [TD_LOSRS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer2_finished, dance_layer2_reset),
+    [TD_LOSRS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer1_finished, dance_layer1_reset),
+    [TD_LBASE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer2_finished, dance_layer2_reset),
 };
 
 // Layer keymap
@@ -59,7 +59,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT(
                      KC_ESC,            KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
                      KC_TAB,            KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
-        TD_LALT_DF2, KC_LCTL,           KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_RBRC,
+        TD_LOSRS,    KC_LCTL,           KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_RBRC,
                      TD(TD_SHIFT_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    DF(LIGHT), KC_UP,   KC_DEL,  KC_RALT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
                                                           KC_LEFT, KC_RGHT, KC_LWIN, KC_SPC,    KC_DOWN, KC_INS,  KC_ENT,  KC_BSPC, KC_HOME, KC_END
     ),                                                                                          
@@ -80,7 +80,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [OSRS] = LAYOUT(                                                                            
                      KC_ESC,            KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                         KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
                      KC_TAB,            KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                          KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
-        TD_LALT_DF0, KC_LCTL,           KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                          KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_BSPC,
+        TD_LBASE,    KC_LCTL,           KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                          KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_BSPC,
                      TD(TD_SHIFT_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    RGB_TOG,   KC_UP,   KC_DEL,  KC_RALT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
                                                           KC_BTN1, KC_LCTL, KC_LSFT, KC_SPC,    XXXXXXX, XXXXXXX, KC_ENT,  KC_BSPC, XXXXXXX, XXXXXXX
     ),
