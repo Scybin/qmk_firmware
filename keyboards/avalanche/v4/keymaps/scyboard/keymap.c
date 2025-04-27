@@ -122,48 +122,49 @@ void oled_init_display_2(void) {
     oled_clear();
 }
 
+#include QMK_KEYBOARD_H
+
+// Function to initialize OLED with address 1 (0x3C)
+void oled_init_display_1(void) {
+    oled_set_driver(OLED_DRIVER_TYPE);  // Initialize the OLED driver
+    oled_clear();  // Clear display before writing
+    oled_set_i2c_address(OLED_I2C_ADDRESS_1);
+}
+
+// Function to initialize OLED with address 2 (0x3D)
+void oled_init_display_2(void) {
+    oled_set_driver(OLED_DRIVER_TYPE);  // Initialize the OLED driver
+    oled_clear();  // Clear display before writing
+    oled_set_i2c_address(OLED_I2C_ADDRESS_2);
+}
+
 // Custom OLED task
 bool oled_task_user(void) {
     // Only show OLED on the master keyboard (if you have a split keyboard)
     if (is_keyboard_master()) {
-        // First OLED display (0x3C)
+        // Display on the first OLED (address 0x3C)
         oled_init_display_1();
+        oled_write_P(PSTR("scyboard - 1"), false);
         
-        // Display header text on the first OLED
-        oled_write_P(PSTR("scyboard"), false);
-        
-        // Set cursor position for the next line
+        // Set cursor position for the next line on the first OLED
         oled_set_cursor(0, 1);
-
-        // Display current layer information on the first OLED
         uint8_t current_layer = biton32(layer_state);
         oled_write_P(PSTR("Layer: "), false);
-
-        // Display the name of the current layer on the first OLED
         switch (current_layer) {
-            case 0:
-                oled_write_P(PSTR("BASE"), false);
-                break;
-            case 1:
-                oled_write_P(PSTR("LIGHT"), false);
-                break;
-            case 2:
-                oled_write_P(PSTR("DEV"), false);
-                break;
-            case 3:
-                oled_write_P(PSTR("OSRS"), false);
-                break;
+            case 0: oled_write_P(PSTR("BASE"), false); break;
+            case 1: oled_write_P(PSTR("LIGHT"), false); break;
+            case 2: oled_write_P(PSTR("DEV"), false); break;
+            case 3: oled_write_P(PSTR("OSRS"), false); break;
         }
-        
-        // Second OLED display (0x3D)
+
+        // Display on the second OLED (address 0x3D)
         oled_init_display_2();
-
-        // Display some different text on the second OLED
         oled_write_P(PSTR("scyboard - 2"), false);
-    }
 
-    return false;
-}
+        // Set cursor position for the next line on the second OLED
+        oled_set_cursor(0, 1);
+        oled_write_P(PSTR("Second OLED"), false);
+    }
 
     return false;
 }
