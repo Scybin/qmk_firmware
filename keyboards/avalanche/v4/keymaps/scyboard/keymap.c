@@ -13,10 +13,10 @@ enum layer {
 
 // Tap Dance function declarations and definitions
 enum {
-    TD_SHIFT_CAPS = 1,
-    TD_LOSRS,
-    TD_LBASE,
-    TD_LLIGHT,
+    SHIFT_CAPS = 1,
+    LOSRS,
+    LBASE,
+    LLIGHT,
 };
 
 void dance_layer1_finished(tap_dance_state_t *state, void *user_data) {
@@ -65,41 +65,41 @@ void dance_layer3_reset(tap_dance_state_t *state, void *user_data) {
 }
 
 tap_dance_action_t tap_dance_actions[] = {
-    [TD_SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
-    [TD_LOSRS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer1_finished, dance_layer1_reset),
-    [TD_LBASE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer2_finished, dance_layer2_reset),
-    [TD_LLIGHT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer3_finished, dance_layer3_reset),
+    [SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
+    [LOSRS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer1_finished, dance_layer1_reset),
+    [LBASE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer2_finished, dance_layer2_reset),
+    [LLIGHT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer3_finished, dance_layer3_reset),
 };
 
 // Layer keymap
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT(
-                         KC_ESC,            KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                              KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
-                         KC_TAB,            KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                              KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
-        TD(TD_LOSRS),    KC_LCTL,           KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                              KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_RBRC,
-                         TD(TD_SHIFT_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    TD(TD_LLIGHT), KC_UP,   KC_DEL,  KC_RALT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
-                                                              KC_LEFT, KC_RGHT, KC_LWIN, KC_SPC,        KC_DOWN, KC_INS,  KC_ENT,  KC_BSPC, KC_HOME, KC_END
+                   KC_ESC,         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                           KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
+                   KC_TAB,         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                           KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
+        TD(LOSRS), KC_LCTL,        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                           KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_RBRC,
+                   TD(SHIFT_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    TD(LLIGHT), KC_UP,   KC_DEL,  KC_RALT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
+                                                              KC_LEFT, KC_RGHT, KC_LWIN,    KC_SPC,  KC_DOWN, KC_INS,  KC_ENT,  KC_BSPC, KC_HOME, KC_END
     ),                                                                                          
     [LIGHT] = LAYOUT(                                                                             
-                         XXXXXXX,           XXXXXXX, XXXXXXX, XXXXXXX, UG_VALD, UG_VALU,                                           XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                         XXXXXXX,           XXXXXXX, XXXXXXX, XXXXXXX, UG_SATD, UG_SATU,                                           XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX,         XXXXXXX,           XXXXXXX, XXXXXXX, XXXXXXX, UG_HUED, UG_HUEU,                                           XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                         XXXXXXX,           XXXXXXX, XXXXXXX, XXXXXXX, UG_PREV, UG_NEXT, TD(TD_LBASE),  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                                                              XXXXXXX, UG_SPDD, UG_SPDU, RGB_TOG,       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
-    ),                                                                                          
-    [DEV] = LAYOUT(                                                                             
-                         _______,           _______, _______, _______, _______, _______,                                           _______, _______, _______, _______, _______, _______,
-                         _______,           _______, _______, _______, _______, _______,                                           _______, _______, _______, _______, _______, _______,
-        _______,         _______,           _______, _______, _______, _______, _______,                                           _______, _______, _______, _______, _______, _______, _______,
-                         _______,           _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______, _______, _______, _______,
-                                                              _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______
-    ),                                                                                          
-    [OSRS] = LAYOUT(                                                                            
-                         KC_ESC,            KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                             KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
-                         KC_TAB,            KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                              KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
-        TD(TD_LBASE),    KC_LCTL,           KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                              KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_BSPC,
-                         TD(TD_SHIFT_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    RGB_TOG,       KC_UP,   KC_DEL,  KC_RALT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
-                                                              KC_BTN1, KC_LCTL, KC_LSFT, KC_SPC,        XXXXXXX, XXXXXXX, KC_ENT,  KC_BSPC, XXXXXXX, XXXXXXX
+                   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, UG_VALD, UG_VALU,                                        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, UG_SATD, UG_SATU,                                        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX,   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, UG_HUED, UG_HUEU,                                        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, UG_PREV, UG_NEXT, TD(LBASE),  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                                                     XXXXXXX, UG_SPDD, UG_SPDU, RGB_TOG,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+    ),                                                                                        
+    [DEV] = LAYOUT(                                                                           
+                   _______,        _______, _______, _______, _______, _______,                                        _______, _______, _______, _______, _______, _______,
+                   _______,        _______, _______, _______, _______, _______,                                        _______, _______, _______, _______, _______, _______,
+        _______,   _______,        _______, _______, _______, _______, _______,                                        _______, _______, _______, _______, _______, _______, _______,
+                   _______,        _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______, _______, _______, _______,
+                                                     _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______
+    ),                                                                                        
+    [OSRS] = LAYOUT(                                                                          
+                   KC_ESC,         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                          KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
+                   KC_TAB,         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                           KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
+        TD(LBASE), KC_LCTL,        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                           KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_BSPC,
+                   TD(SHIFT_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    RGB_TOG,    KC_UP,   KC_DEL,  KC_RALT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
+                                                              KC_BTN1, KC_LCTL, KC_LSFT,    KC_SPC,  XXXXXXX, XXXXXXX, KC_ENT,  KC_BSPC, XXXXXXX, XXXXXXX
     ),
 };
 
