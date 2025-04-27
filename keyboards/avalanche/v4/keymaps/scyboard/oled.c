@@ -122,7 +122,7 @@ bool oled_task_user(void) {
     } else {
         // Slave OLED display
         oled_clear();
-        oled_write_raw_P(scyboard_logo, sizeof(scyboard_logo));
+        oled_write_raw_P((const char *)scyboard_logo, sizeof(scyboard_logo));
     }
 
     return false; // Return false to prevent fallback to default logic
