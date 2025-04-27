@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
-#include "oled_display.h"  // Include the custom OLED header
 
 // Layers
 enum layer {
@@ -92,4 +91,37 @@ void matrix_init_user(void) {
     rgblight_init();                             // Initialize RGB lighting
     rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);   // Set to static light mode
     rgblight_sethsv(170, 255, 255);              // Set color to blue (hue=170, max saturation, max value)
+}
+
+// Custom OLED
+bool oled_task_user(void) {
+    if (is_keyboard_master()) {
+        oled_clear();
+
+        oled_write_P(PSTR("scyboard"), false);
+
+        oled_set_cursor(0, 1);  // Move cursor to the next line
+
+        uint8_t current_layer = biton32(layer_state);  // Get the active layer
+
+        oled_write_P(PSTR("Layer: "), false);
+
+        // Map the current layer to its name
+        switch (current_layer) {
+            case 0:
+                oled_write_P(PSTR("BASE"), false);
+                break;
+            case 1:
+                oled_write_P(PSTR("LIGHT"), false);
+                break;
+            case 2:
+                oled_write_P(PSTR("DEV"), false);
+                break;
+            case 3:
+                oled_write_P(PSTR("OSRS"), false);
+                break;
+        }
+    }
+
+    return false;
 }
