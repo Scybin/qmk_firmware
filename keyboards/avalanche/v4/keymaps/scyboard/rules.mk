@@ -3,6 +3,7 @@ MOUSEKEY_ENABLE = no                  # Mouse key support
 TAP_DANCE_ENABLE = yes                # Tap dance functionality
 RGBLIGHT_ENABLE = yes                 # RGB lighting
 OLED_ENABLE = yes                     # OLED support
+WPM_ENABLE = yes                      # Words per minute tracking
 
 # Disable unused RGBLight modes
 RGBLIGHT_EFFECT_BREATHING = no
