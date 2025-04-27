@@ -16,6 +16,9 @@
 #    define RGB_MATRIX_LED_FLUSH_LIMIT 26                   // Limit LED flush rate for performance
 #endif
 
+     #define RGB_MATRIX_ENABLE
+     #define RGB_MATRIX_LED_COUNT 64  // Replace 64 with the actual number of LEDs
+
 // OLED configuration
 #ifdef OLED_ENABLE
 #    define SPLIT_OLED_ENABLE
