@@ -18,7 +18,7 @@ enum {
     TD_LBASE,
 };
 
-void dance_layer1_finished(qk_tap_dance_state_t *state, void *user_data) {
+void dance_layer1_finished(tap_dance_state_t *state, void *user_data) {
     if (state->count == 1) {
         tap_code(KC_LALT);  // Sends Left Alt on single tap
     } else if (state->count == 2) {
@@ -27,13 +27,13 @@ void dance_layer1_finished(qk_tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void dance_layer1_reset(qk_tap_dance_state_t *state, void *user_data) {
+void dance_layer1_reset(tap_dance_state_t *state, void *user_data) {
     if (state->count == 2) {
         // Reset when the key is released
     }
 }
 
-void dance_layer2_finished(qk_tap_dance_state_t *state, void *user_data) {
+void dance_layer2_finished(tap_dance_state_t *state, void *user_data) {
     if (state->count == 1) {
         tap_code(KC_LALT);  // Sends Left Alt on single tap
     } else if (state->count == 2) {
@@ -42,7 +42,7 @@ void dance_layer2_finished(qk_tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void dance_layer2_reset(qk_tap_dance_state_t *state, void *user_data) {
+void dance_layer2_reset(tap_dance_state_t *state, void *user_data) {
     if (state->count == 2) {
         // Reset when the key is released
     }
