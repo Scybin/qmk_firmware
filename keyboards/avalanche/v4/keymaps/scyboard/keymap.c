@@ -9,6 +9,8 @@ enum layer {
     LIGHT,
     DEV,
     OSRS,
+    LOWER,
+    UPPER,
 };
 
 // Tap Dance function declarations and definitions
@@ -74,33 +76,47 @@ tap_dance_action_t tap_dance_actions[] = {
 // Layer keymap
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT(
-                   KC_ESC,         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                           KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
-                   KC_TAB,         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                           KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
-        TD(LOSRS), KC_LCTL,        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                           KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_RBRC,
-                   TD(SHIFT_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    TD(LLIGHT), KC_UP,   KC_DEL,  KC_RALT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
-                                                              KC_LEFT, KC_RGHT, KC_LWIN,    KC_SPC,  KC_DOWN, KC_INS,  KC_ENT,  KC_BSPC, KC_HOME, KC_END
-    ),                                                                                          
-    [LIGHT] = LAYOUT(                                                                             
-                   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, UG_VALD, UG_VALU,                                        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, UG_SATD, UG_SATU,                                        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX,   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, UG_HUED, UG_HUEU,                                        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, UG_PREV, UG_NEXT, TD(LBASE),  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                                                     XXXXXXX, UG_SPDD, UG_SPDU, RGB_TOG,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
-    ),                                                                                        
-    [DEV] = LAYOUT(                                                                           
-                   _______,        _______, _______, _______, _______, _______,                                        _______, _______, _______, _______, _______, _______,
-                   _______,        _______, _______, _______, _______, _______,                                        _______, _______, _______, _______, _______, _______,
-        _______,   _______,        _______, _______, _______, _______, _______,                                        _______, _______, _______, _______, _______, _______, _______,
-                   _______,        _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______, _______, _______, _______,
-                                                     _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______
-    ),                                                                                        
-    [OSRS] = LAYOUT(                                                                          
-                   KC_ESC,         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                          KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
-                   KC_TAB,         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                           KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
-        TD(LBASE), KC_LCTL,        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                           KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_BSPC,
-                   TD(SHIFT_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    RGB_TOG,    KC_UP,   KC_DEL,  KC_RALT, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
-                                                              KC_BTN1, KC_LCTL, KC_LSFT,    KC_SPC,  XXXXXXX, XXXXXXX, KC_ENT,  KC_BSPC, XXXXXXX, XXXXXXX
-    ),
+                   KC_ESC,         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                             KC_6,      KC_7,    KC_8,     KC_9,    KC_0,    KC_MINS,
+                   KC_TAB,         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                             KC_Y,      KC_U,    KC_I,     KC_O,    KC_P,    KC_LBRC,
+        TD(LOSRS), KC_LCTL,        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                             KC_H,      KC_J,    KC_K,     KC_L,    KC_SCLN, KC_QUOT, KC_RBRC,
+                   TD(SHIFT_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,      TD(LLIGHT), XXXXXXX, XXXXXXX, KC_RALT, KC_N,      KC_M,    KC_COMM,  KC_DOT,  KC_SLSH, KC_BSLS,
+                                                     XXXXXXX, XXXXXXX, MO(LOWER), KC_SPC,     KC_LWIN, KC_BSPC, KC_ENT,  MO(UPPER), XXXXXXX, XXXXXXX
+    ),                                                                                                                                             
+    [LIGHT] = LAYOUT(                                                                                                                              
+                   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, UG_VALD, UG_VALU,                                          XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,
+                   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, UG_SATD, UG_SATU,                                          XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX,   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, UG_HUED, UG_HUEU,                                          XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, UG_PREV, UG_NEXT,   TD(LBASE),  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,
+                                                     XXXXXXX, UG_SPDD, UG_SPDU,   RGB_TOG,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX   
+    ),                                                                                                                                                 
+    [DEV] = LAYOUT(                                                                                                                                    
+                   _______,        _______, _______, _______, _______, _______,                                          _______,   _______, _______,  _______, _______, _______,
+                   _______,        _______, _______, _______, _______, _______,                                          _______,   _______, _______,  _______, _______, _______,
+        _______,   _______,        _______, _______, _______, _______, _______,                                          _______,   _______, _______,  _______, _______, _______, _______,
+                   _______,        _______, _______, _______, _______, _______,   _______,    _______, _______, _______, _______,   _______, _______,  _______, _______, _______,
+                                                     _______, _______, _______,   _______,    _______, _______, _______, _______,   _______, _______   
+    ),                                                                                                                                                 
+    [OSRS] = LAYOUT(                                                                                                                                   
+                   _______,        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                          XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,
+                   XXXXXXX,        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                          XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,
+        TD(LBASE), KC_ESC,         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                            KC_F6,     KC_F7,   KC_F8,    KC_F9,   KC_F10,  KC_F11,  XXXXXXX,
+                   KC_LCTL,        KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   RGB_TOG,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,
+                                                     XXXXXXX, XXXXXXX, XXXXXXX,   _______,    XXXXXXX, _______, _______, KC_BSPC,   XXXXXXX, XXXXXXX 
+    ),                                                                                                                                                 
+    [LOWER] = LAYOUT(                                                                                                                                  
+                   KC_F12,         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                            KC_F6,     KC_F7,   KC_F8,    KC_F9,   KC_F10,  KC_F11,
+                   _______,        KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                             KC_6,      KC_7,    KC_8,     KC_9,    KC_0,    KC_BSPC,
+        _______,   _______,        _______, _______, _______, _______, _______,                                          _______,   KC_UP,   _______,  _______, KC_DEL,  KC_HOME, KC_ESC,
+                   _______,        _______, _______, _______, _______, _______,   _______,    _______, _______, _______, KC_LEFT,   KC_DOWN, KC_RIGHT, _______, KC_INS,  KC_END,
+                                                     _______, _______, _______,   _______,    _______, _______, _______, _______,   _______, _______   
+    ),                                                                                                                                                 
+    [UPPER] = LAYOUT(                                                                                                                                  
+                   KC_F12,         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                            KC_F6,     KC_F7,   KC_F8,    KC_F9,   KC_F10,  KC_F11,
+                   KC_TILD,        KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                                          KC_CIRC,   KC_AMPR, KC_ASTR,  KC_LPRN, KC_RPRN, KC_BSPC,
+        _______,   _______,        _______, _______, _______, _______, _______,                                          KC_MINS,   KC_EQL,  KC_LBRC,  KC_RBRC, KC_BSLS, KC_GRV,  _______,
+                   _______,        _______, _______, _______, _______, _______,   _______,    _______, _______, _______, KC_UNDS,   KC_PLUS, KC_LCBR,  KC_RCBR, KC_PIPE, _______,
+                                                     _______, _______, _______,   _______,    _______, _______, _______, _______,   _______, _______
+    ),                                                                            
 };
 
 // RGB Settings
@@ -108,44 +124,4 @@ void matrix_init_user(void) {
     rgblight_init();
     rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
     rgblight_sethsv(170, 255, 255);              // Set color to blue (hue, sat, val)
-}
-
-// Custom OLED task
-bool oled_task_user(void) {
-    if (is_keyboard_master()) {
-        // Master OLED display
-        oled_clear();
-
-        oled_write_P(PSTR("scyboard"), false);
-
-        oled_set_cursor(0, 1);
-
-        uint8_t current_layer = biton32(layer_state);
-
-        oled_write_P(PSTR("Layer: "), false);
-
-        // Map the current layer to its name
-        switch (current_layer) {
-            case 0:
-                oled_write_P(PSTR("BASE"), false);
-                break;
-            case 1:
-                oled_write_P(PSTR("LIGHT"), false);
-                break;
-            case 2:
-                oled_write_P(PSTR("DEV"), false);
-                break;
-            case 3:
-                oled_write_P(PSTR("OSRS"), false);
-                break;
-        }
-    } else {
-        // Slave OLED display
-        oled_clear();
-
-        oled_set_cursor(0, 0);
-        oled_write_P(PSTR("test"), false);
-    }
-
-    return false;
 }
