@@ -140,31 +140,32 @@ void oled_init_display_2(void) {
 
 // Custom OLED task
 bool oled_task_user(void) {
-    // Only show OLED on the master keyboard (if you have a split keyboard)
     if (is_keyboard_master()) {
-        // Display on the first OLED (address 0x3C)
-        oled_init_display_1();
-        oled_write_P(PSTR("scyboard - 1"), false);
-        
-        // Set cursor position for the next line on the first OLED
+        oled_clear();
+
+        oled_write_P(PSTR("scyboard"), false);
+
         oled_set_cursor(0, 1);
+
         uint8_t current_layer = biton32(layer_state);
+
         oled_write_P(PSTR("Layer: "), false);
+
+        // Map the current layer to its name
         switch (current_layer) {
-            case 0: oled_write_P(PSTR("BASE"), false); break;
-            case 1: oled_write_P(PSTR("LIGHT"), false); break;
-            case 2: oled_write_P(PSTR("DEV"), false); break;
-            case 3: oled_write_P(PSTR("OSRS"), false); break;
+            case 0:
+                oled_write_P(PSTR("BASE"), false);
+                break;
+            case 1:
+                oled_write_P(PSTR("LIGHT"), false);
+                break;
+            case 2:
+                oled_write_P(PSTR("DEV"), false);
+                break;
+            case 3:
+                oled_write_P(PSTR("OSRS"), false);
+                break;
         }
-
-        // Display on the second OLED (address 0x3D)
-        oled_init_display_2();
-        oled_write_P(PSTR("scyboard - 2"), false);
-
-        // Set cursor position for the next line on the second OLED
-        oled_set_cursor(0, 1);
-        oled_write_P(PSTR("Second OLED"), false);
     }
 
     return false;
-}
