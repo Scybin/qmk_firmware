@@ -1,5 +1,8 @@
 #include QMK_KEYBOARD_H
 
+#ifndef OLED_TASK_KB_OVERRIDE
+#define OLED_TASK_KB_OVERRIDE
+
 bool oled_task_kb(void) {
     // Use your custom OLED logic
     if (is_keyboard_master()) {
@@ -40,3 +43,5 @@ bool oled_task_kb(void) {
 
     return false; // Return false to prevent fallback to default logic
 }
+
+#endif
