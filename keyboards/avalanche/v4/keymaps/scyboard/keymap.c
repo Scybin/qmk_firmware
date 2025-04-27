@@ -16,6 +16,7 @@ enum {
     TD_SHIFT_CAPS = 1,
     TD_LOSRS,
     TD_LBASE,
+    TD_L3,  // Add new tap dance action for Layer 3
 };
 
 void dance_layer1_finished(tap_dance_state_t *state, void *user_data) {
@@ -48,10 +49,27 @@ void dance_layer2_reset(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+// New tap dance function for third layer (Layer 4)
+void dance_layer3_finished(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        tap_code(KC_LALT);  // Sends Left Alt on single tap
+    } else if (state->count == 2) {
+        layer_clear();       // Clear all layers
+        layer_on(4);         // Turn on Layer 4
+    }
+}
+
+void dance_layer3_reset(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 2) {
+        // Reset when the key is released
+    }
+}
+
 tap_dance_action_t tap_dance_actions[] = {
     [TD_SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
     [TD_LOSRS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer1_finished, dance_layer1_reset),
     [TD_LBASE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer2_finished, dance_layer2_reset),
+    [TD_L3] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer3_finished, dance_layer3_reset),  // Add new action for Layer 3
 };
 
 // Layer keymap
@@ -93,14 +111,14 @@ void matrix_init_user(void) {
     rgblight_sethsv(170, 255, 255);              // Set color to blue (hue=170, max saturation, max value)
 }
 
-// Custom OLED
+// Custom OLED task
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
-        oled_clear();
+        oled_clear();  // Clear the OLED screen
 
-        oled_write_P(PSTR("scyboard"), false);
+        oled_write_P(PSTR("scyboard"), false);  // Display "scyboard"
 
-        oled_set_cursor(0, 1);  // Move cursor to the next line
+        oled_set_cursor(0, 1);  // Move cursor to the second line
 
         uint8_t current_layer = biton32(layer_state);  // Get the active layer
 
@@ -123,5 +141,5 @@ bool oled_task_user(void) {
         }
     }
 
-    return false;
+    return false;  // Return false to indicate the OLED task was handled
 }
