@@ -108,13 +108,25 @@ bool oled_task_user(void) {
 
         // Get the current layer and display it
         uint8_t current_layer = biton32(layer_state);  // Get the active layer
-        oled_write_P(PSTR("Layer: "), false);  // Write "Layer: " text
 
-        // Convert the layer number to a string and display it
-        char layer_str[2];  // Array to store the layer as a string (only one digit)
-        itoa(current_layer, layer_str, 10);  // Convert current_layer to string
+        // Display "Layer: " text
+        oled_write_P(PSTR("Layer: "), false);
 
-        oled_write(layer_str, false);  // Display the layer number as a string
+        // Map the current layer to its name
+        switch (current_layer) {
+            case 0:
+                oled_write_P(PSTR("Base"), false);
+                break;
+            case 1:
+                oled_write_P(PSTR("LIGHT"), false);
+                break;
+            case 2:
+                oled_write_P(PSTR("DEV"), false);
+                break;
+            case 3:
+                oled_write_P(PSTR("OSRS"), false);
+
+        }
     }
 
     return false;  // Return false to indicate that the OLED update was handled successfully
