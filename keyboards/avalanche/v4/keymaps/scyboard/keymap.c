@@ -115,7 +115,7 @@ bool oled_task_user(void) {
         // Map the current layer to its name
         switch (current_layer) {
             case 0:
-                oled_write_P(PSTR("Base"), false);
+                oled_write_P(PSTR("BASE"), false);
                 break;
             case 1:
                 oled_write_P(PSTR("LIGHT"), false);
