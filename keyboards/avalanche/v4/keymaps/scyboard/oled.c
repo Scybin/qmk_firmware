@@ -1,11 +1,11 @@
 #include QMK_KEYBOARD_H
 
 bool oled_task_user(void) {
-    // Use your custom OLED logic
+    // Custom OLED logic
     if (is_keyboard_master()) {
         oled_clear();
         oled_write_P(PSTR("sycboard\n"), false);
-        oled_set_cursor(0, 1);
+        oled_set_cursor(0, 2);
 
         uint8_t current_layer = biton32(layer_state);
 
@@ -31,6 +31,19 @@ bool oled_task_user(void) {
             case 5:
                 oled_write_P(PSTR("UPPER"), false);
                 break;
+        }
+
+        // Move cursor two rows below the "Layer" text
+        oled_set_cursor(0, 4);
+
+        // Display the keycode of the currently pressed key
+        if (matrix_is_on()) {
+            uint16_t keycode = get_highest_layer(layer_state);
+            char keycode_str[8];
+            snprintf(keycode_str, sizeof(keycode_str), "KC: %d", keycode);
+            oled_write(keycode_str, false);
+        } else {
+            oled_write_P(PSTR("KC: None"), false);
         }
     } else {
         // Slave OLED display
