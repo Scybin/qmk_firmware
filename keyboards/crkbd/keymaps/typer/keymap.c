@@ -1,4 +1,5 @@
 #include QMK_KEYBOARD_H
+#include "oled.h"
 
 enum custom_keycodes {
     BSPC_ENT = SAFE_RANGE,
