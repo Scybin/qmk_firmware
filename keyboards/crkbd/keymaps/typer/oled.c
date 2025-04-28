@@ -35,7 +35,12 @@ bool oled_task_user(void) {
 
         // Display the most recent autocorrected word next to "Last Word:"
         char last_word_line[64];
-        snprintf(last_word_line, sizeof(last_word_line), "Last Word: %s", last_corrected_word);
+        // Truncate the last word if it is equal to or longer than 10 characters
+        if (strlen(last_corrected_word) >= 10) {
+            snprintf(last_word_line, sizeof(last_word_line), "Last Word: %.6s...", last_corrected_word);
+        } else {
+            snprintf(last_word_line, sizeof(last_word_line), "Last Word: %s", last_corrected_word);
+        }
         oled_write_ln(last_word_line, false);
 
         // Display WPM counter below the "Last Word" row
