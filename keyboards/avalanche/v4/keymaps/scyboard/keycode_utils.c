@@ -1,114 +1,128 @@
 #include QMK_KEYBOARD_H
 #include "keycode_utils.h"
 
+// Define a struct for keycode-to-name mapping
+typedef struct {
+    uint16_t keycode;
+    const char* name;
+} keycode_map_t;
+
+// Create a lookup table for keycodes and their names
+static const keycode_map_t keycode_map[] = {
+    {KC_ESC, "KC_ESC"},
+    {KC_1, "KC_1"},
+    {KC_2, "KC_2"},
+    {KC_3, "KC_3"},
+    {KC_4, "KC_4"},
+    {KC_5, "KC_5"},
+    {KC_6, "KC_6"},
+    {KC_7, "KC_7"},
+    {KC_8, "KC_8"},
+    {KC_9, "KC_9"},
+    {KC_0, "KC_0"},
+    {KC_MINS, "KC_MINS"},
+    {KC_TAB, "KC_TAB"},
+    {KC_Q, "KC_Q"},
+    {KC_W, "KC_W"},
+    {KC_E, "KC_E"},
+    {KC_R, "KC_R"},
+    {KC_T, "KC_T"},
+    {KC_Y, "KC_Y"},
+    {KC_U, "KC_U"},
+    {KC_I, "KC_I"},
+    {KC_O, "KC_O"},
+    {KC_P, "KC_P"},
+    {KC_LBRC, "KC_LBRC"},
+    {KC_LCTL, "KC_LCTL"},
+    {KC_A, "KC_A"},
+    {KC_S, "KC_S"},
+    {KC_D, "KC_D"},
+    {KC_F, "KC_F"},
+    {KC_G, "KC_G"},
+    {KC_H, "KC_H"},
+    {KC_J, "KC_J"},
+    {KC_K, "KC_K"},
+    {KC_L, "KC_L"},
+    {KC_SCLN, "KC_SCLN"},
+    {KC_QUOT, "KC_QUOT"},
+    {KC_RBRC, "KC_RBRC"},
+    {KC_LSFT, "KC_LSFT"},
+    {KC_Z, "KC_Z"},
+    {KC_X, "KC_X"},
+    {KC_C, "KC_C"},
+    {KC_V, "KC_V"},
+    {KC_B, "KC_B"},
+    {KC_N, "KC_N"},
+    {KC_M, "KC_M"},
+    {KC_COMM, "KC_COMM"},
+    {KC_DOT, "KC_DOT"},
+    {KC_SLSH, "KC_SLSH"},
+    {KC_BSLS, "KC_BSLS"},
+    {KC_RALT, "KC_RALT"},
+    {KC_SPC, "KC_SPC"},
+    {KC_ENT, "KC_ENT"},
+    {KC_BSPC, "KC_BSPC"},
+    {KC_LWIN, "KC_LWIN"},
+    {KC_F1, "KC_F1"},
+    {KC_F2, "KC_F2"},
+    {KC_F3, "KC_F3"},
+    {KC_F4, "KC_F4"},
+    {KC_F5, "KC_F5"},
+    {KC_F6, "KC_F6"},
+    {KC_F7, "KC_F7"},
+    {KC_F8, "KC_F8"},
+    {KC_F9, "KC_F9"},
+    {KC_F10, "KC_F10"},
+    {KC_F11, "KC_F11"},
+    {KC_F12, "KC_F12"},
+    {KC_TILD, "KC_TILD"},
+    {KC_EXLM, "KC_EXLM"},
+    {KC_AT, "KC_AT"},
+    {KC_HASH, "KC_HASH"},
+    {KC_DLR, "KC_DLR"},
+    {KC_PERC, "KC_PERC"},
+    {KC_CIRC, "KC_CIRC"},
+    {KC_AMPR, "KC_AMPR"},
+    {KC_ASTR, "KC_ASTR"},
+    {KC_LPRN, "KC_LPRN"},
+    {KC_RPRN, "KC_RPRN"},
+    {KC_EQL, "KC_EQL"},
+    {KC_GRV, "KC_GRV"},
+    {KC_UNDS, "KC_UNDS"},
+    {KC_PLUS, "KC_PLUS"},
+    {KC_LCBR, "KC_LCBR"},
+    {KC_RCBR, "KC_RCBR"},
+    {KC_PIPE, "KC_PIPE"},
+    {KC_UP, "KC_UP"},
+    {KC_DOWN, "KC_DOWN"},
+    {KC_LEFT, "KC_LEFT"},
+    {KC_RIGHT, "KC_RIGHT"},
+    {KC_DEL, "KC_DEL"},
+    {KC_HOME, "KC_HOME"},
+    {KC_END, "KC_END"},
+    {KC_INS, "KC_INS"},
+    {XXXXXXX, "KC_NO"},
+    {_______, "KC_TRNS"},
+    {RGB_TOG, "RGB_TOG"},
+    {UG_VALD, "UG_VALD"},
+    {UG_VALU, "UG_VALU"},
+    {UG_SATD, "UG_SATD"},
+    {UG_SATU, "UG_SATU"},
+    {UG_HUED, "UG_HUED"},
+    {UG_HUEU, "UG_HUEU"},
+    {UG_PREV, "UG_PREV"},
+    {UG_NEXT, "UG_NEXT"},
+    {UG_SPDD, "UG_SPDD"},
+    {UG_SPDU, "UG_SPDU"},
+    {EE_CLR, "EE_CLR"},
+};
+
+// Function to get the name of a keycode
 const char* get_keycode_name(uint16_t keycode) {
-    switch (keycode) {
-        case KC_ESC: return "KC_ESC";
-        case KC_1: return "KC_1";
-        case KC_2: return "KC_2";
-        case KC_3: return "KC_3";
-        case KC_4: return "KC_4";
-        case KC_5: return "KC_5";
-        case KC_6: return "KC_6";
-        case KC_7: return "KC_7";
-        case KC_8: return "KC_8";
-        case KC_9: return "KC_9";
-        case KC_0: return "KC_0";
-        case KC_MINS: return "KC_MINS";
-        case KC_TAB: return "KC_TAB";
-        case KC_Q: return "KC_Q";
-        case KC_W: return "KC_W";
-        case KC_E: return "KC_E";
-        case KC_R: return "KC_R";
-        case KC_T: return "KC_T";
-        case KC_Y: return "KC_Y";
-        case KC_U: return "KC_U";
-        case KC_I: return "KC_I";
-        case KC_O: return "KC_O";
-        case KC_P: return "KC_P";
-        case KC_LBRC: return "KC_LBRC";
-        case KC_LCTL: return "KC_LCTL";
-        case KC_A: return "KC_A";
-        case KC_S: return "KC_S";
-        case KC_D: return "KC_D";
-        case KC_F: return "KC_F";
-        case KC_G: return "KC_G";
-        case KC_H: return "KC_H";
-        case KC_J: return "KC_J";
-        case KC_K: return "KC_K";
-        case KC_L: return "KC_L";
-        case KC_SCLN: return "KC_SCLN";
-        case KC_QUOT: return "KC_QUOT";
-        case KC_RBRC: return "KC_RBRC";
-        case KC_LSFT: return "KC_LSFT";
-        case KC_Z: return "KC_Z";
-        case KC_X: return "KC_X";
-        case KC_C: return "KC_C";
-        case KC_V: return "KC_V";
-        case KC_B: return "KC_B";
-        case KC_N: return "KC_N";
-        case KC_M: return "KC_M";
-        case KC_COMM: return "KC_COMM";
-        case KC_DOT: return "KC_DOT";
-        case KC_SLSH: return "KC_SLSH";
-        case KC_BSLS: return "KC_BSLS";
-        case KC_RALT: return "KC_RALT";
-        case KC_SPC: return "KC_SPC";
-        case KC_ENT: return "KC_ENT";
-        case KC_BSPC: return "KC_BSPC";
-        case KC_LWIN: return "KC_LWIN";
-        case KC_F1: return "KC_F1";
-        case KC_F2: return "KC_F2";
-        case KC_F3: return "KC_F3";
-        case KC_F4: return "KC_F4";
-        case KC_F5: return "KC_F5";
-        case KC_F6: return "KC_F6";
-        case KC_F7: return "KC_F7";
-        case KC_F8: return "KC_F8";
-        case KC_F9: return "KC_F9";
-        case KC_F10: return "KC_F10";
-        case KC_F11: return "KC_F11";
-        case KC_F12: return "KC_F12";
-        case KC_TILD: return "KC_TILD";
-        case KC_EXLM: return "KC_EXLM";
-        case KC_AT: return "KC_AT";
-        case KC_HASH: return "KC_HASH";
-        case KC_DLR: return "KC_DLR";
-        case KC_PERC: return "KC_PERC";
-        case KC_CIRC: return "KC_CIRC";
-        case KC_AMPR: return "KC_AMPR";
-        case KC_ASTR: return "KC_ASTR";
-        case KC_LPRN: return "KC_LPRN";
-        case KC_RPRN: return "KC_RPRN";
-        case KC_EQL: return "KC_EQL";
-        case KC_GRV: return "KC_GRV";
-        case KC_UNDS: return "KC_UNDS";
-        case KC_PLUS: return "KC_PLUS";
-        case KC_LCBR: return "KC_LCBR";
-        case KC_RCBR: return "KC_RCBR";
-        case KC_PIPE: return "KC_PIPE";
-        case KC_UP: return "KC_UP";
-        case KC_DOWN: return "KC_DOWN";
-        case KC_LEFT: return "KC_LEFT";
-        case KC_RIGHT: return "KC_RIGHT";
-        case KC_DEL: return "KC_DEL";
-        case KC_HOME: return "KC_HOME";
-        case KC_END: return "KC_END";
-        case KC_INS: return "KC_INS";
-        case XXXXXXX: return "KC_NO";
-        case _______: return "KC_TRNS";
-        case RGB_TOG: return "RGB_TOG";
-        case UG_VALD: return "UG_VALD";
-        case UG_VALU: return "UG_VALU";
-        case UG_SATD: return "UG_SATD";
-        case UG_SATU: return "UG_SATU";
-        case UG_HUED: return "UG_HUED";
-        case UG_HUEU: return "UG_HUEU";
-        case UG_PREV: return "UG_PREV";
-        case UG_NEXT: return "UG_NEXT";
-        case UG_SPDD: return "UG_SPDD";
-        case UG_SPDU: return "UG_SPDU";
-        case EE_CLR: return "EE_CLR";
-        default: return "UNKNOWN";
+    for (size_t i = 0; i < sizeof(keycode_map) / sizeof(keycode_map[0]); i++) {
+        if (keycode_map[i].keycode == keycode) {
+            return keycode_map[i].name;
+        }
     }
+    return "UNKNOWN";
 }
