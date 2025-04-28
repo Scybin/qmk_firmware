@@ -1,6 +1,7 @@
 #include QMK_KEYBOARD_H
 #include "oled.h"
 
+// Wrapper for custom OLED logic
 #ifndef OLED_TASK_KB_OVERRIDE
 bool oled_task_kb(void) {
     return oled_task_user();
