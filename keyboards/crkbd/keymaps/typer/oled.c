@@ -4,11 +4,24 @@ static uint32_t autocorrect_count = 0; // Counter for autocorrect events
 static char last_corrected_word[32] = ""; // Stores the most recent autocorrected word
 static bool white_out_flag = false; // Flag to trigger OLED white-out on the slave side
 
+#ifdef SPLIT_KEYBOARD
+// Shared memory for synchronizing the white-out flag between halves
+bool shared_white_out_flag = false;
+#endif
+
 bool apply_autocorrect(uint8_t backspaces, const char *str, char *typo, char *correct) {
     autocorrect_count++; // Increment the counter
     strncpy(last_corrected_word, correct, sizeof(last_corrected_word) - 1); // Store the corrected word
     last_corrected_word[sizeof(last_corrected_word) - 1] = '\0'; // Ensure null termination
-    white_out_flag = true; // Set the white-out flag for the slave side
+
+    // Set the white-out flag
+    white_out_flag = true;
+
+#ifdef SPLIT_KEYBOARD
+    // Synchronize the white-out flag with the slave side
+    shared_white_out_flag = true;
+#endif
+
     return true; // Allow the default autocorrect behavior to proceed
 }
 
@@ -26,11 +39,23 @@ bool oled_task_user(void) {
         snprintf(buffer, sizeof(buffer), "Count: %lu", autocorrect_count);
         oled_write_ln(buffer, false);
 
-        // Display the most recent autocorrected word
-        oled_write_ln("Last Word:", false);
-        oled_write_ln(last_corrected_word, false);
+        // Display the most recent autocorrected word next to "Last Word:"
+        char last_word_line[64];
+        snprintf(last_word_line, sizeof(last_word_line), "Last Word: %s", last_corrected_word);
+        oled_write_ln(last_word_line, false);
     } else {
         // Perform the white-out effect on the slave OLED
+#ifdef SPLIT_KEYBOARD
+        if (shared_white_out_flag) {
+            uint8_t white_screen[512]; // Buffer for a 128x32 OLED (128 * 32 / 8 = 512 bytes)
+            memset(white_screen, 0xFF, sizeof(white_screen)); // Fill the buffer with white pixels
+            oled_write_raw((const char *)white_screen, sizeof(white_screen)); // Write the buffer to the OLED
+            wait_ms(200); // Wait for 200 milliseconds
+            oled_clear(); // Clear the OLED to blank
+            oled_render(); // Render the cleared display
+            shared_white_out_flag = false; // Reset the shared white-out flag
+        }
+#else
         if (white_out_flag) {
             uint8_t white_screen[512]; // Buffer for a 128x32 OLED (128 * 32 / 8 = 512 bytes)
             memset(white_screen, 0xFF, sizeof(white_screen)); // Fill the buffer with white pixels
@@ -40,6 +65,7 @@ bool oled_task_user(void) {
             oled_render(); // Render the cleared display
             white_out_flag = false; // Reset the white-out flag
         }
+#endif
     }
     return false; // Indicate no further processing is needed
 }
