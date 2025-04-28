@@ -43,13 +43,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
-static uint32_t keypress_count = 0; // Counter for key presses
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        keypress_count++; // Increment key press counter
-    }
-
     switch (keycode) {
         case BSPC_ENT:
             if (record->event.pressed) {
@@ -64,10 +58,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         default:
             return true;
     }
-}
-
-uint32_t get_keypress_count(void) {
-    return keypress_count;
 }
 
 void keyboard_post_init_user(void) {
