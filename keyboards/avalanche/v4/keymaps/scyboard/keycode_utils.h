@@ -3,22 +3,9 @@
 
 #include QMK_KEYBOARD_H
 
-// Declare enums as extern to reference them from keymap.c
-extern enum layer {
-    BASE,
-    LIGHT,
-    DEV,
-    OSRS,
-    LOWER,
-    UPPER,
-};
-
-extern enum tap_dance {
-    SHIFT_CAPS = 1,
-    LOSRS,
-    LBASE,
-    LLIGHT,
-};
+// Declare the enums as references (not definitions)
+enum layer;
+enum tap_dance;
 
 const char* get_keycode_name(uint16_t keycode);
 
