@@ -69,23 +69,19 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 };
 
 bool oled_task_user(void) {
-    // Static variables to store the last pressed key's information
-    static uint8_t last_row = 0; // Declare last_row
-    static uint8_t last_col = 0; // Declare last_col
+    static uint8_t last_row = 0;
+    static uint8_t last_col = 0;
     static uint16_t last_keycode = 0;
     static bool key_pressed = false;
 
-    // Custom OLED logic
     if (is_keyboard_master()) {
         oled_clear();
 
         uint8_t current_layer = biton32(layer_state);
 
-        // Display the current layer at the top row
         oled_set_cursor(0, 0);
         oled_write_P(PSTR("Layer: "), false);
 
-        // Map the current layer to its name
         switch (current_layer) {
             case 0:
                 oled_write_P(PSTR("BASE"), false);
@@ -107,23 +103,20 @@ bool oled_task_user(void) {
                 break;
         }
 
-        // Move cursor one row below the "Layer" text
         oled_set_cursor(0, 2);
 
-        // Iterate through the matrix to find a pressed key
         bool current_key_found = false;
         for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
             for (uint8_t col = 0; col < MATRIX_COLS; col++) {
                 if (matrix_is_on(row, col)) {
                     current_key_found = true;
 
-                    // Update the last pressed key's information
-                    last_row = row; // Assign row to last_row
-                    last_col = col; // Assign col to last_col
+                    last_row = row;
+                    last_col = col;
                     last_keycode = keymap_key_to_keycode(current_layer, (keypos_t){.row = row, .col = col});
                     key_pressed = true;
 
-                    break; // Exit inner loop
+                    break;
                 }
             }
             if (current_key_found) {
@@ -143,11 +136,9 @@ bool oled_task_user(void) {
         // Move cursor one row below the row and column display
         oled_set_cursor(0, 4);
 
-        // Display the keycode and its name
         if (key_pressed) {
             char keycode_str[32];
-            const char* key_name = get_keycode_name(last_keycode); // Get the key name
-            snprintf(keycode_str, sizeof(keycode_str), "KC: %s - %05d", key_name, last_keycode);
+            snprintf(keycode_str, sizeof(keycode_str), "KC: 0x%04X - %05d", last_keycode, last_keycode);
             oled_write(keycode_str, false);
         } else {
             oled_write_P(PSTR("KC: None"), false);
