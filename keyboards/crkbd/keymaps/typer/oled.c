@@ -32,8 +32,9 @@ bool oled_task_user(void) {
     } else {
         // Perform the white-out effect on the slave OLED
         if (white_out_flag) {
-            oled_fill(1); // Fill the OLED with white pixels
-            oled_render(); // Render the white display
+            uint8_t white_screen[512]; // Buffer for a 128x32 OLED (128 * 32 / 8 = 512 bytes)
+            memset(white_screen, 0xFF, sizeof(white_screen)); // Fill the buffer with white pixels
+            oled_write_raw(white_screen, sizeof(white_screen)); // Write the buffer to the OLED
             wait_ms(200); // Wait for 200 milliseconds
             oled_clear(); // Clear the OLED to blank
             oled_render(); // Render the cleared display
