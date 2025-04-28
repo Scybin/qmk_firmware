@@ -78,7 +78,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     tap_code(KC_BSPC);
                 }
             }
-            return false; // Skip further processing for this key
+            return false;
 
         case M_0:
             if (record->event.pressed) {
@@ -147,6 +147,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
 
         default:
-            return true; // Allow further processing for all other keycodes
+            return true;
     }
+}
+
+void keyboard_post_init_user(void) {
+    rgb_matrix_mode(RGB_MATRIX_SOLID_REACTIVE);
+    rgb_matrix_sethsv(170, 255, 255);
 }
