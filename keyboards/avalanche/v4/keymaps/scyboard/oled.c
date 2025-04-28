@@ -71,6 +71,8 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 
 bool oled_task_user(void) {
     // Static variables to store the last pressed key's information
+    static uint8_t last_row = 0; // Declare last_row
+    static uint8_t last_col = 0; // Declare last_col
     static uint16_t last_keycode = 0;
     static bool key_pressed = false;
 
@@ -117,8 +119,8 @@ bool oled_task_user(void) {
                     current_key_found = true;
 
                     // Update the last pressed key's information
-                    last_row = row;
-                    last_col = col;
+                    last_row = row; // Assign row to last_row
+                    last_col = col; // Assign col to last_col
                     last_keycode = keymap_key_to_keycode(current_layer, (keypos_t){.row = row, .col = col});
                     key_pressed = true;
 
@@ -132,12 +134,11 @@ bool oled_task_user(void) {
 
         // Display row and column
         if (key_pressed) {
-            char keycode_str[32];
-            const char* key_name = get_keycode_name(last_keycode); // Get the key name
-            snprintf(keycode_str, sizeof(keycode_str), "KC: %s", key_name);
-            oled_write(keycode_str, false);
+            char row_col_str[16];
+            snprintf(row_col_str, sizeof(row_col_str), "Row: %d Col: %d", last_row, last_col);
+            oled_write(row_col_str, false);
         } else {
-            oled_write_P(PSTR("KC: None"), false);
+            oled_write_P(PSTR("Row: None Col: None"), false);
         }
 
         // Move cursor one row below the row and column display
@@ -146,8 +147,8 @@ bool oled_task_user(void) {
         // Display the keycode and its name
         if (key_pressed) {
             char keycode_str[32];
-            const char *key_name = get_u16_str(last_keycode, '0'); // Correct usage
-            snprintf(keycode_str, sizeof(keycode_str), "KC: 0x%X - %s", last_keycode, key_name);
+            const char* key_name = get_keycode_name(last_keycode); // Get the key name
+            snprintf(keycode_str, sizeof(keycode_str), "KC: %s", key_name);
             oled_write(keycode_str, false);
         } else {
             oled_write_P(PSTR("KC: None"), false);
