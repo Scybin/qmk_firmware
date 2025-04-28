@@ -1,19 +1,25 @@
 #include QMK_KEYBOARD_H
 
-static uint32_t autocorrect_count = 0; // Counter for autocorrect events
+static uint32_t autocorrect_count = 0;
 
 bool apply_autocorrect(uint8_t backspaces, const char *str, char *typo, char *correct) {
-    autocorrect_count++; // Increment the counter on each autocorrect event
-    return true; // Allow the default autocorrect behavior to proceed
+    autocorrect_count++;
+    return true;
 }
 
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
+        if (autocorrect_is_enabled()) {
+            oled_write_ln("Autocorrect: ON", false);
+        } else {
+            oled_write_ln("Autocorrect: OFF", false);
+        }
+
         char buffer[32];
-        snprintf(buffer, sizeof(buffer), "Autocorrect: %lu", autocorrect_count);
-        oled_write_ln(buffer, false); // Display the autocorrect counter
+        snprintf(buffer, sizeof(buffer), "Count: %lu", autocorrect_count);
+        oled_write_ln(buffer, false);
     } else {
-        oled_write_ln("Slave Side", false); // Display a message for the slave side
+        oled_write_ln("Slave Side", false);
     }
-    return false; // Indicate no further processing is needed
+    return false;
 }
