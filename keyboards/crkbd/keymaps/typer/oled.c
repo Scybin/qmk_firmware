@@ -1,10 +1,10 @@
 #include QMK_KEYBOARD_H
 
-bool oled_task_kb(void) {
+bool oled_task_user(void) {
     if (is_keyboard_master()) {
-        oled_write_ln("TEST MASTER", false); // Display "TEST MASTER" on the master side
+        oled_write_ln("Custom Master", false); // Custom message for the master side
     } else {
-        oled_write_ln("TEST SLAVE", false);  // Display "TEST SLAVE" on the slave side
+        oled_write_ln("Custom Slave", false);  // Custom message for the slave side
     }
     return false; // Indicate no further processing is needed
 }
