@@ -78,63 +78,75 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     tap_code(KC_BSPC);
                 }
             }
-            return false;
+            return false; // Skip further processing for this key
 
         case M_0:
             if (record->event.pressed) {
                 SEND_STRING("SandyCory" SS_TAP(X_P5) SS_TAP(X_P7) SS_TAP(X_P9));
             }
-            break;
+            return false;
+
         case M_1:
             if (record->event.pressed) {
                 SEND_STRING("4319");
             }
-            break;
+            return false;
+
         case M_2:
             if (record->event.pressed) {
                 SEND_STRING("1628");
             }
-            break;
+            return false;
+
         case M_3:
             if (record->event.pressed) {
                 SEND_STRING(SS_LCTL("c"));
             }
-            break;
+            return false;
+
         case M_4:
             if (record->event.pressed) {
                 SEND_STRING(SS_LSFT(SS_LCTL("v")));
             }
-            break;
+            return false;
+
         case M_5:
             if (record->event.pressed) {
                 SEND_STRING(SS_LCTL("x"));
             }
-            break;
+            return false;
+
         case M_6:
             if (record->event.pressed) {
                 SEND_STRING("ahoughton");
             }
-            break;
+            return false;
+
         case M_7:
             if (record->event.pressed) {
                 SEND_STRING("CorySandy866");
             }
-            break;
+            return false;
+
         case M_8:
             if (record->event.pressed) {
                 SEND_STRING("Synapse" SS_TAP(X_P4) "$");
             }
-            break;
+            return false;
+
         case M_9:
             if (record->event.pressed) {
                 SEND_STRING("texas\ahoughton");
             }
-            break;
+            return false;
+
         case M_10:
             if (record->event.pressed) {
                 SEND_STRING("ahoughton@envisionradiology.com");
             }
-            break;
+            return false;
+
+        default:
+            return true; // Allow further processing for all other keycodes
     }
-    return true;
 }
