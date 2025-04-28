@@ -3,10 +3,6 @@
 
 #include QMK_KEYBOARD_H
 
-// Declare the enums as references (not definitions)
-enum layer;
-enum tap_dance;
-
 const char* get_keycode_name(uint16_t keycode);
 
 #endif

@@ -109,14 +109,6 @@ const char* get_keycode_name(uint16_t keycode) {
         case UG_SPDD: return "UG_SPDD";
         case UG_SPDU: return "UG_SPDU";
         case EE_CLR: return "EE_CLR";
-        case MO(LOWER): return "MO(LOWER)";
-        case MO(UPPER): return "MO(UPPER)";
-        case DF(OSRS): return "DF(OSRS)";
-        case DF(BASE): return "DF(BASE)";
-        case TD(LLIGHT): return "TD(LLIGHT)";
-        case TD(SHIFT_CAPS): return "TD(SHIFT_CAPS)";
-        case TD(LBASE): return "TD(LBASE)";
-        case TD(LOSRS): return "TD(LOSRS)";
         default: return "UNKNOWN";
     }
 }
