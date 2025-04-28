@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
+#include "keycode_utils.h"
 #include "oled.h"
 
 // Wrapper for custom OLED logic

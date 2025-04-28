@@ -133,11 +133,12 @@ bool oled_task_user(void) {
 
         // Display row and column
         if (key_pressed) {
-            char row_col_str[16];
-            snprintf(row_col_str, sizeof(row_col_str), "Row: %d Col: %d", last_row, last_col);
-            oled_write(row_col_str, false);
+            char keycode_str[32];
+            const char* key_name = get_keycode_name(last_keycode); // Get the key name
+            snprintf(keycode_str, sizeof(keycode_str), "KC: %s", key_name);
+            oled_write(keycode_str, false);
         } else {
-            oled_write_P(PSTR("Row: None Col: None"), false);
+            oled_write_P(PSTR("KC: None"), false);
         }
 
         // Move cursor one row below the row and column display
