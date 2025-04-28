@@ -1,4 +1,5 @@
 #include QMK_KEYBOARD_H
+#include "keycode_utils.h"
 
 const char* get_keycode_name(uint16_t keycode) {
     switch (keycode) {
@@ -112,10 +113,10 @@ const char* get_keycode_name(uint16_t keycode) {
         case MO(UPPER): return "MO(UPPER)";
         case DF(OSRS): return "DF(OSRS)";
         case DF(BASE): return "DF(BASE)";
-        case TD(LLIGHT): return "TD(LLIGHT)"
-        case TD(SHIFT_CAPS): return "TD(SHIFT_CAPS)"
-        case TD(LBASE): return "TD(LBASE)"
-        case TD(LOSRS): return "TD(LOSRS)"
+        case TD(LLIGHT): return "TD(LLIGHT)";
+        case TD(SHIFT_CAPS): return "TD(SHIFT_CAPS)";
+        case TD(LBASE): return "TD(LBASE)";
+        case TD(LOSRS): return "TD(LOSRS)";
         default: return "UNKNOWN";
     }
 }
