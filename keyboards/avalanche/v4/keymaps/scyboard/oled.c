@@ -1,4 +1,5 @@
 #include QMK_KEYBOARD_H
+#include "keycode_utils.h"
 
 // Bitmap for "scyboard" (128x64 OLED screen)
 static const unsigned char PROGMEM scyboard_logo[] = {
@@ -70,8 +71,6 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 
 bool oled_task_user(void) {
     // Static variables to store the last pressed key's information
-    static uint8_t last_row = 0;
-    static uint8_t last_col = 0;
     static uint16_t last_keycode = 0;
     static bool key_pressed = false;
 
