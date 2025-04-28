@@ -1,25 +1,25 @@
-   #ifndef KEYCODE_UTILS_H
-   #define KEYCODE_UTILS_H
+#ifndef KEYCODE_UTILS_H
+#define KEYCODE_UTILS_H
 
-   #include QMK_KEYBOARD_H
+#include QMK_KEYBOARD_H
 
-   // Include layer and tap dance definitions
-   enum layer {
-       BASE,
-       LIGHT,
-       DEV,
-       OSRS,
-       LOWER,
-       UPPER,
-   };
+// Declare enums as extern to reference them from keymap.c
+extern enum layer {
+    BASE,
+    LIGHT,
+    DEV,
+    OSRS,
+    LOWER,
+    UPPER,
+};
 
-   enum tap_dance {
-       SHIFT_CAPS = 1,
-       LOSRS,
-       LBASE,
-       LLIGHT,
-   };
+extern enum tap_dance {
+    SHIFT_CAPS = 1,
+    LOSRS,
+    LBASE,
+    LLIGHT,
+};
 
-   const char* get_keycode_name(uint16_t keycode);
+const char* get_keycode_name(uint16_t keycode);
 
-   #endif
+#endif
