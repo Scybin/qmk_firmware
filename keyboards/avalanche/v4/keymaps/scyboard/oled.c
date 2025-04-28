@@ -68,6 +68,8 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+static uint32_t total_characters = 0;
+
 bool oled_task_user(void) {
     static uint8_t last_row = 0;
     static uint8_t last_col = 0;
@@ -116,6 +118,8 @@ bool oled_task_user(void) {
                     last_keycode = keymap_key_to_keycode(current_layer, (keypos_t){.row = row, .col = col});
                     key_pressed = true;
 
+                    total_characters++;
+
                     break;
                 }
             }
@@ -144,9 +148,9 @@ bool oled_task_user(void) {
 
         oled_set_cursor(0, 6);
 
-        char wpm_str[16];
-        snprintf(wpm_str, sizeof(wpm_str), "WPM: %d", get_current_wpm());
-        oled_write(wpm_str, false);
+        char char_count_str[32];
+        snprintf(char_count_str, sizeof(char_count_str), "Chars: %lu", total_characters);
+        oled_write(char_count_str, false);
 
     } else {
         oled_clear();
