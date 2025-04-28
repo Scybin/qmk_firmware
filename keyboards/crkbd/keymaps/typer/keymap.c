@@ -136,7 +136,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         case M_9:
             if (record->event.pressed) {
-                SEND_STRING("texas\ahoughton");
+                SEND_STRING("texas\\ahoughton");
             }
             return false;
 
