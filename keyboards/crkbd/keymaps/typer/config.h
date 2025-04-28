@@ -56,3 +56,9 @@
 //#    define ENABLE_RGB_MATRIX_SOLID_SPLASH
 //#    define ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
 #endif
+
+// OLED configuration
+#ifdef OLED_ENABLE
+#    define SPLIT_OLED_ENABLE
+#endif
+#define OLED_TASK_KB_OVERRIDE

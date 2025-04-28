@@ -1,13 +1,11 @@
 #include QMK_KEYBOARD_H
 #include "oled.h"
 
-// Override the default OLED task implementation
-#define OLED_TASK_KB_OVERRIDE
-
+#ifndef OLED_TASK_KB_OVERRIDE
 bool oled_task_kb(void) {
-    // Your custom OLED logic here
-    return oled_task_user(); // Call your custom logic in oled.c
+    return oled_task_user();
 }
+#endif
 
 enum custom_keycodes {
     BSPC_ENT = SAFE_RANGE,

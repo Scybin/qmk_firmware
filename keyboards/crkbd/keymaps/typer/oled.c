@@ -1,4 +1,4 @@
-#include "oled.h"
+#include QMK_KEYBOARD_H
 
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
