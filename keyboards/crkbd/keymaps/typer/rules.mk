@@ -1,6 +1,7 @@
 # Feature Configuration
 RGB_MATRIX_ENABLE = yes
 AUTOCORRECT_ENABLE = yes
+WPM_ENABLE = yes
 OLED_ENABLE = yes
 RGBLIGHT_ENABLE = no
 CONSOLE_ENABLE = no
