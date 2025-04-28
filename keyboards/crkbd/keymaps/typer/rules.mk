@@ -16,15 +16,15 @@ DYNAMIC_MACRO_ENABLE = no
 
 # Custom Source Files
 SRC += oled.c
-SRC -= keyboards/crkbd/crkbd.c
+SRC_FILTER = -<keyboards/crkbd/crkbd.c>
 
 # Optimization Settings
 LINK_TIME_OPTIMIZATION_ENABLE = yes
 EXTRAFLAGS += -flto
 
 # Disable Unused Features
-# NO_ACTION_MACRO
-# NO_ACTION_FUNCTION
+#define NO_ACTION_MACRO
+#define NO_ACTION_FUNCTION
 
 NO_DEBUG = yes
 NO_PRINT = yes
