@@ -1,16 +1,16 @@
 #include QMK_KEYBOARD_H
 
-// Override the keyboard-level OLED task
+#ifdef OLED_TASK_KB_OVERRIDE
 bool oled_task_kb(void) {
-    return oled_task_user(); // Delegate to the user-defined OLED task
+    return oled_task_user();
 }
+#endif
 
-// Custom user-defined OLED task
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
-        oled_write_ln("Master Side", false); // Display "Master Side" on the master half
+        oled_write_ln("Master Side", false);
     } else {
-        oled_write_ln("Slave Side", false);  // Display "Slave Side" on the slave half
+        oled_write_ln("Slave Side", false);
     }
-    return true; // Indicate the task was handled
+    return true;
 }
