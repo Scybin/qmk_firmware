@@ -1,6 +1,24 @@
 #include QMK_KEYBOARD_H
 
-// Custom macros
+enum custom_keycodes {
+    BSPC_ENT = SAFE_RANGE,
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case BSPC_ENT:
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    tap_code(KC_ENT);
+                } else {
+                    tap_code(KC_BSPC);
+                }
+            }
+            return false;
+    }
+    return true;
+}
+
 enum custom_macros {
     M_0,
     M_1,
@@ -24,7 +42,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_ESC,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI,  MO(1),  KC_SPC,     KC_ENT,   MO(2), DF(3)
+                                          KC_LGUI,  MO(1),  KC_SPC,    BSPC_ENT, MO(2),   DF(3)
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -36,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       M_4, KC_CAPS, RGB_SAD, RGB_SAI, RGB_SPD, RGB_SPI,                         KC_LEFT, KC_DOWN, KC_RIGHT, KC_TRNS, KC_INS,  KC_END,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LALT, KC_TRNS,  KC_SPC,     KC_ENT,   MO(3), KC_TRNS
+                                          KC_LALT, KC_TRNS,  KC_SPC,   BSPC_ENT, MO(3),  KC_TRNS
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -48,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT, KC_TRNS, M_9,     M_8,      M_6,     M_0,                        KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, KC_TRNS,  KC_SPC,     KC_ENT, KC_RALT, KC_TRNS
+                                          KC_LGUI, KC_TRNS,  KC_SPC,   BSPC_ENT, KC_RALT, KC_TRNS
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -60,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LCTL, KC_LCTL,  KC_A,    KC_S,    KC_D,   KC_NO,                        KC_NO,    KC_NO,  KC_NO,   KC_NO,   KC_NO,   KC_NO,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LALT, KC_NO,   KC_SPC,     KC_ENT,  KC_NO,   DF(0)
+                                          KC_LALT, KC_NO,   KC_SPC,    BSPC_ENT, KC_NO,   DF(0)
                                       //`--------------------------'  `--------------------------'
   )
 };
