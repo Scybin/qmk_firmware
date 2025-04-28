@@ -5,7 +5,7 @@ enum custom_keycodes {
 };
 
 enum custom_macros {
-    M_0 = SAFE_RANGE,
+    M_0 = SAFE_RANGE + 1,
     M_1,
     M_2,
     M_3,
