@@ -21,7 +21,6 @@ RGBLIGHT_EFFECT_RGB_TEST = no
 RGBLIGHT_EFFECT_ALTERNATING = no
 
 # Custom Source Files
-SRC += keycode_utils.c
 SRC += oled.c
 
 # Optimization Settings

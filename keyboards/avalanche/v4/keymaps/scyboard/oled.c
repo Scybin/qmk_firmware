@@ -1,5 +1,4 @@
 #include QMK_KEYBOARD_H
-#include "keycode_utils.h"
 
 // Bitmap for "scyboard" (128x64 OLED screen)
 static const unsigned char PROGMEM scyboard_logo[] = {
@@ -148,7 +147,7 @@ bool oled_task_user(void) {
         if (key_pressed) {
             char keycode_str[32];
             const char* key_name = get_keycode_name(last_keycode); // Get the key name
-            snprintf(keycode_str, sizeof(keycode_str), "KC: %s", key_name);
+            snprintf(keycode_str, sizeof(keycode_str), "KC: %s - %05d", key_name, last_keycode);
             oled_write(keycode_str, false);
         } else {
             oled_write_P(PSTR("KC: None"), false);
