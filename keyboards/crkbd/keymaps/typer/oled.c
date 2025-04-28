@@ -2,7 +2,8 @@
 
 static uint32_t autocorrect_count = 0; // Counter for autocorrect events
 static char last_corrected_word[32] = ""; // Stores the most recent autocorrected word
-static uint32_t keypress_count = 0; // Counter for key presses
+
+extern uint32_t get_keypress_count(void); // Declare external function
 
 bool apply_autocorrect(uint8_t backspaces, const char *str, char *typo, char *correct) {
     autocorrect_count++; // Increment the counter
@@ -37,15 +38,8 @@ bool oled_task_user(void) {
 
         // Display key press counter on the slave OLED
         char keypress_buffer[32];
-        snprintf(keypress_buffer, sizeof(keypress_buffer), "Keypresses: %lu", keypress_count);
+        snprintf(keypress_buffer, sizeof(keypress_buffer), "Keypresses: %lu", get_keypress_count());
         oled_write_ln(keypress_buffer, false);
     }
     return false; // Indicate no further processing is needed
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        keypress_count++; // Increment key press counter
-    }
-    return true; // Continue processing the keycode
 }
