@@ -61,4 +61,5 @@
 #ifdef OLED_ENABLE
 #    define SPLIT_OLED_ENABLE
 #endif
+
 #define OLED_TASK_KB_OVERRIDE

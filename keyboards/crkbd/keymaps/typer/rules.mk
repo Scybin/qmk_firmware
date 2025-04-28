@@ -16,6 +16,7 @@ DYNAMIC_MACRO_ENABLE = no
 
 # Custom Source Files
 SRC += oled.c
+SRC -= keyboards/crkbd/crkbd.c
 
 # Optimization Settings
 LINK_TIME_OPTIMIZATION_ENABLE = yes
