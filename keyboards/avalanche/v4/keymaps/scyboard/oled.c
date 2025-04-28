@@ -120,11 +120,10 @@ bool oled_task_user(void) {
                 }
             }
             if (current_key_found) {
-                break; // Exit outer loop
+                break;
             }
         }
 
-        // Display row and column
         if (key_pressed) {
             char row_col_str[16];
             snprintf(row_col_str, sizeof(row_col_str), "Row: %d Col: %d", last_row, last_col);
@@ -133,30 +132,26 @@ bool oled_task_user(void) {
             oled_write_P(PSTR("Row: None Col: None"), false);
         }
 
-        // Move cursor one row below the row and column display
         oled_set_cursor(0, 4);
 
         if (key_pressed) {
             char keycode_str[32];
-            snprintf(keycode_str, sizeof(keycode_str), "KC: 0x%04X - %05d", last_keycode, last_keycode);
+            snprintf(keycode_str, sizeof(keycode_str), "KC: %#X-%d", last_keycode, last_keycode);
             oled_write(keycode_str, false);
         } else {
             oled_write_P(PSTR("KC: None"), false);
         }
 
-        // Move cursor two rows below the keycode tracker
         oled_set_cursor(0, 6);
 
-        // Display the WPM (Words Per Minute)
         char wpm_str[16];
         snprintf(wpm_str, sizeof(wpm_str), "WPM: %d", get_current_wpm());
         oled_write(wpm_str, false);
 
     } else {
-        // Slave OLED display
         oled_clear();
         oled_write_raw_P((const char *)scyboard_logo, sizeof(scyboard_logo));
     }
 
-    return false; // Return false to prevent fallback to default logic
+    return false;
 }
