@@ -136,7 +136,7 @@ bool oled_task_user(void) {
 
         if (key_pressed) {
             char keycode_str[32];
-            snprintf(keycode_str, sizeof(keycode_str), "KC: 0x%X-%d", last_keycode, last_keycode);
+            snprintf(keycode_str, sizeof(keycode_str), "KC: 0x%X - %d", last_keycode, last_keycode);
             oled_write(keycode_str, false);
         } else {
             oled_write_P(PSTR("KC: None"), false);
