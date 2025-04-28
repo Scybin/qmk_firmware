@@ -21,11 +21,6 @@ bool apply_autocorrect(uint8_t backspaces, const char *str, char *typo, char *co
 
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
-        // Display WPM counter
-        char wpm_buffer[32];
-        snprintf(wpm_buffer, sizeof(wpm_buffer), "WPM: %d", get_current_wpm());
-        oled_write_ln(wpm_buffer, false);
-
         // Display autocorrect status
         if (autocorrect_is_enabled()) {
             oled_write_ln("Autocorrect: ON", false);
@@ -42,6 +37,11 @@ bool oled_task_user(void) {
         char last_word_line[64];
         snprintf(last_word_line, sizeof(last_word_line), "Last Word: %s", last_corrected_word);
         oled_write_ln(last_word_line, false);
+
+        // Display WPM counter below the "Last Word" row
+        char wpm_buffer[32];
+        snprintf(wpm_buffer, sizeof(wpm_buffer), "WPM: %d", get_current_wpm());
+        oled_write_ln(wpm_buffer, false);
     } else {
         // Display the logo on the slave OLED
         oled_write_raw_P(logo, sizeof(logo));
