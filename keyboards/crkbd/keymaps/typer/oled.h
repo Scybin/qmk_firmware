@@ -3,6 +3,6 @@
 
 #include QMK_KEYBOARD_H
 
-void oled_task_user(void);
+bool oled_task_user(void);
 
-#endif
+#endif // OLED_H
