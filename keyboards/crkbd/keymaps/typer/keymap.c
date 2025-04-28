@@ -4,21 +4,6 @@ enum custom_keycodes {
     BSPC_ENT = SAFE_RANGE,
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case BSPC_ENT:
-            if (record->event.pressed) {
-                if (get_mods() & MOD_MASK_SHIFT) {
-                    tap_code(KC_ENT);
-                } else {
-                    tap_code(KC_BSPC);
-                }
-            }
-            return false;
-    }
-    return true;
-}
-
 enum custom_macros {
     M_0,
     M_1,
@@ -83,9 +68,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
-// Macro handling
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case BSPC_ENT:
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    tap_code(KC_ENT);
+                } else {
+                    tap_code(KC_BSPC);
+                }
+            }
+            return false;
+
         case M_0:
             if (record->event.pressed) {
                 SEND_STRING("SandyCory" SS_TAP(X_P5) SS_TAP(X_P7) SS_TAP(X_P9));
