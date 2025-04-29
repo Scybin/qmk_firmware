@@ -12,7 +12,7 @@ bool oled_task_kb(void) {
 }
 #endif
 
-// Sleep/Wakeup logic
+// Sleep & wakeup logic
 void matrix_scan_user(void) {
 }
 
