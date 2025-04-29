@@ -36,3 +36,11 @@ uint8_t get_last_col(void) {
 uint16_t get_last_keycode(void) {
     return last_keycode;
 }
+
+matrix_row_t get_previous_matrix_row(uint8_t row) {
+    return previous_matrix[row];
+}
+
+void set_previous_matrix_row(uint8_t row, matrix_row_t value) {
+    previous_matrix[row] = value;
+}

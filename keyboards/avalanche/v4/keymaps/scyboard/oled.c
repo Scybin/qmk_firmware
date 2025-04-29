@@ -104,7 +104,7 @@ bool oled_task_user(void) {
         for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
             matrix_row_t current_row = matrix_get_row(row);
             for (uint8_t col = 0; col < MATRIX_COLS; col++) {
-                bool was_pressed = previous_matrix[row] & (1 << col);
+                bool was_pressed = get_previous_matrix_row(row) & (1 << col);
                 bool is_pressed = current_row & (1 << col);
 
                 if (is_pressed && !was_pressed) { // Key was just pressed
@@ -112,7 +112,7 @@ bool oled_task_user(void) {
                     break;
                 }
             }
-            previous_matrix[row] = current_row; // Update the previous state for this row
+            set_previous_matrix_row(row, current_row); // Update the previous state for this row
         }
 
         // Display key press information
