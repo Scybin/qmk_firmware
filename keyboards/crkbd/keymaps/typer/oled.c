@@ -39,14 +39,22 @@ static const char PROGMEM logo[] = {
     0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x03, 0x03, 0x07, 0x00, 0x00, 0x00, 0x00
 };
 
+static uint32_t oled_last_activity = 0;
+
 bool apply_autocorrect(uint8_t backspaces, const char *str, char *typo, char *correct) {
-    autocorrect_count++; // Increment the counter
+    autocorrect_count++;
     strncpy(last_corrected_word, correct, sizeof(last_corrected_word) - 1);
     last_corrected_word[sizeof(last_corrected_word) - 1] = '\0';
+    oled_last_activity = timer_read32();
     return true;
 }
 
 bool oled_task_user(void) {
+    if (timer_elapsed32(oled_last_activity) > OLED_TIMEOUT) {
+        oled_off();
+        return false;
+    }
+
     if (is_keyboard_master()) {
         if (autocorrect_is_enabled()) {
             oled_write_ln("Autocorrect: ON", false);
@@ -72,5 +80,7 @@ bool oled_task_user(void) {
     } else {
         oled_write_raw_P(logo, sizeof(logo));
     }
+
+    oled_last_activity = timer_read32();
     return false;
 }
