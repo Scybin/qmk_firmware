@@ -15,4 +15,6 @@ void set_previous_matrix_row(uint8_t row, matrix_row_t value);
 
 void process_keypress(uint8_t row, uint8_t col, uint8_t layer);
 
+void oled_reset_timer_on_keypress(void);
+
 #endif

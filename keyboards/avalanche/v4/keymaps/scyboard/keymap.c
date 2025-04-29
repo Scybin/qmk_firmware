@@ -3,6 +3,7 @@
 
 #include QMK_KEYBOARD_H
 #include "oled.h"
+#include "oled_state.h"
 
 // OLED logic
 #ifndef OLED_TASK_KB_OVERRIDE
