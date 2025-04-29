@@ -17,14 +17,20 @@ void oled_state_init(void) {
     oled_last_activity = timer_read32();
 }
 
-void update_key_state(uint8_t row, uint8_t col, uint8_t layer, bool is_pressed) {
-    if (is_pressed) {
-        last_row = row;
-        last_col = col;
-        last_keycode = keymap_key_to_keycode(layer, (keypos_t){.row = row, .col = col});
-        total_characters++;
-        reset_oled_timer();
-    }
+void process_keypress(uint8_t row, uint8_t col, uint8_t layer) {
+    last_row = row;
+    last_col = col;
+    last_keycode = keymap_key_to_keycode(layer, (keypos_t){.row = row, .col = col});
+    total_characters++;
+    reset_oled_timer(); // Reset the OLED timeout
+}
+
+void reset_oled_timer(void) {
+    oled_last_activity = timer_read32();
+}
+
+bool is_oled_timed_out(void) {
+    return (timer_elapsed32(oled_last_activity) > OLED_TIMEOUT);
 }
 
 uint32_t get_total_characters(void) {
@@ -49,12 +55,4 @@ matrix_row_t get_previous_matrix_row(uint8_t row) {
 
 void set_previous_matrix_row(uint8_t row, matrix_row_t value) {
     previous_matrix[row] = value;
-}
-
-void reset_oled_timer(void) {
-    oled_last_activity = timer_read32();
-}
-
-bool is_oled_timed_out(void) {
-    return (timer_elapsed32(oled_last_activity) > OLED_TIMEOUT);
 }

@@ -103,11 +103,11 @@ bool oled_task_user(void) {
     if (is_keyboard_master()) {
         oled_clear();
 
-        // Display current layer on the same line
+        // Display current layer
         uint8_t current_layer = biton32(layer_state);
-        oled_set_cursor(0, 0); // Set cursor to the beginning of the first line
+        oled_set_cursor(0, 0);
         oled_write_P(PSTR("Layer: "), false);
-        oled_write(layer_names[current_layer], false); // Write layer name next to "Layer:"
+        oled_write(layer_names[current_layer], false);
 
         // Scan key matrix for changes
         for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
@@ -117,8 +117,7 @@ bool oled_task_user(void) {
                 bool is_pressed = current_row & (1 << col);
 
                 if (is_pressed && !was_pressed) { // Key was just pressed
-                    update_key_state(row, col, current_layer, true);
-                    oled_on(); // Turn on the OLED if a key is pressed
+                    process_keypress(row, col, current_layer); // Delegate to oled_state.c
                     break;
                 }
             }
