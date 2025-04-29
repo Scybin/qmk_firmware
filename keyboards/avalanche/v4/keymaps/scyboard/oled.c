@@ -69,6 +69,7 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 };
 
 static uint32_t total_characters = 0;
+static matrix_row_t previous_matrix[MATRIX_ROWS] = {0}; // To track the previous state of the key matrix
 
 bool oled_task_user(void) {
     static uint8_t last_row = 0;
@@ -109,8 +110,12 @@ bool oled_task_user(void) {
 
         bool current_key_found = false;
         for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
+            matrix_row_t current_row = matrix_get_row(row);
             for (uint8_t col = 0; col < MATRIX_COLS; col++) {
-                if (matrix_is_on(row, col)) {
+                bool was_pressed = previous_matrix[row] & (1 << col);
+                bool is_pressed = current_row & (1 << col);
+
+                if (is_pressed && !was_pressed) { // Key was just pressed
                     current_key_found = true;
 
                     last_row = row;
@@ -118,11 +123,12 @@ bool oled_task_user(void) {
                     last_keycode = keymap_key_to_keycode(current_layer, (keypos_t){.row = row, .col = col});
                     key_pressed = true;
 
-                    total_characters++;
+                    total_characters++; // Increment only on key press
 
                     break;
                 }
             }
+            previous_matrix[row] = current_row; // Update the previous state for this row
             if (current_key_found) {
                 break;
             }
