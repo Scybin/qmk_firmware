@@ -92,7 +92,7 @@ tap_dance_action_t tap_dance_actions[] = {
     [SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
     [LOSRS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer1_finished, dance_layer1_reset),
     [LBASE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer2_finished, dance_layer2_reset),
-    [LLIGHT] = ACTION_TAP_DANCE_ADVANCED(NULL, dance_layer3_finished, dance_layer3_reset),
+    [LLIGHT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer3_finished, dance_layer3_reset), // Fixed here
 };
 
 // Layer keymap
