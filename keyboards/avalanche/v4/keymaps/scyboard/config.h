@@ -20,5 +20,6 @@
 // OLED configuration
 #ifdef OLED_ENABLE
 #    define SPLIT_OLED_ENABLE
+#    define OLED_TIMEOUT 30000  // Timeout after 30 seconds of inactivity
 #endif
 #define OLED_TASK_KB_OVERRIDE
