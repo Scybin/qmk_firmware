@@ -60,7 +60,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
-        case CTRL_SHIFT_V:
+        case LCTL_LSFT_V:
             if (record->event.pressed) {
                 tap_code16(C(S(KC_V))); // Simplified CTRL+SHIFT+V
             }
