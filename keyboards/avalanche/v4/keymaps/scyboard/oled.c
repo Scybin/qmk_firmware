@@ -68,25 +68,16 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-static uint32_t total_characters = 0;
-static matrix_row_t previous_matrix[MATRIX_ROWS] = {0}; // To track the previous state of the key matrix
-
-static uint32_t oled_timer = 0; // Timer to track OLED inactivity
+static uint32_t oled_last_activity = 0; // Track the last activity time
 
 bool oled_task_user(void) {
-    static uint8_t last_row = 0;
-    static uint8_t last_col = 0;
-    static uint16_t last_keycode = 0;
-    static bool key_pressed = false;
-
-    // Check if OLED should be turned off due to inactivity
-    if (timer_elapsed(oled_timer) > OLED_TIMEOUT) {
+    // Turn off the OLED if the timeout has elapsed
+    if (timer_elapsed32(oled_last_activity) > OLED_TIMEOUT) {
         oled_off();
         return false;
     }
 
     if (is_keyboard_master()) {
-        oled_on(); // Ensure OLED is on when active
         oled_clear();
 
         uint8_t current_layer = biton32(layer_state);
@@ -134,9 +125,6 @@ bool oled_task_user(void) {
 
                     total_characters++; // Increment only on key press
 
-                    // Reset the OLED timer on key press
-                    oled_timer = timer_read();
-
                     break;
                 }
             }
@@ -175,12 +163,7 @@ bool oled_task_user(void) {
         oled_write_raw_P((const char *)scyboard_logo, sizeof(scyboard_logo));
     }
 
+    // Update the last activity time
+    oled_last_activity = timer_read32();
     return false;
-}
-
-void matrix_scan_user(void) {
-    // Reset the OLED timer if any key is pressed
-    if (matrix_is_on()) {
-        oled_timer = timer_read();
-    }
 }
