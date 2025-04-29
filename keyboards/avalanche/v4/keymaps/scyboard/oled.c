@@ -88,19 +88,7 @@ static void oled_write_formatted(uint8_t row, const char *format, ...) {
     oled_write_line(row, buffer);
 }
 
-// Timer for OLED sleep
-static uint32_t oled_timer = 0;
-
-void oled_reset_timer_on_keypress(void) {
-    oled_timer = timer_read32();
-}
-
 bool oled_task_user(void) {
-    if (timer_elapsed32(oled_timer) > 30000) { // 30 sec
-        oled_off();
-        return false;
-    }
-
     if (is_keyboard_master()) {
         oled_on();
         oled_clear();

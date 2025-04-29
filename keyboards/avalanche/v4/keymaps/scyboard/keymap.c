@@ -12,29 +12,6 @@ bool oled_task_kb(void) {
 }
 #endif
 
-// Sleep & wakeup logic
-void matrix_scan_user(void) {
-    // Handle wakeup logic here
-    suspend_wakeup_init();
-    oled_reset_timer_on_keypress();
-}
-
-// Remove sleep/wakeup logic from process_record_user
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    return true;
-}
-
-// Suspend hooks for sleep/wakeup
-static void suspend_wakeup_init(void) {
-    // Logic to handle when the keyboard wakes up
-    oled_reset_timer_on_keypress();  // Reset OLED timer on wakeup
-}
-
-void suspend_wakeup_init(void) {
-    // Logic to handle when the keyboard wakes up
-    oled_reset_timer_on_keypress();  // Reset OLED timer on wakeup
-}
-
 // Name layers
 enum layer {
     BASE,
@@ -102,7 +79,7 @@ tap_dance_action_t tap_dance_actions[] = {
     [SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
     [LOSRS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer1_finished, dance_layer1_reset),
     [LBASE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer2_finished, dance_layer2_reset),
-    [LLIGHT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer3_finished, dance_layer3_reset), // Fixed here
+    [LLIGHT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer3_finished, dance_layer3_reset),
 };
 
 // Layer keymap

@@ -1,7 +1,7 @@
 #pragma once
 
 // Sleep configuration
-#define SLEEP_TIMEOUT 30000 // 30 sec
+//#define SLEEP_TIMEOUT 30000 // 30 sec
 
 // Tapping configuration
 #define TAPPING_TERM 200  // 200ms
