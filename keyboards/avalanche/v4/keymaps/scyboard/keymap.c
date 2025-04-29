@@ -25,8 +25,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 // Suspend hooks for sleep/wakeup
-void suspend_power_down_user(void) {
-    // Logic to handle when the keyboard goes to sleep
+static void suspend_wakeup_init(void) {
+    // Logic to handle when the keyboard wakes up
+    oled_reset_timer_on_keypress();  // Reset OLED timer on wakeup
 }
 
 void suspend_wakeup_init(void) {
