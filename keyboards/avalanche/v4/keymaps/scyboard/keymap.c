@@ -29,6 +29,11 @@ enum {
     LLIGHT,
 };
 
+// Custom keycodes
+enum custom_keycodes {
+    TOGGLE_OLED = SAFE_RANGE, 
+};
+
 void dance_layer1_finished(tap_dance_state_t *state, void *user_data) {
     if (state->count == 1) {
         tap_code(KC_LALT);
@@ -86,17 +91,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case TOGGLE_OLED:
             if (record->event.pressed) {
-                static bool oled_enabled = true; // Track OLED state
+                static bool oled_enabled = true;
                 oled_enabled = !oled_enabled;
                 if (oled_enabled) {
-                    oled_on(); // Turn on the OLED
+                    oled_on();
                 } else {
-                    oled_off(); // Turn off the OLED
+                    oled_off();
                 }
             }
-            return false; // Skip further processing of this keycode
+            return false;
         default:
-            return true; // Process all other keycodes normally
+            return true;
     }
 }
 
