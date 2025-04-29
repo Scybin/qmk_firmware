@@ -13,10 +13,7 @@ theese     -> these
 :yaers     -> years
 :thsoe     -> those
 shoudl     -> should
-raelly     -> really
-bedore     -> before
 littel     -> little
-beeing     -> being
 :hwile     -> while
 aroud      -> around
 thign      -> thing
@@ -41,15 +38,11 @@ fitler     -> filter
 firts      -> first
 follwo     -> follow
 :foudn     -> found
-frequecy   -> frequency
-firend     -> friend
 iamge      -> image
 inital     -> initial
-intput     -> input
 lenght     -> length
 :moeny     -> money
 mysefl     -> myself
-ouptut     -> output
 probaly    -> probably
 probelm    -> problem
 recrod     -> record
@@ -69,10 +62,6 @@ amature    -> amateur
 aparent    -> apparent
 asthetic   -> aesthetic
 busness    -> business
-calander   -> calendar
-competance -> competence
-concensus  -> consensus
-collegue   -> colleague
 excercise  -> exercise
 :grammer   -> grammar
 guaratee   -> guarantee
@@ -82,7 +71,6 @@ pallete    -> palette
 paralel    -> parallel
 priviledge -> privilege
 propogate  -> propagate
-psuedo     -> pseudo
 reciept    -> receipt
 relevent   -> relevant
 symetric   -> symmetric
@@ -128,12 +116,8 @@ ahppn      -> happen
 allign     -> align
 aquire     -> acquire
 availabe   -> available
-bandwith   -> bandwidth
-begginer   -> beginner
 beleive    -> believe
 breif      -> brief
-caluclate  -> calculate
-catagory   -> category
 cauhgt     -> caught
 ceratin    -> certain
 cheif      -> chief
@@ -156,7 +140,6 @@ inclued    -> include
 insted     -> instead
 intrest    -> interest
 invliad    -> invalid
-learnign   -> learning
 likly      -> likely
 lisense    -> license
 macthing   -> matching
