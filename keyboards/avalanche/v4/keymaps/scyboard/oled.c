@@ -68,7 +68,13 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-static uint32_t oled_last_activity = 0; // Track the last activity time
+static matrix_row_t previous_matrix[MATRIX_ROWS] = {0}; // To track the previous state of the key matrix
+static uint8_t last_row = 0;                            // Last row of the pressed key
+static uint8_t last_col = 0;                            // Last column of the pressed key
+static uint16_t last_keycode = 0;                       // Last keycode of the pressed key
+static bool key_pressed = false;                        // Whether a key is currently pressed
+static uint32_t total_characters = 0;                   // Total characters typed
+static uint32_t oled_last_activity = 0;                 // Track the last activity time
 
 bool oled_task_user(void) {
     // Turn off the OLED if the timeout has elapsed
