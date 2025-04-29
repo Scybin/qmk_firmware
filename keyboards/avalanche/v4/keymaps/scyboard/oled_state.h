@@ -13,4 +13,7 @@ uint16_t get_last_keycode(void);
 void reset_oled_timer(void);
 bool is_oled_timed_out(void);
 
-#endif // OLED_STATE_H
+matrix_row_t get_previous_matrix_row(uint8_t row);
+void set_previous_matrix_row(uint8_t row, matrix_row_t value);
+
+#endif
