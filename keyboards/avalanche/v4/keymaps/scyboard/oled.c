@@ -1,4 +1,5 @@
 #include QMK_KEYBOARD_H
+#include "oled_state.h"
 
 // Bitmap for "scyboard" (128x64 OLED screen)
 static const unsigned char PROGMEM scyboard_logo[] = {
