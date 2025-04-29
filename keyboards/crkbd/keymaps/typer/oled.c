@@ -1,7 +1,7 @@
 #include QMK_KEYBOARD_H
 
-static uint32_t autocorrect_count = 0; // Counter for autocorrect events
-static char last_corrected_word[32] = ""; // Stores the most recent autocorrected word
+static uint32_t autocorrect_count = 0;
+static char last_corrected_word[32] = "";
 
 // Define the logo as a bitmap array for a 128x32 display
 static const char PROGMEM logo[] = {
@@ -41,28 +41,24 @@ static const char PROGMEM logo[] = {
 
 bool apply_autocorrect(uint8_t backspaces, const char *str, char *typo, char *correct) {
     autocorrect_count++; // Increment the counter
-    strncpy(last_corrected_word, correct, sizeof(last_corrected_word) - 1); // Store the corrected word
-    last_corrected_word[sizeof(last_corrected_word) - 1] = '\0'; // Ensure null termination
-    return true; // Allow the default autocorrect behavior to proceed
+    strncpy(last_corrected_word, correct, sizeof(last_corrected_word) - 1);
+    last_corrected_word[sizeof(last_corrected_word) - 1] = '\0';
+    return true;
 }
 
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
-        // Display autocorrect status
         if (autocorrect_is_enabled()) {
             oled_write_ln("Autocorrect: ON", false);
         } else {
             oled_write_ln("Autocorrect: OFF", false);
         }
 
-        // Display autocorrect counter
         char buffer[32];
         snprintf(buffer, sizeof(buffer), "Count: %lu", autocorrect_count);
         oled_write_ln(buffer, false);
 
-        // Display the most recent autocorrected word next to "Last Word:"
         char last_word_line[64];
-        // Truncate the last word if it is equal to or longer than 10 characters
         if (strlen(last_corrected_word) >= 10) {
             snprintf(last_word_line, sizeof(last_word_line), "Last Word: %.6s...", last_corrected_word);
         } else {
@@ -70,13 +66,11 @@ bool oled_task_user(void) {
         }
         oled_write_ln(last_word_line, false);
 
-        // Display WPM counter below the "Last Word" row
         char wpm_buffer[32];
         snprintf(wpm_buffer, sizeof(wpm_buffer), "WPM: %d", get_current_wpm());
         oled_write_ln(wpm_buffer, false);
     } else {
-        // Display the logo on the slave OLED
         oled_write_raw_P(logo, sizeof(logo));
     }
-    return false; // Indicate no further processing is needed
+    return false;
 }
