@@ -22,6 +22,7 @@ RGBLIGHT_EFFECT_ALTERNATING = no
 
 # Custom Source Files
 SRC += oled.c
+SRC += oled_state.c
 
 # Optimization Settings
 LINK_TIME_OPTIMIZATION_ENABLE = yes
