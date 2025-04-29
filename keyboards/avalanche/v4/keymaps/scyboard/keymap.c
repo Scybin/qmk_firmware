@@ -29,11 +29,6 @@ enum {
     LLIGHT,
 };
 
-// Custom keycodes
-enum custom_keycodes {
-    TOGGLE_OLED = SAFE_RANGE, 
-};
-
 void dance_layer1_finished(tap_dance_state_t *state, void *user_data) {
     if (state->count == 1) {
         tap_code(KC_LALT);
@@ -85,25 +80,6 @@ tap_dance_action_t tap_dance_actions[] = {
     [LBASE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer2_finished, dance_layer2_reset),
     [LLIGHT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layer3_finished, dance_layer3_reset),
 };
-
-// Process custom keycodes
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case TOGGLE_OLED:
-            if (record->event.pressed) {
-                static bool oled_enabled = true;
-                oled_enabled = !oled_enabled;
-                if (oled_enabled) {
-                    oled_on();
-                } else {
-                    oled_off();
-                }
-            }
-            return false;
-        default:
-            return true;
-    }
-}
 
 // Layer keymap
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
