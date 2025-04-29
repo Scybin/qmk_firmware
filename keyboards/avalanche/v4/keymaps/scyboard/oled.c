@@ -69,27 +69,28 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 };
 
 static uint32_t total_characters = 0;
-static matrix_row_t previous_matrix[MATRIX_ROWS] = {0};
-static uint32_t last_activity = 0;
-static bool oled_was_off = false;
+static matrix_row_t previous_matrix[MATRIX_ROWS] = {0}; // To track the previous state of the key matrix
+static uint32_t last_activity = 0; // Tracks the last activity timestamp
+static bool oled_was_off = false;  // Tracks if the OLED was turned off
 
 bool oled_task_user(void) {
     static uint8_t last_row = 0;
     static uint8_t last_col = 0;
     static uint16_t last_keycode = 0;
-    static bool key_pressed = false;
 
+    // Check for OLED timeout
     if (timer_elapsed32(last_activity) > OLED_TIMEOUT) {
         if (!oled_was_off) {
-            oled_off();
-            oled_was_off = true;
+            oled_off(); // Turn off the OLED display
+            oled_was_off = true; // Mark OLED as off
         }
         return false;
     }
 
+    // If the OLED was off and activity is detected, turn it back on
     if (oled_was_off) {
-        oled_on();
-        oled_was_off = false;
+        oled_on(); // Turn the OLED back on
+        oled_was_off = false; // Reset the flag
     }
 
     if (is_keyboard_master()) {
@@ -130,27 +131,26 @@ bool oled_task_user(void) {
                 bool was_pressed = previous_matrix[row] & (1 << col);
                 bool is_pressed = current_row & (1 << col);
 
-                if (is_pressed && !was_pressed) {
+                if (is_pressed && !was_pressed) { // Key was just pressed
                     current_key_found = true;
 
                     last_row = row;
                     last_col = col;
                     last_keycode = keymap_key_to_keycode(current_layer, (keypos_t){.row = row, .col = col});
-                    key_pressed = true;
 
-                    total_characters++;
-                    last_activity = timer_read32();
+                    total_characters++; // Increment only on key press
+                    last_activity = timer_read32(); // Update last activity timestamp
 
                     break;
                 }
             }
-            previous_matrix[row] = current_row;
+            previous_matrix[row] = current_row; // Update the previous state for this row
             if (current_key_found) {
                 break;
             }
         }
 
-        if (key_pressed) {
+        if (current_key_found) {
             char row_col_str[16];
             snprintf(row_col_str, sizeof(row_col_str), "Row: %d Col: %d", last_row, last_col);
             oled_write(row_col_str, false);
@@ -160,7 +160,7 @@ bool oled_task_user(void) {
 
         oled_set_cursor(0, 4);
 
-        if (key_pressed) {
+        if (current_key_found) {
             char keycode_str[32];
             snprintf(keycode_str, sizeof(keycode_str), "KC: 0x%04X - %05d", last_keycode, last_keycode);
             oled_write(keycode_str, false);
