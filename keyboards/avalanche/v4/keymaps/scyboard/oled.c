@@ -68,112 +68,76 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-// Declare variables for OLED timeout
-static uint32_t oled_last_activity = 0; // Track the last activity time
-static bool oled_is_on = true;          // Track whether the OLED is currently on
-
 static uint32_t total_characters = 0;
 static matrix_row_t previous_matrix[MATRIX_ROWS] = {0}; // To track the previous state of the key matrix
 
+// Layer names for display
+static const char *layer_names[] = {
+    "BASE", "LIGHT", "DEV", "OSRS", "LOWER", "UPPER"
+};
+
+// Helper function to write a string to the OLED
+static void oled_write_line(uint8_t row, const char *text) {
+    oled_set_cursor(0, row);
+    oled_write(text, false);
+}
+
+// Helper function to write a formatted string to the OLED
+static void oled_write_formatted(uint8_t row, const char *format, ...) {
+    char buffer[32];
+    va_list args;
+    va_start(args, format);
+    vsnprintf(buffer, sizeof(buffer), format, args);
+    va_end(args);
+    oled_write_line(row, buffer);
+}
+
 bool oled_task_user(void) {
-    // Turn off the OLED if the timeout has elapsed
-    if (oled_is_on && timer_elapsed32(oled_last_activity) > OLED_TIMEOUT) {
-        oled_off();
-        oled_is_on = false;
-        return false;
-    }
-
-    // Turn on the OLED if a key is pressed
-    bool key_pressed = false;
-    static uint8_t last_row = 0;
-    static uint8_t last_col = 0;
+    static uint8_t last_row = 0, last_col = 0;
     static uint16_t last_keycode = 0;
-
-    for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
-        matrix_row_t current_row = matrix_get_row(row);
-        for (uint8_t col = 0; col < MATRIX_COLS; col++) {
-            bool was_pressed = previous_matrix[row] & (1 << col);
-            bool is_pressed = current_row & (1 << col);
-
-            if (is_pressed && !was_pressed) { // Key was just pressed
-                key_pressed = true;
-
-                last_row = row;
-                last_col = col;
-                last_keycode = keymap_key_to_keycode(biton32(layer_state), (keypos_t){.row = row, .col = col});
-                total_characters++; // Increment only on key press
-
-                break;
-            }
-        }
-        previous_matrix[row] = current_row; // Update the previous state for this row
-        if (key_pressed) {
-            break;
-        }
-    }
-
-    if (key_pressed) {
-        oled_last_activity = timer_read32(); // Reset the activity timer
-        if (!oled_is_on) {
-            oled_on();
-            oled_is_on = true;
-        }
-    }
+    static bool key_pressed = false;
 
     if (is_keyboard_master()) {
         oled_clear();
 
+        // Display current layer
         uint8_t current_layer = biton32(layer_state);
+        oled_write_line(0, "Layer: ");
+        oled_write_line(1, layer_names[current_layer]);
 
-        oled_set_cursor(0, 0);
-        oled_write_P(PSTR("Layer: "), false);
+        // Scan key matrix for changes
+        bool current_key_found = false;
+        for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
+            matrix_row_t current_row = matrix_get_row(row);
+            for (uint8_t col = 0; col < MATRIX_COLS; col++) {
+                bool was_pressed = previous_matrix[row] & (1 << col);
+                bool is_pressed = current_row & (1 << col);
 
-        switch (current_layer) {
-            case 0:
-                oled_write_P(PSTR("BASE"), false);
-                break;
-            case 1:
-                oled_write_P(PSTR("LIGHT"), false);
-                break;
-            case 2:
-                oled_write_P(PSTR("DEV"), false);
-                break;
-            case 3:
-                oled_write_P(PSTR("OSRS"), false);
-                break;
-            case 4:
-                oled_write_P(PSTR("LOWER"), false);
-                break;
-            case 5:
-                oled_write_P(PSTR("UPPER"), false);
-                break;
+                if (is_pressed && !was_pressed) { // Key was just pressed
+                    current_key_found = true;
+                    last_row = row;
+                    last_col = col;
+                    last_keycode = keymap_key_to_keycode(current_layer, (keypos_t){.row = row, .col = col});
+                    key_pressed = true;
+                    total_characters++;
+                    break;
+                }
+            }
+            previous_matrix[row] = current_row; // Update the previous state for this row
+            if (current_key_found) break;
         }
 
-        oled_set_cursor(0, 2);
-
+        // Display key press information
         if (key_pressed) {
-            char row_col_str[16];
-            snprintf(row_col_str, sizeof(row_col_str), "Row: %d Col: %d", last_row, last_col);
-            oled_write(row_col_str, false);
+            oled_write_formatted(2, "Row: %d Col: %d", last_row, last_col);
+            oled_write_formatted(4, "KC: 0x%04X - %05d", last_keycode, last_keycode);
         } else {
-            oled_write_P(PSTR("Row: None Col: None"), false);
+            oled_write_line(2, "Row: None Col: None");
+            oled_write_line(4, "KC: None");
         }
 
-        oled_set_cursor(0, 4);
-
-        if (key_pressed) {
-            char keycode_str[32];
-            snprintf(keycode_str, sizeof(keycode_str), "KC: 0x%04X - %05d", last_keycode, last_keycode);
-            oled_write(keycode_str, false);
-        } else {
-            oled_write_P(PSTR("KC: None"), false);
-        }
-
-        oled_set_cursor(0, 6);
-
-        char char_count_str[32];
-        snprintf(char_count_str, sizeof(char_count_str), "Chars: %lu", total_characters);
-        oled_write(char_count_str, false);
+        // Display total characters
+        oled_write_formatted(6, "Chars: %lu", total_characters);
 
     } else {
         oled_clear();
