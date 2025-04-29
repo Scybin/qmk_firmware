@@ -88,8 +88,18 @@ static void oled_write_formatted(uint8_t row, const char *format, ...) {
     oled_write_line(row, buffer);
 }
 
+// Timer for OLED sleep
+static uint32_t oled_timer = 0;
+
 bool oled_task_user(void) {
+    // Check if the OLED should be turned off due to inactivity
+    if (timer_elapsed32(oled_timer) > 5000) { // 5 seconds timeout
+        oled_off();
+        return false;
+    }
+
     if (is_keyboard_master()) {
+        oled_on(); // Ensure OLED is on when active
         oled_clear();
 
         uint8_t current_layer = biton32(layer_state);
@@ -120,11 +130,18 @@ bool oled_task_user(void) {
         }
 
         oled_write_formatted(6, "Chars: %lu", get_total_characters());
-
     } else {
+        oled_on(); // Ensure OLED is on when active
         oled_clear();
         oled_write_raw_P((const char *)scyboard_logo, sizeof(scyboard_logo));
     }
 
     return false;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        oled_timer = timer_read32(); // Reset the timer on keypress
+    }
+    return true;
 }
