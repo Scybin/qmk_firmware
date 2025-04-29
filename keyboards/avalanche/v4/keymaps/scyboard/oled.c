@@ -97,7 +97,8 @@ bool oled_task_user(void) {
         return false;
     }
 
-    oled_on(); // Ensure the OLED is on if not timed out
+    // Ensure the OLED is on if not timed out
+    oled_on();
 
     if (is_keyboard_master()) {
         oled_clear();
@@ -117,6 +118,7 @@ bool oled_task_user(void) {
 
                 if (is_pressed && !was_pressed) { // Key was just pressed
                     update_key_state(row, col, current_layer, true);
+                    oled_on(); // Turn on the OLED if a key is pressed
                     break;
                 }
             }
