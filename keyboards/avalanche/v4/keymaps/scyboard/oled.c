@@ -74,13 +74,11 @@ static const char *layer_names[] = {
     "BASE", "LIGHT", "DEV", "OSRS", "LOWER", "UPPER"
 };
 
-// Helper function to write a string to the OLED
 static void oled_write_line(uint8_t row, const char *text) {
     oled_set_cursor(0, row);
     oled_write(text, false);
 }
 
-// Helper function to write a formatted string to the OLED
 static void oled_write_formatted(uint8_t row, const char *format, ...) {
     char buffer[32];
     va_list args;
@@ -91,40 +89,28 @@ static void oled_write_formatted(uint8_t row, const char *format, ...) {
 }
 
 bool oled_task_user(void) {
-    // Check if the OLED has timed out
-    if (is_oled_timed_out()) {
-        oled_off(); // Turn off the OLED if timed out
-        return false;
-    }
-
-    // Ensure the OLED is on if not timed out
-    oled_on();
-
     if (is_keyboard_master()) {
         oled_clear();
 
-        // Display current layer
         uint8_t current_layer = biton32(layer_state);
         oled_set_cursor(0, 0);
         oled_write_P(PSTR("Layer: "), false);
         oled_write(layer_names[current_layer], false);
 
-        // Scan key matrix for changes
         for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
             matrix_row_t current_row = matrix_get_row(row);
             for (uint8_t col = 0; col < MATRIX_COLS; col++) {
                 bool was_pressed = get_previous_matrix_row(row) & (1 << col);
                 bool is_pressed = current_row & (1 << col);
 
-                if (is_pressed && !was_pressed) { // Key was just pressed
-                    process_keypress(row, col, current_layer); // Delegate to oled_state.c
+                if (is_pressed && !was_pressed) {
+                    process_keypress(row, col, current_layer);
                     break;
                 }
             }
-            set_previous_matrix_row(row, current_row); // Update the previous state for this row
+            set_previous_matrix_row(row, current_row);
         }
 
-        // Display key press information
         if (get_last_keycode() != 0) {
             oled_write_formatted(2, "Row: %d Col: %d", get_last_row(), get_last_col());
             oled_write_formatted(4, "KC: 0x%04X - %05d", get_last_keycode(), get_last_keycode());
@@ -133,7 +119,6 @@ bool oled_task_user(void) {
             oled_write_line(4, "KC: None");
         }
 
-        // Display total characters
         oled_write_formatted(6, "Chars: %lu", get_total_characters());
 
     } else {

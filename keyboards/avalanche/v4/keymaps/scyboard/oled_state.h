@@ -10,9 +10,6 @@ uint8_t get_last_row(void);
 uint8_t get_last_col(void);
 uint16_t get_last_keycode(void);
 
-void reset_oled_timer(void);
-bool is_oled_timed_out(void);
-
 matrix_row_t get_previous_matrix_row(uint8_t row);
 void set_previous_matrix_row(uint8_t row, matrix_row_t value);
 
