@@ -91,6 +91,14 @@ static void oled_write_formatted(uint8_t row, const char *format, ...) {
 }
 
 bool oled_task_user(void) {
+    // Check if the OLED has timed out
+    if (is_oled_timed_out()) {
+        oled_off(); // Turn off the OLED if timed out
+        return false;
+    }
+
+    oled_on(); // Ensure the OLED is on if not timed out
+
     if (is_keyboard_master()) {
         oled_clear();
 

@@ -14,7 +14,7 @@ void oled_state_init(void) {
     memset(previous_matrix, 0, sizeof(previous_matrix));
     last_row = last_col = 0;
     last_keycode = 0;
-    oled_last_activity = timer_read32(); // Initialize the timer
+    oled_last_activity = timer_read32();
 }
 
 void update_key_state(uint8_t row, uint8_t col, uint8_t layer, bool is_pressed) {
@@ -23,7 +23,7 @@ void update_key_state(uint8_t row, uint8_t col, uint8_t layer, bool is_pressed) 
         last_col = col;
         last_keycode = keymap_key_to_keycode(layer, (keypos_t){.row = row, .col = col});
         total_characters++;
-        reset_oled_timer(); // Reset the timer on key press
+        reset_oled_timer();
     }
 }
 
@@ -51,11 +51,10 @@ void set_previous_matrix_row(uint8_t row, matrix_row_t value) {
     previous_matrix[row] = value;
 }
 
-// Timeout-related functions
 void reset_oled_timer(void) {
     oled_last_activity = timer_read32();
 }
 
 bool is_oled_timed_out(void) {
-    return (timer_elapsed32(oled_last_activity) > OLED_TIMEOUT); // Use OLED_TIMEOUT from config.h
+    return (timer_elapsed32(oled_last_activity) > OLED_TIMEOUT);
 }
