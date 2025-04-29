@@ -12,17 +12,26 @@ bool oled_task_kb(void) {
 }
 #endif
 
-// Keep only the OLED reset timer logic
+// Sleep & wakeup logic
 void matrix_scan_user(void) {
-    oled_reset_timer_on_keypress();  // Reset OLED timer on keypress
+    // Handle wakeup logic here
+    suspend_wakeup_init();
+    oled_reset_timer_on_keypress();
 }
 
 // Remove sleep/wakeup logic from process_record_user
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        oled_reset_timer_on_keypress();  // Reset OLED timer on keypress
-    }
     return true;
+}
+
+// Suspend hooks for sleep/wakeup
+void suspend_power_down_user(void) {
+    // Logic to handle when the keyboard goes to sleep
+}
+
+void suspend_wakeup_init(void) {
+    // Logic to handle when the keyboard wakes up
+    oled_reset_timer_on_keypress();  // Reset OLED timer on wakeup
 }
 
 // Name layers
