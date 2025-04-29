@@ -71,6 +71,7 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 static uint32_t total_characters = 0;
 static matrix_row_t previous_matrix[MATRIX_ROWS] = {0};
 static uint32_t last_activity = 0;
+static bool oled_was_off = false;
 
 bool oled_task_user(void) {
     static uint8_t last_row = 0;
@@ -79,12 +80,19 @@ bool oled_task_user(void) {
     static bool key_pressed = false;
 
     if (timer_elapsed32(last_activity) > OLED_TIMEOUT) {
-        oled_off();
+        if (!oled_was_off) {
+            oled_off();
+            oled_was_off = true;
+        }
         return false;
     }
 
-    if (is_keyboard_master()) {
+    if (oled_was_off) {
         oled_on();
+        oled_was_off = false;
+    }
+
+    if (is_keyboard_master()) {
         oled_clear();
 
         uint8_t current_layer = biton32(layer_state);
