@@ -48,21 +48,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case BSPC_ENT:
+            if (record->event.pressed) {
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    tap_code(KC_ENT);
+                } else {
+                    tap_code(KC_BSPC);
+                }
+            }
+            return false;
+
         case CTRL_X:
             if (record->event.pressed) {
-                tap_code16(C(KC_X)); // Simplified CTRL+X
+                register_mods(MOD_BIT(KC_LCTL));
+                tap_code(KC_X);
+                unregister_mods(MOD_BIT(KC_LCTL));
             }
             return false;
 
         case CTRL_C:
             if (record->event.pressed) {
-                tap_code16(C(KC_C)); // Simplified CTRL+C
+                register_mods(MOD_BIT(KC_LCTL));
+                tap_code(KC_C);
+                unregister_mods(MOD_BIT(KC_LCTL));
             }
             return false;
 
         case LCTL_LSFT_V:
             if (record->event.pressed) {
-                tap_code16(C(S(KC_V))); // Simplified CTRL+SHIFT+V
+                register_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_LSFT));
+                tap_code(KC_V);
+                unregister_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_LSFT));
             }
             return false;
 
