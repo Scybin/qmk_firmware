@@ -85,15 +85,28 @@ bool oled_task_user(void) {
 
     // Turn on the OLED if a key is pressed
     bool key_pressed = false;
+    static uint8_t last_row = 0;
+    static uint8_t last_col = 0;
+    static uint16_t last_keycode = 0;
+
     for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
         matrix_row_t current_row = matrix_get_row(row);
         for (uint8_t col = 0; col < MATRIX_COLS; col++) {
+            bool was_pressed = previous_matrix[row] & (1 << col);
             bool is_pressed = current_row & (1 << col);
-            if (is_pressed) {
+
+            if (is_pressed && !was_pressed) { // Key was just pressed
                 key_pressed = true;
+
+                last_row = row;
+                last_col = col;
+                last_keycode = keymap_key_to_keycode(biton32(layer_state), (keypos_t){.row = row, .col = col});
+                total_characters++; // Increment only on key press
+
                 break;
             }
         }
+        previous_matrix[row] = current_row; // Update the previous state for this row
         if (key_pressed) {
             break;
         }
@@ -138,35 +151,7 @@ bool oled_task_user(void) {
 
         oled_set_cursor(0, 2);
 
-        bool current_key_found = false;
-        static uint8_t last_row = 0;
-        static uint8_t last_col = 0;
-        static uint16_t last_keycode = 0;
-
-        for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
-            matrix_row_t current_row = matrix_get_row(row);
-            for (uint8_t col = 0; col < MATRIX_COLS; col++) {
-                bool was_pressed = previous_matrix[row] & (1 << col);
-                bool is_pressed = current_row & (1 << col);
-
-                if (is_pressed && !was_pressed) { // Key was just pressed
-                    current_key_found = true;
-
-                    last_row = row;
-                    last_col = col;
-                    last_keycode = keymap_key_to_keycode(current_layer, (keypos_t){.row = row, .col = col});
-                    total_characters++; // Increment only on key press
-
-                    break;
-                }
-            }
-            previous_matrix[row] = current_row; // Update the previous state for this row
-            if (current_key_found) {
-                break;
-            }
-        }
-
-        if (current_key_found) {
+        if (key_pressed) {
             char row_col_str[16];
             snprintf(row_col_str, sizeof(row_col_str), "Row: %d Col: %d", last_row, last_col);
             oled_write(row_col_str, false);
@@ -176,7 +161,7 @@ bool oled_task_user(void) {
 
         oled_set_cursor(0, 4);
 
-        if (current_key_found) {
+        if (key_pressed) {
             char keycode_str[32];
             snprintf(keycode_str, sizeof(keycode_str), "KC: 0x%04X - %05d", last_keycode, last_keycode);
             oled_write(keycode_str, false);
