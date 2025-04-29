@@ -4,10 +4,10 @@
 #include QMK_KEYBOARD_H
 #include "oled.h"
 
-// Wrapper for custom OLED logic
+// OLED logic
 #ifndef OLED_TASK_KB_OVERRIDE
 bool oled_task_kb(void) {
-    return oled_task_user(); // Call your custom logic in oled.c
+    return oled_task_user();
 }
 #endif
 
@@ -17,7 +17,7 @@ void matrix_scan_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
-        host_wakeup();
+        suspend_wakeup_init();
     }
     return true;
 }
