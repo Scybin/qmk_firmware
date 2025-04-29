@@ -68,6 +68,7 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+// Track total characters typed
 static uint32_t total_characters = 0;
 static matrix_row_t previous_matrix[MATRIX_ROWS] = {0}; // To track the previous state of the key matrix
 
@@ -100,10 +101,11 @@ bool oled_task_user(void) {
     if (is_keyboard_master()) {
         oled_clear();
 
-        // Display current layer
+        // Display current layer on the same line
         uint8_t current_layer = biton32(layer_state);
-        oled_write_line(0, "Layer: ");
-        oled_write_line(1, layer_names[current_layer]);
+        oled_set_cursor(0, 0); // Set cursor to the beginning of the first line
+        oled_write_P(PSTR("Layer: "), false);
+        oled_write(layer_names[current_layer], false); // Write layer name next to "Layer:"
 
         // Scan key matrix for changes
         bool current_key_found = false;
