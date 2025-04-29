@@ -1,5 +1,17 @@
 #pragma once
 
+// Sleep configuration
+#define SLEEP_TIMEOUT 5000
+
+// Tapping configuration
+#define TAPPING_TERM 200  // 200ms
+
+// OLED configuration
+#ifdef OLED_ENABLE
+#    define SPLIT_OLED_ENABLE
+#endif
+#define OLED_TASK_KB_OVERRIDE
+
 // Override the default RGBLight mode
 #undef RGBLIGHT_DEFAULT_MODE
 #define RGBLIGHT_DEFAULT_MODE RGBLIGHT_MODE_STATIC_LIGHT
@@ -13,12 +25,3 @@
 #undef RGBLIGHT_EFFECT_STATIC_GRADIENT
 #undef RGBLIGHT_EFFECT_RGB_TEST
 #undef RGBLIGHT_EFFECT_ALTERNATING
-
-// Tapping configuration
-#define TAPPING_TERM 200  // 200ms
-
-// OLED configuration
-#ifdef OLED_ENABLE
-#    define SPLIT_OLED_ENABLE
-#endif
-#define OLED_TASK_KB_OVERRIDE
