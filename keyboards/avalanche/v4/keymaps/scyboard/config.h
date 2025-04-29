@@ -15,11 +15,11 @@
 #undef RGBLIGHT_EFFECT_ALTERNATING
 
 // Tapping configuration
-#define TAPPING_TERM 200  // 200ms tapping term
+#define TAPPING_TERM 200  // 200ms
 
 // OLED configuration
 #ifdef OLED_ENABLE
 #    define SPLIT_OLED_ENABLE
-#    define OLED_TIMEOUT 30000  // Timeout after 30 seconds of inactivity
+#    define OLED_TIMEOUT 30000  // 30 seconds
 #endif
 #define OLED_TASK_KB_OVERRIDE
