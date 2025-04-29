@@ -69,7 +69,8 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 };
 
 static uint32_t total_characters = 0;
-static matrix_row_t previous_matrix[MATRIX_ROWS] = {0}; // To track the previous state of the key matrix
+static matrix_row_t previous_matrix[MATRIX_ROWS] = {0};
+static uint32_t last_activity = 0;
 
 bool oled_task_user(void) {
     static uint8_t last_row = 0;
@@ -77,7 +78,13 @@ bool oled_task_user(void) {
     static uint16_t last_keycode = 0;
     static bool key_pressed = false;
 
+    if (timer_elapsed32(last_activity) > OLED_TIMEOUT) {
+        oled_off();
+        return false;
+    }
+
     if (is_keyboard_master()) {
+        oled_on();
         oled_clear();
 
         uint8_t current_layer = biton32(layer_state);
@@ -115,7 +122,7 @@ bool oled_task_user(void) {
                 bool was_pressed = previous_matrix[row] & (1 << col);
                 bool is_pressed = current_row & (1 << col);
 
-                if (is_pressed && !was_pressed) { // Key was just pressed
+                if (is_pressed && !was_pressed) {
                     current_key_found = true;
 
                     last_row = row;
@@ -123,12 +130,13 @@ bool oled_task_user(void) {
                     last_keycode = keymap_key_to_keycode(current_layer, (keypos_t){.row = row, .col = col});
                     key_pressed = true;
 
-                    total_characters++; // Increment only on key press
+                    total_characters++;
+                    last_activity = timer_read32();
 
                     break;
                 }
             }
-            previous_matrix[row] = current_row; // Update the previous state for this row
+            previous_matrix[row] = current_row;
             if (current_key_found) {
                 break;
             }
