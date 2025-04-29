@@ -3,6 +3,9 @@
 
 enum custom_keycodes {
     BSPC_ENT = SAFE_RANGE,
+    CTRL_X,
+    CTRL_C,
+    LCTL_LSFT_V,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -20,11 +23,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [1] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-     KC_TRNS,   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_BSPC,
+      CTRL_X,   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-     KC_TRNS, RGB_TOG, RGB_HUD, RGB_HUI, RGB_RMOD, RGB_MOD,                     KC_TRNS,  KC_UP,  KC_TRNS, KC_TRNS, KC_DEL,  KC_HOME,
+      CTRL_C, RGB_TOG, RGB_HUD, RGB_HUI, RGB_RMOD, RGB_MOD,                     KC_TRNS,  KC_UP,  KC_TRNS, KC_TRNS, KC_DEL,  KC_HOME,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-     KC_TRNS, KC_CAPS, RGB_SAD, RGB_SAI, RGB_SPD, RGB_SPI,                      KC_LEFT, KC_DOWN, KC_RIGHT, KC_TRNS, KC_INS, KC_END,
+   LCTL_LSFT_V, KC_CAPS, RGB_SAD, RGB_SAI, RGB_SPD, RGB_SPI,                    KC_LEFT, KC_DOWN, KC_RIGHT, KC_TRNS, KC_INS, KC_END,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                          KC_LALT, KC_TRNS, KC_SPC,      KC_ENT,  MO(3),  EE_CLR
                                       //`--------------------------'  `--------------------------'
@@ -52,6 +55,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 } else {
                     tap_code(KC_BSPC);
                 }
+            }
+            return false;
+
+        case CTRL_X:
+            if (record->event.pressed) {
+                register_mods(MOD_BIT(KC_LCTL)); // Hold CTRL
+                tap_code(KC_X);                 // Tap X
+                unregister_mods(MOD_BIT(KC_LCTL)); // Release CTRL
+            }
+            return false;
+
+        case CTRL_C:
+            if (record->event.pressed) {
+                register_mods(MOD_BIT(KC_LCTL)); // Hold CTRL
+                tap_code(KC_C);                 // Tap C
+                unregister_mods(MOD_BIT(KC_LCTL)); // Release CTRL
+            }
+            return false;
+
+        case LCTL_LSFT_V:
+            if (record->event.pressed) {
+                register_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_LSFT)); // Hold CTRL+SHIFT
+                tap_code(KC_V);                                    // Tap V
+                unregister_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_LSFT)); // Release CTRL+SHIFT
             }
             return false;
 
