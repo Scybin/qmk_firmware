@@ -68,10 +68,6 @@ static const unsigned char PROGMEM scyboard_logo[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-// Track total characters typed
-static uint32_t total_characters = 0;
-static matrix_row_t previous_matrix[MATRIX_ROWS] = {0}; // To track the previous state of the key matrix
-
 // Layer names for display
 static const char *layer_names[] = {
     "BASE", "LIGHT", "DEV", "OSRS", "LOWER", "UPPER"
@@ -94,10 +90,6 @@ static void oled_write_formatted(uint8_t row, const char *format, ...) {
 }
 
 bool oled_task_user(void) {
-    static uint8_t last_row = 0, last_col = 0;
-    static uint16_t last_keycode = 0;
-    static bool key_pressed = false;
-
     if (is_keyboard_master()) {
         oled_clear();
 
@@ -108,7 +100,6 @@ bool oled_task_user(void) {
         oled_write(layer_names[current_layer], false); // Write layer name next to "Layer:"
 
         // Scan key matrix for changes
-        bool current_key_found = false;
         for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
             matrix_row_t current_row = matrix_get_row(row);
             for (uint8_t col = 0; col < MATRIX_COLS; col++) {
@@ -116,30 +107,24 @@ bool oled_task_user(void) {
                 bool is_pressed = current_row & (1 << col);
 
                 if (is_pressed && !was_pressed) { // Key was just pressed
-                    current_key_found = true;
-                    last_row = row;
-                    last_col = col;
-                    last_keycode = keymap_key_to_keycode(current_layer, (keypos_t){.row = row, .col = col});
-                    key_pressed = true;
-                    total_characters++;
+                    update_key_state(row, col, current_layer, true);
                     break;
                 }
             }
             previous_matrix[row] = current_row; // Update the previous state for this row
-            if (current_key_found) break;
         }
 
         // Display key press information
-        if (key_pressed) {
-            oled_write_formatted(2, "Row: %d Col: %d", last_row, last_col);
-            oled_write_formatted(4, "KC: 0x%04X - %05d", last_keycode, last_keycode);
+        if (get_last_keycode() != 0) {
+            oled_write_formatted(2, "Row: %d Col: %d", get_last_row(), get_last_col());
+            oled_write_formatted(4, "KC: 0x%04X - %05d", get_last_keycode(), get_last_keycode());
         } else {
             oled_write_line(2, "Row: None Col: None");
             oled_write_line(4, "KC: None");
         }
 
         // Display total characters
-        oled_write_formatted(6, "Chars: %lu", total_characters);
+        oled_write_formatted(6, "Chars: %lu", get_total_characters());
 
     } else {
         oled_clear();
