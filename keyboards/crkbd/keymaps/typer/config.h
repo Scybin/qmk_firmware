@@ -55,7 +55,7 @@
 //#    define ENABLE_RGB_MATRIX_MULTISPLASH
 //#    define ENABLE_RGB_MATRIX_SOLID_SPLASH
 //#    define ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
-#endif
+//#endif
 
 // OLED configuration
 # ifdef OLED_ENABLE
