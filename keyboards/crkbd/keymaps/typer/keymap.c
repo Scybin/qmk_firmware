@@ -91,8 +91,5 @@ void keyboard_post_init_user(void) {
    rgb_matrix_mode(RGB_MATRIX_TYPING_HEATMAP);
    rgb_matrix_sethsv(170, 255, 255);
 
-   rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-   rgblight_sethsv(170, 255, 255);
-
    autocorrect_enable();
 }
