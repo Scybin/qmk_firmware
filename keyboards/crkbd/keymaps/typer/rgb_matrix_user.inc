@@ -10,21 +10,26 @@ static bool BLUE_HEATMAP(effect_params_t*params)
 {
     RGB_MATRIX_USE_LIMITS(led_min, led_max);
 
-    // Decrease heatmap values over time
+    // Decrease heatmap values over time (cooling effect)
     for (uint8_t i = 0; i < DRIVER_LED_TOTAL; i++)
     {
         if (heatmap_values[i] > 0)
         {
-            heatmap_values[i]--;
+            heatmap_values[i]--; // Gradually decrease heat
         }
     }
 
     // Handle keypress events
-    for (uint8_t i = led_min; i < led_max; i++)
-    {
-        if (HAS_ANY_FLAGS(g_led_config.flags[i], LED_FLAG_KEYLIGHT))
+    if (params->flags & RGB_MATRIX_ITER_KEYEVENT) {
+        uint8_t led_indices[LED_HITS_TO_REMEMBER];
+        uint8_t led_count = rgb_matrix_map_row_column_to_led (params->row, params->col, led_indices);
+
+        for (uint8_t i = 0; i < led_count; i++)
         {
-            heatmap_values[i] = 255; // Max heat for pressed keys
+            if (led_indices[i] < DRIVER_LED_TOTAL)
+            {
+                heatmap_values[led_indices[i]] = 255; // Max heat for pressed keys
+            }
         }
     }
 
