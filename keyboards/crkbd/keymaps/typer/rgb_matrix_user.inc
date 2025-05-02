@@ -23,7 +23,16 @@ static bool decrease_heatmap_values;    // Whether to decrease heatmap values
 // --- Synchronize the heatmap frame buffer ---
 void transport_sync_matrix(void)
 {
-    transport_master_to_slave(g_rgb_frame_buffer, sizeof(g_rgb_frame_buffer));
+#ifdef SPLIT_KEYBOARD
+    if (is_keyboard_master())
+    {
+        transport_master(g_rgb_frame_buffer, sizeof(g_rgb_frame_buffer));
+    }
+    else
+    {
+        transport_slave(g_rgb_frame_buffer, sizeof(g_rgb_frame_buffer));
+    }
+#endif
 }
 
 // --- Called on keypress to update the frame buffer ---
