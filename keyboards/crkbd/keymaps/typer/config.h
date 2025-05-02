@@ -8,6 +8,8 @@
 #define RGB_MATRIX_VAL_STEP 8
 #define RGB_MATRIX_SPD_STEP 10
 #define DRIVER_LED_TOTAL 54
+#define SPLIT_KEYBOARD
+#define SPLIT_RGB_MATRIX
 
 // OLED configuration
 #ifdef OLED_ENABLE
