@@ -1,4 +1,3 @@
-// Declare the custom effect
 RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 
 // Define the effect implementation
