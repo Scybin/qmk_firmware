@@ -98,8 +98,3 @@ void keyboard_post_init_user(void) {
     rgb_matrix_mode(RGB_MATRIX_CUSTOM_BLUE_HEATMAP);
     autocorrect_enable();
 }
-
-void keyboard_post_init_user(void) {
-    rgb_matrix_mode(RGB_MATRIX_CUSTOM_BLUE_HEATMAP);
-    autocorrect_enable();
-}
