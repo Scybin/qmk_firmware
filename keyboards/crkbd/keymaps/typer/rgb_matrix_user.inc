@@ -1,3 +1,4 @@
+// Declare the custom effect
 RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 
 // Define the effect implementation
@@ -20,23 +21,6 @@ RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 static uint16_t heatmap_decrease_timer; // Timer to track heatmap cooling
 static bool decrease_heatmap_values;    // Whether to decrease heatmap values
 
-// --- Synchronize the heatmap frame buffer ---
-void transport_sync_matrix(void)
-{
-#ifdef SPLIT_KEYBOARD
-    if (is_keyboard_master())
-    {
-        // Send the heatmap data to the slave
-        split_shared_memory_send((uint8_t*)g_rgb_frame_buffer, sizeof(g_rgb_frame_buffer));
-    }
-    else
-    {
-        // Receive the heatmap data from the master
-        split_shared_memory_receive((uint8_t*)g_rgb_frame_buffer, sizeof(g_rgb_frame_buffer));
-    }
-#endif
-}
-
 // --- Called on keypress to update the frame buffer ---
 void process_rgb_matrix_blue_heatmap(uint8_t row, uint8_t col)
 {
@@ -56,14 +40,26 @@ bool BLUE_HEATMAP(effect_params_t* params)
         memset(g_rgb_frame_buffer, 0, sizeof g_rgb_frame_buffer); // Clear the heatmap
     }
 
-    // Update the timer and determine if we should decrease heatmap values
-    if (params->iter == 0) {
-        decrease_heatmap_values = timer_elapsed(heatmap_decrease_timer) >= RGB_MATRIX_BLUE_HEATMAP_DECREASE_DELAY_MS;
-        if (decrease_heatmap_values)
-        {
-            heatmap_decrease_timer = timer_read();
+#ifdef RGB_MATRIX_SPLIT
+    if (is_keyboard_master())
+    {
+        // Master half: Update the frame buffer and send it to the slave
+        if (params->iter == 0) {
+            decrease_heatmap_values = timer_elapsed(heatmap_decrease_timer) >= RGB_MATRIX_BLUE_HEATMAP_DECREASE_DELAY_MS;
+            if (decrease_heatmap_values)
+            {
+                heatmap_decrease_timer = timer_read();
+            }
         }
+        // Send the frame buffer to the slave
+        rgb_matrix_update_slave(g_rgb_frame_buffer, sizeof(g_rgb_frame_buffer));
     }
+    else
+    {
+        // Slave half: Receive the frame buffer from the master
+        rgb_matrix_receive_frame_buffer(g_rgb_frame_buffer, sizeof(g_rgb_frame_buffer));
+    }
+#endif
 
     // Render the heatmap for key LEDs
     uint8_t count = 0;
