@@ -20,6 +20,12 @@ RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 static uint16_t heatmap_decrease_timer; // Timer to track heatmap cooling
 static bool decrease_heatmap_values;    // Whether to decrease heatmap values
 
+// --- Synchronize the heatmap frame buffer ---
+void transport_sync_matrix(void)
+{
+    transport_master_to_slave(g_rgb_frame_buffer, sizeof(g_rgb_frame_buffer));
+}
+
 // --- Called on keypress to update the frame buffer ---
 void process_rgb_matrix_blue_heatmap(uint8_t row, uint8_t col)
 {
