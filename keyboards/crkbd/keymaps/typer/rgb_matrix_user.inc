@@ -4,7 +4,7 @@ RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 // Define the effect implementation
 #ifdef RGB_MATRIX_CUSTOM_EFFECT_IMPLS
 
-static uint8_t heatmap_values[DRIVER_LED_TOTAL] = { 0 }; // Array to store heatmap values for each LED
+static uint8_t heatmap_values[DRIVER_LED_TOTAL] = { 54 }; // Array to store heatmap values for each LED
 
 static bool BLUE_HEATMAP(effect_params_t*params)
 {
@@ -19,16 +19,14 @@ static bool BLUE_HEATMAP(effect_params_t*params)
         }
     }
 
-    // Increase heatmap values for pressed keys
-    if (params->pressed) {
-        uint8_t led_indices[LED_HITS_TO_REMEMBER];
-        uint8_t led_count = rgb_matrix_map_row_column_to_led (params->row, params->col, led_indices);
-
-        for (uint8_t i = 0; i < led_count; i++)
+    // Handle keypress events
+    for (uint8_t i = led_min; i < led_max; i++)
+    {
+        if (HAS_ANY_FLAGS(g_led_config.flags[i], LED_FLAG_KEYLIGHT))
         {
-            if (led_indices[i] < DRIVER_LED_TOTAL)
+            if (g_rgb_frame_buffer[i])
             {
-                heatmap_values[led_indices[i]] = 255; // Max heat for pressed keys
+                heatmap_values[i] = 255; // Max heat for pressed keys
             }
         }
     }
