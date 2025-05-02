@@ -75,11 +75,6 @@ bool BLUE_HEATMAP(effect_params_t* params)
         }
     }
 
-    // Ensure the effect applies to both halves
-# ifdef SPLIT_KEYBOARD
-    rgb_matrix_sync(); // Synchronize the RGB matrix across both halves
-#endif
-
     // Set underglow LEDs to always-on hue 170 (blue)
     for (uint8_t i = led_min; i < led_max; i++)
     {
