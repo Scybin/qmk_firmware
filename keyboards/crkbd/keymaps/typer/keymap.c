@@ -91,3 +91,10 @@ void keyboard_post_init_user(void) {
     rgb_matrix_mode(RGB_MATRIX_CUSTOM_BLUE_HEATMAP);
     autocorrect_enable();
 }
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        process_rgb_matrix_blue_heatmap(record->event.key.row, record->event.key.col);
+    }
+    return true;
+}
