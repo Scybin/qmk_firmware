@@ -57,10 +57,6 @@
 //#    define ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
 #endif
 
-#ifdef RGBLIGHT_ENABLE
-#   define RGBLIGHT_MODE_STATIC_LIGHT
-#endif
-
 // OLED configuration
 #ifdef OLED_ENABLE
 #    define SPLIT_OLED_ENABLE
