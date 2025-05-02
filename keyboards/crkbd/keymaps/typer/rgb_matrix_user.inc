@@ -1,8 +1,5 @@
 #if defined(RGB_MATRIX_FRAMEBUFFER_EFFECTS) && defined(ENABLE_RGB_MATRIX_CUSTOM_HEATMAP)
-
-// Step 1: Declare your custom effect(s)
 RGB_MATRIX_EFFECT(CUSTOM_HEATMAP)
-
 #    ifdef RGB_MATRIX_CUSTOM_EFFECT_IMPLS
 #        ifndef RGB_MATRIX_TYPING_HEATMAP_INCREASE_STEP
 #            define RGB_MATRIX_TYPING_HEATMAP_INCREASE_STEP 32
@@ -66,7 +63,7 @@ static uint16_t heatmap_decrease_timer;
 // Whether we should decrement the heatmap values during the next update.
 static bool decrease_heatmap_values;
 
-bool TYPING_HEATMAP(effect_params_t* params)
+bool CUSTOM_HEATMAP(effect_params_t* params)
 {
     RGB_MATRIX_USE_LIMITS(led_min, led_max);
 
@@ -115,6 +112,5 @@ bool TYPING_HEATMAP(effect_params_t* params)
     return rgb_matrix_check_finished_leds(led_max);
 }
 
-#    endif // RGB_MATRIX_CUSTOM_EFFECT_IMPLS
-#endif     // defined(RGB_MATRIX_FRAMEBUFFER_EFFECTS) && defined(ENABLE_RGB_MATRIX_TYPING_HEATMAP)
-
+#endif // RGB_MATRIX_CUSTOM_EFFECT_IMPLS
+#endif     // defined(RGB_MATRIX_FRAMEBUFFER_EFFECTS) && defined(ENABLE_RGB_MATRIX_CUSTOM_HEATMAP)
