@@ -6,53 +6,51 @@ RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 
 #include "timer.h"
 
-static uint8_t heatmap_values[DRIVER_LED_TOTAL] = { 0 }; // Array to store heatmap values for each LED
-static uint16_t last_typing_time = 0;                 // Timestamp of the last keypress
-static uint8_t typing_speed = 0;                      // Typing speed (keypresses per second)
+static uint16_t heatmap_decrease_timer; // Timer to track heatmap cooling
+static bool decrease_heatmap_values;    // Whether to decrease heatmap values
 
-static bool BLUE_HEATMAP(effect_params_t*params)
+bool BLUE_HEATMAP(effect_params_t*params)
 {
     RGB_MATRIX_USE_LIMITS(led_min, led_max);
 
-    // Decrease heatmap values over time (cooling effect)
-    for (uint8_t i = 0; i < DRIVER_LED_TOTAL; i++)
-    {
-        if (heatmap_values[i] > 0)
+    if (params->init) {
+        rgb_matrix_set_color_all(0, 0, 0); // Initialize all LEDs to off
+        memset(g_rgb_frame_buffer, 0, sizeof g_rgb_frame_buffer); // Clear the heatmap
+    }
+
+    // Update the timer and determine if we should decrease heatmap values
+    if (params->iter == 0) {
+        decrease_heatmap_values = timer_elapsed(heatmap_decrease_timer) >= 25; // 25ms delay
+        if (decrease_heatmap_values)
         {
-            heatmap_values[i]--; // Gradually decrease heat
+            heatmap_decrease_timer = timer_read();
         }
     }
 
-    // Update heatmap values for active LEDs
-    for (uint8_t i = led_min; i < led_max; i++)
+    // Render the heatmap
+    uint8_t count = 0;
+    for (uint8_t row = 0; row < MATRIX_ROWS && count < RGB_MATRIX_LED_PROCESS_LIMIT; row++)
     {
-        if (HAS_ANY_FLAGS(g_led_config.flags[i], LED_FLAG_KEYLIGHT))
+        for (uint8_t col = 0; col < MATRIX_COLS && count < RGB_MATRIX_LED_PROCESS_LIMIT; col++)
         {
-            heatmap_values[i] = 255; // Max heat for active LEDs
+            if (g_led_config.matrix_co[row][col] >= led_min && g_led_config.matrix_co[row][col] < led_max)
+            {
+                count++;
+                uint8_t val = g_rgb_frame_buffer[row][col];
+                if (!HAS_ANY_FLAGS(g_led_config.flags[g_led_config.matrix_co[row][col]], params->flags)) continue;
+
+                // Convert heatmap value to a blue-to-red gradient
+                hsv_t hsv = { 170 - qsub8(val, 85), 255, scale8((qadd8(170, val) - 170) * 3, 255) };
+                rgb_t rgb = rgb_matrix_hsv_to_rgb(hsv);
+                rgb_matrix_set_color(g_led_config.matrix_co[row][col], rgb.r, rgb.g, rgb.b);
+
+                // Decrease heatmap values if needed
+                if (decrease_heatmap_values)
+                {
+                    g_rgb_frame_buffer[row][col] = qsub8(val, 1);
+                }
+            }
         }
-    }
-
-    // Calculate typing speed based on time since the last keypress
-    uint16_t current_time = timer_read();
-    uint16_t time_diff = current_time - last_typing_time;
-
-    if (time_diff > 0 && time_diff < 1000)
-    { // Ignore long idle times
-        typing_speed = 1000 / time_diff; // Convert milliseconds to keypresses per second
-    }
-    last_typing_time = current_time;
-
-    // Set LED colors based on heatmap values and typing speed
-    for (uint8_t i = led_min; i < led_max; i++)
-    {
-        uint8_t heat = heatmap_values[i];
-
-        // Adjust color gradient based on typing speed
-        uint8_t blue = (typing_speed < 5) ? 255 - heat : 0; // Blue for slow typing
-        uint8_t green = (typing_speed >= 5 && typing_speed < 10) ? 255 - heat : 0; // Green for moderate typing
-        uint8_t red = (typing_speed >= 10) ? heat : 0; // Red for fast typing
-
-        rgb_matrix_set_color(i, red, green, blue);
     }
 
     return rgb_matrix_check_finished_leds(led_max);
