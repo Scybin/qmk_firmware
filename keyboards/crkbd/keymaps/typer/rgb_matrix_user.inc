@@ -49,7 +49,7 @@ bool BLUE_HEATMAP(effect_params_t* params)
         }
     }
 
-    // Render the heatmap
+    // Render the heatmap for key LEDs
     uint8_t count = 0;
     for (uint8_t row = 0; row < MATRIX_ROWS && count < RGB_MATRIX_LED_PROCESS_LIMIT; row++)
     {
@@ -72,6 +72,17 @@ bool BLUE_HEATMAP(effect_params_t* params)
                     g_rgb_frame_buffer[row][col] = qsub8(val, 1);
                 }
             }
+        }
+    }
+
+    // Set underglow LEDs to always-on hue 170 (blue)
+    for (uint8_t i = led_min; i < led_max; i++)
+    {
+        if (HAS_FLAGS(g_led_config.flags[i], LED_FLAG_UNDERGLOW))
+        {
+            hsv_t hsv = { 170, 255, 255 };
+            rgb_t rgb = rgb_matrix_hsv_to_rgb(hsv);
+            rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
         }
     }
 
