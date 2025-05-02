@@ -26,11 +26,13 @@ void transport_sync_matrix(void)
 #ifdef SPLIT_KEYBOARD
     if (is_keyboard_master())
     {
-        transport_master(g_rgb_frame_buffer, sizeof(g_rgb_frame_buffer));
+        // Send the heatmap data to the slave
+        split_shared_memory_send((uint8_t*)g_rgb_frame_buffer, sizeof(g_rgb_frame_buffer));
     }
     else
     {
-        transport_slave(g_rgb_frame_buffer, sizeof(g_rgb_frame_buffer));
+        // Receive the heatmap data from the master
+        split_shared_memory_receive((uint8_t*)g_rgb_frame_buffer, sizeof(g_rgb_frame_buffer));
     }
 #endif
 }
