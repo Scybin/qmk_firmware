@@ -20,6 +20,9 @@ SRC += oled.c
 SRC_FILTER = -<keyboards/crkbd/crkbd.c>
 SRC += custom/custom_rgb_matrix.c
 SRC += custom/typing_heatmap_anim.c
+SRC_FILTER += -<quantum/rgb_matrix/rgb_matrix.c>
+SRC_FILTER += -<quantum/rgb_matrix/rgb_matrix.h>
+SRC_FILTER += -<quantum/rgb_matrix/animations/typing_heatmap_anim.h>
 
 # Optimization Settings
 LINK_TIME_OPTIMIZATION_ENABLE = yes
