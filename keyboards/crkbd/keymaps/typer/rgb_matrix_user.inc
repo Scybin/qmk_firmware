@@ -24,10 +24,7 @@ static bool BLUE_HEATMAP(effect_params_t*params)
     {
         if (HAS_ANY_FLAGS(g_led_config.flags[i], LED_FLAG_KEYLIGHT))
         {
-            if (g_rgb_frame_buffer[i])
-            {
-                heatmap_values[i] = 255; // Max heat for pressed keys
-            }
+            heatmap_values[i] = 255; // Max heat for pressed keys
         }
     }
 
