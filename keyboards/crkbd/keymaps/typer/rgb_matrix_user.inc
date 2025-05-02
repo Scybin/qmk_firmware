@@ -1,10 +1,10 @@
 // Declare the custom effect
 RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 
+// Define the effect implementation
 #ifdef RGB_MATRIX_CUSTOM_EFFECT_IMPLS
 
 #include "timer.h"
-#include "math.h"
 
 #ifndef NO_LED
 #    define NO_LED 255
@@ -18,44 +18,29 @@ RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 #    define RGB_MATRIX_BLUE_HEATMAP_DECREASE_DELAY_MS 25
 #endif
 
-#define SPREAD_RADIUS 6.0f    // Max radius to affect surrounding LEDs
-#define SPREAD_FALLOFF 1.5f   // Higher values = quicker dimming with distance
+static uint16_t heatmap_decrease_timer; // Timer to track heatmap cooling
+static bool decrease_heatmap_values;    // Whether to decrease heatmap values
 
-static uint16_t heatmap_decrease_timer;
-static bool decrease_heatmap_values;
-
+// --- Called on keypress to update the frame buffer ---
 void process_rgb_matrix_blue_heatmap(uint8_t row, uint8_t col)
 {
-    uint8_t center_index = g_led_config.matrix_co[row][col];
-    if (center_index == NO_LED) return;
-
-    // Get physical position of keypress
-    int8_t x0 = g_led_config.point[center_index].x;
-    int8_t y0 = g_led_config.point[center_index].y;
-
-    for (uint8_t i = 0; i < DRIVER_LED_TOTAL; i++)
+    if (g_led_config.matrix_co[row][col] != NO_LED)
     {
-        int8_t dx = g_led_config.point[i].x - x0;
-        int8_t dy = g_led_config.point[i].y - y0;
-        float dist = sqrtf((float)(dx * dx + dy * dy));
-
-        if (dist <= SPREAD_RADIUS)
-        {
-            uint8_t boost = (uint8_t)((1.0f - (dist / SPREAD_RADIUS)) * RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP);
-            g_rgb_frame_buffer[i / MATRIX_COLS][i % MATRIX_COLS] = qadd8(g_rgb_frame_buffer[i / MATRIX_COLS][i % MATRIX_COLS], boost);
-        }
+        g_rgb_frame_buffer[row][col] = qadd8(g_rgb_frame_buffer[row][col], RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP);
     }
 }
 
+// --- Heatmap effect render function ---
 bool BLUE_HEATMAP(effect_params_t* params)
 {
     RGB_MATRIX_USE_LIMITS(led_min, led_max);
 
     if (params->init) {
-        rgb_matrix_set_color_all(0, 0, 0);
-        memset(g_rgb_frame_buffer, 0, sizeof g_rgb_frame_buffer);
+        rgb_matrix_set_color_all(0, 0, 0); // Initialize all LEDs to off
+        memset(g_rgb_frame_buffer, 0, sizeof g_rgb_frame_buffer); // Clear the heatmap
     }
 
+    // Update the timer and determine if we should decrease heatmap values
     if (params->iter == 0) {
         decrease_heatmap_values = timer_elapsed(heatmap_decrease_timer) >= RGB_MATRIX_BLUE_HEATMAP_DECREASE_DELAY_MS;
         if (decrease_heatmap_values)
@@ -64,28 +49,33 @@ bool BLUE_HEATMAP(effect_params_t* params)
         }
     }
 
+    // Render the heatmap for key LEDs
     uint8_t count = 0;
-    for (uint8_t i = led_min; i < led_max && count < RGB_MATRIX_LED_PROCESS_LIMIT; i++)
+    for (uint8_t row = 0; row < MATRIX_ROWS && count < RGB_MATRIX_LED_PROCESS_LIMIT; row++)
     {
-        if (!HAS_ANY_FLAGS(g_led_config.flags[i], params->flags)) continue;
-        count++;
-
-        uint8_t row = i / MATRIX_COLS;
-        uint8_t col = i % MATRIX_COLS;
-        uint8_t val = g_rgb_frame_buffer[row][col];
-
-        // Convert value to blue-red gradient
-        hsv_t hsv = { 170 - qsub8(val, 85), 255, scale8((qadd8(170, val) - 170) * 3, 255) };
-        rgb_t rgb = rgb_matrix_hsv_to_rgb(hsv);
-        rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
-
-        if (decrease_heatmap_values)
+        for (uint8_t col = 0; col < MATRIX_COLS && count < RGB_MATRIX_LED_PROCESS_LIMIT; col++)
         {
-            g_rgb_frame_buffer[row][col] = qsub8(val, 1);
+            uint8_t index = g_led_config.matrix_co[row][col];
+            if (index >= led_min && index < led_max)
+            {
+                count++;
+                uint8_t val = g_rgb_frame_buffer[row][col];
+                if (!HAS_ANY_FLAGS(g_led_config.flags[index], params->flags)) continue;
+
+                // Convert heatmap value to a blue-to-red gradient
+                hsv_t hsv = { 170 - qsub8(val, 85), 255, scale8((qadd8(170, val) - 170) * 3, 255) };
+                rgb_t rgb = rgb_matrix_hsv_to_rgb(hsv);
+                rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
+
+                if (decrease_heatmap_values)
+                {
+                    g_rgb_frame_buffer[row][col] = qsub8(val, 1);
+                }
+            }
         }
     }
 
-    // Underglow LEDs: always on at hue 170 (blue)
+    // Set underglow LEDs to always-on hue 170 (blue)
     for (uint8_t i = led_min; i < led_max; i++)
     {
         if (HAS_FLAGS(g_led_config.flags[i], LED_FLAG_UNDERGLOW))
