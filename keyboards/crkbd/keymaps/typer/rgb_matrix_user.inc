@@ -1,3 +1,7 @@
+#include "rgb_matrix.h" // For RGB matrix functions/macros
+#include "timer.h"      // For timer functions like timer_elapsed and timer_read
+#include "quantum.h"    // For general QMK functions/macros
+
 #if defined(RGB_MATRIX_FRAMEBUFFER_EFFECTS) && defined(ENABLE_RGB_MATRIX_CUSTOM_TYPING_HEATMAP)
 RGB_MATRIX_EFFECT(CUSTOM_TYPING_HEATMAP) // Declare the custom effect
 #    ifdef RGB_MATRIX_CUSTOM_EFFECT_IMPLS
