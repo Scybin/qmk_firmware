@@ -23,28 +23,24 @@ static bool BLUE_HEATMAP(effect_params_t*params)
         }
     }
 
-    // Handle keypress events
-    if (HAS_ANY_FLAGS (params->flags, RGB_MATRIX_ITER_KEYEVENT))
+    // Update heatmap values for active LEDs
+    for (uint8_t i = led_min; i < led_max; i++)
     {
-        uint16_t current_time = timer_read();
-        uint16_t time_diff = current_time - last_typing_time;
-
-        // Update typing speed (keypresses per second)
-        if (time_diff > 0)
+        if (HAS_ANY_FLAGS(g_led_config.flags[i], LED_FLAG_KEYLIGHT))
         {
-            typing_speed = 1000 / time_diff; // Convert milliseconds to keypresses per second
-        }
-        last_typing_time = current_time;
-
-        // Update heatmap values for active LEDs
-        for (uint8_t i = led_min; i < led_max; i++)
-        {
-            if (HAS_ANY_FLAGS(g_led_config.flags[i], LED_FLAG_KEYLIGHT))
-            {
-                heatmap_values[i] = 255; // Max heat for active LEDs
-            }
+            heatmap_values[i] = 255; // Max heat for active LEDs
         }
     }
+
+    // Calculate typing speed based on time since the last keypress
+    uint16_t current_time = timer_read();
+    uint16_t time_diff = current_time - last_typing_time;
+
+    if (time_diff > 0 && time_diff < 1000)
+    { // Ignore long idle times
+        typing_speed = 1000 / time_diff; // Convert milliseconds to keypresses per second
+    }
+    last_typing_time = current_time;
 
     // Set LED colors based on heatmap values and typing speed
     for (uint8_t i = led_min; i < led_max; i++)
