@@ -6,7 +6,7 @@ RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 
 #include "timer.h"
 
-static uint8_t heatmap_values[DRIVER_LED_TOTAL] = { 54 }; // Array to store heatmap values for each LED
+static uint8_t heatmap_values[DRIVER_LED_TOTAL] = { 0 }; // Array to store heatmap values for each LED
 static uint16_t last_typing_time = 0;                 // Timestamp of the last keypress
 static uint8_t typing_speed = 0;                      // Typing speed (keypresses per second)
 
@@ -19,7 +19,7 @@ static bool BLUE_HEATMAP(effect_params_t*params)
     {
         if (heatmap_values[i] > 0)
         {
-            heatmap_values[i]--;
+            heatmap_values[i]--; // Gradually decrease heat
         }
     }
 
