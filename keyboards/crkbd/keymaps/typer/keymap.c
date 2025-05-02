@@ -1,5 +1,7 @@
 #include QMK_KEYBOARD_H
 #include "oled.h"
+#include "custom/custom_rgb_matrix.h"
+#include "custom/typing_heatmap_anim.h"
 
 enum custom_keycodes {
     BSPC_ENT = SAFE_RANGE,
@@ -88,8 +90,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 void keyboard_post_init_user(void) {
-   rgb_matrix_mode(RGB_MATRIX_TYPING_HEATMAP);
+   rgb_matrix_mode(RGB_MATRIX_CUSTOM_TYPING_HEATMAP);
    rgb_matrix_sethsv(170, 255, 255);
+   RGB_MATRIX_CUSTOM_TYPING_HEATMAP(NULL);
 
    autocorrect_enable();
 }
