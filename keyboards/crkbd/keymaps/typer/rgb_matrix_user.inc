@@ -22,7 +22,7 @@ RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 
 #ifndef RGB_MATRIX_BLUE_HEATMAP_AREA_LIMIT
 #    define RGB_MATRIX_BLUE_HEATMAP_AREA_LIMIT 16
-#endif
+# endif
 
 void process_rgb_matrix_blue_heatmap(uint8_t row, uint8_t col)
 {
