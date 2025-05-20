@@ -81,6 +81,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_LSFT));
             }
             return false;
+
+        default:
+            // Return true for unhandled keycodes
+            return true;
     }
 }
 
