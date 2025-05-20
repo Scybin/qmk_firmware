@@ -1,7 +1,15 @@
-#if defined(RGB_MATRIX_FRAMEBUFFER_EFFECTS) && defined(ENABLE_RGB_MATRIX_CUSTOM_USER)
-RGB_MATRIX_EFFECT(TYPING_HEATMAP)
+// !!! DO NOT ADD #pragma once !!! //
 
-#ifdef RGB_MATRIX_CUSTOM_USER
+// Step 1.
+// Declare custom effects using the RGB_MATRIX_EFFECT macro
+// (note the lack of semicolon after the macro!)
+RGB_MATRIX_EFFECT(BLUE_HEATMAP)
+
+// Step 2.
+// Define effects inside the `RGB_MATRIX_CUSTOM_EFFECT_IMPLS` ifdef block
+#ifdef RGB_MATRIX_CUSTOM_EFFECT_IMPLS
+
+//#ifdef RGB_MATRIX_CUSTOM_USER
 #   ifdef ENABLE_RGB_MATRIX_BLUE_HEATMAP
 
 #       include "quantum/rgb_matrix/rgb_matrix.h" // Ensure required headers are included
