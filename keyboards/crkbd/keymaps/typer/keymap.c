@@ -83,12 +83,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
 
         default:
-            // Return true for unhandled keycodes
-            return true;
+            if (record->event.pressed) {
+                process_rgb_matrix_typer_heatmap(record->event.key.row, record->event.key.col);
+        }
+        return true;
     }
 }
 
 void keyboard_post_init_user(void) {
-    rgb_matrix_mode(RGB_MATRIX_CUSTOM_TYPER);
+    rgb_matrix_mode(RGB_MATRIX_CUSTOM_TYPER_HEATMAP);
     autocorrect_enable();
 }
