@@ -62,8 +62,15 @@ bool BLUE_HEATMAP(effect_params_t* params)
                 uint8_t val = g_rgb_frame_buffer[row][col];
                 if (!HAS_ANY_FLAGS(g_led_config.flags[index], params->flags)) continue;
 
+                // Determine if the LED is on the left or right half
+                bool is_right_half = index >= (MATRIX_ROWS * MATRIX_COLS) / 2;
+
                 // Convert heatmap value to a blue-to-red gradient
-                hsv_t hsv = { 170 - qsub8(val, 85), 255, scale8((qadd8(170, val) - 170) * 3, 255) };
+                hsv_t hsv = {
+                    is_right_half ? 85 - qsub8(val, 85) : 170 - qsub8(val, 85),
+                    255,
+                    scale8((qadd8(170, val) - 170) * 3, 255)
+                };
                 rgb_t rgb = rgb_matrix_hsv_to_rgb(hsv);
                 rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
 
