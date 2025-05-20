@@ -44,30 +44,18 @@ bool TYPER(effect_params_t* params)
         {
             if (g_led_config.matrix_co[row][col] >= led_min && g_led_config.matrix_co[row][col] < led_max)
             {
-                // Skip underglow LEDs
-                if (g_led_config.flags[g_led_config.matrix_co[row][col]] & LED_FLAG_UNDERGLOW)
-                {
-                    continue;
-                }
-
                 count++;
 
                 // Reset the key to dark blue
                 rgb_matrix_set_color(g_led_config.matrix_co[row][col], default_rgb.r, default_rgb.g, default_rgb.b);
 
-                // If the key is pressed, set it to purple
+                // If the key is pressed, set it to purple temporarily
                 if (HAS_ANY_FLAGS(g_led_config.flags[g_led_config.matrix_co[row][col]], params->flags))
                 {
                     process_rgb_matrix_typer(row, col);
                 }
             }
         }
-    }
-
-    // Set underglow LEDs to blue
-    for (uint8_t i = 0; i < RGB_MATRIX_UNDERGLOW_LED_COUNT; i++)
-    {
-        rgb_matrix_set_color(underglow_leds[i], default_rgb.r, default_rgb.g, default_rgb.b);
     }
 
     return rgb_matrix_check_finished_leds(led_max);
