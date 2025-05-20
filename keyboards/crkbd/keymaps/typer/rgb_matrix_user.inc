@@ -1,3 +1,5 @@
+bool BLUE_HEATMAP(effect_params_t* params);
+
 # ifdef ENABLE_RGB_MATRIX_BLUE_HEATMAP
 RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 #endif
