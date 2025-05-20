@@ -67,15 +67,16 @@ static bool BLUE_HEATMAP(effect_params_t* params)
 {
     RGB_MATRIX_USE_LIMITS(led_min, led_max);
 
+    // Declare static variables at the top of the function
+    static uint16_t blue_heatmap_decrease_timer;
+    static bool decrease_blue_heatmap_values;
+
     if (params->init) {
         rgb_matrix_set_color_all(0, 0, 0);
         memset(g_rgb_frame_buffer, 0, sizeof g_rgb_frame_buffer);
     }
 
     if (params->iter == 0) {
-        static uint16_t blue_heatmap_decrease_timer;
-        static bool decrease_blue_heatmap_values;
-
         decrease_blue_heatmap_values = timer_elapsed(blue_heatmap_decrease_timer) >= RGB_MATRIX_BLUE_HEATMAP_DECREASE_DELAY_MS;
 
         if (decrease_blue_heatmap_values)
@@ -99,7 +100,7 @@ static bool BLUE_HEATMAP(effect_params_t* params)
                 rgb_t rgb = rgb_matrix_hsv_to_rgb(hsv);
                 rgb_matrix_set_color(g_led_config.matrix_co[row][col], rgb.r, rgb.g, rgb.b);
 
-                if (params->iter == 0 && timer_elapsed(blue_heatmap_decrease_timer) >= RGB_MATRIX_BLUE_HEATMAP_DECREASE_DELAY_MS) {
+                if (params->iter == 0 && decrease_blue_heatmap_values) {
         g_rgb_frame_buffer[row][col] = qsub8(val, 1);
     }
 }
