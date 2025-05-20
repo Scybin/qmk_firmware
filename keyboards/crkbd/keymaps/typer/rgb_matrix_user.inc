@@ -1,28 +1,33 @@
-#ifdef RGB_MATRIX_CUSTOM_USER
-#    ifdef ENABLE_RGB_MATRIX_BLUE_HEATMAP
+# ifdef RGB_MATRIX_CUSTOM_USER
+# ifdef ENABLE_RGB_MATRIX_BLUE_HEATMAP
 
-#        ifndef RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP
-#            define RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP 32
-#        endif
+# include "quantum/rgb_matrix/rgb_matrix.h" // Ensure required headers are included
 
-#        ifndef RGB_MATRIX_BLUE_HEATMAP_DECREASE_DELAY_MS
-#            define RGB_MATRIX_BLUE_HEATMAP_DECREASE_DELAY_MS 25
-#        endif
+# ifndef RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP
+#define RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP 32
+#endif
 
-#        ifndef RGB_MATRIX_BLUE_HEATMAP_SPREAD
-#            define RGB_MATRIX_BLUE_HEATMAP_SPREAD 40
-#        endif
+# ifndef RGB_MATRIX_BLUE_HEATMAP_DECREASE_DELAY_MS
+#define RGB_MATRIX_BLUE_HEATMAP_DECREASE_DELAY_MS 25
+#endif
 
-#        ifndef RGB_MATRIX_BLUE_HEATMAP_AREA_LIMIT
-#            define RGB_MATRIX_BLUE_HEATMAP_AREA_LIMIT 16
-#        endif
+# ifndef RGB_MATRIX_BLUE_HEATMAP_SPREAD
+#define RGB_MATRIX_BLUE_HEATMAP_SPREAD 40
+#endif
+
+# ifndef RGB_MATRIX_BLUE_HEATMAP_AREA_LIMIT
+#define RGB_MATRIX_BLUE_HEATMAP_AREA_LIMIT 16
+#endif
+
+// Ensure the function is only included in the correct context
+#if defined(MATRIX_ROWS) && defined(MATRIX_COLS) && defined(g_rgb_frame_buffer)
 
 void process_rgb_matrix_blue_heatmap(uint8_t row, uint8_t col)
 {
-#        ifdef RGB_MATRIX_BLUE_HEATMAP_SLIM
+# ifdef RGB_MATRIX_BLUE_HEATMAP_SLIM
     g_rgb_frame_buffer[row][col] = qadd8(g_rgb_frame_buffer[row][col], RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP);
-#        else
-    if (g_led_config.matrix_co[row][col] == NO_LED)
+#else
+if (g_led_config.matrix_co[row][col] == NO_LED)
     {
         return;
     }
@@ -105,5 +110,5 @@ bool BLUE_HEATMAP(effect_params_t* params)
     return rgb_matrix_check_finished_leds(led_max);
 }
 
-#endif // ENABLE_RGB_MATRIX_BLUE_HEATMAP
+#   endif // ENABLE_RGB_MATRIX_BLUE_HEATMAP
 #endif     // RGB_MATRIX_CUSTOM_USER
