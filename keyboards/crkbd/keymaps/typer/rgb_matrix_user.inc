@@ -32,7 +32,10 @@ bool TYPER(effect_params_t* params)
         rgb_matrix_set_color_all(rgb.r, rgb.g, rgb.b);
     }
 
-    // Process keypresses
+    // Reset all per-key RGB to dark blue
+    hsv_t default_hsv = { 170, rgb_matrix_config.hsv.s, rgb_matrix_config.hsv.v };
+    rgb_t default_rgb = rgb_matrix_hsv_to_rgb(default_hsv);
+
     uint8_t count = 0;
     for (uint8_t row = 0; row < MATRIX_ROWS && count < RGB_MATRIX_LED_PROCESS_LIMIT; row++)
     {
@@ -41,6 +44,11 @@ bool TYPER(effect_params_t* params)
             if (g_led_config.matrix_co[row][col] >= led_min && g_led_config.matrix_co[row][col] < led_max)
             {
                 count++;
+
+                // Reset the key to dark blue
+                rgb_matrix_set_color(g_led_config.matrix_co[row][col], default_rgb.r, default_rgb.g, default_rgb.b);
+
+                // If the key is pressed, set it to purple
                 if (HAS_ANY_FLAGS(g_led_config.flags[g_led_config.matrix_co[row][col]], params->flags))
                 {
                     process_rgb_matrix_typer(row, col);
