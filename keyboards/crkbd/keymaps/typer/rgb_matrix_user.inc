@@ -58,6 +58,7 @@ bool TYPER(effect_params_t* params)
         }
     }
 
+    // Ensure all LEDs are updated correctly
     return rgb_matrix_check_finished_leds(led_max);
 }
 
