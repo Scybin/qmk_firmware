@@ -41,14 +41,14 @@ bool TYPER(effect_params_t* params)
             {
                 count++;
 
-                // If the key is pressed, set it to purple
+                // Debugging: Check if the key is pressed
                 if (HAS_ANY_FLAGS(g_led_config.flags[g_led_config.matrix_co[row][col]], params->flags))
                 {
                     process_rgb_matrix_typer(row, col);
                 }
                 else
                 {
-                    // Reset the key to dark blue
+                    // Debugging: Reset the key to dark blue
                     hsv_t default_hsv = { 170, rgb_matrix_config.hsv.s, rgb_matrix_config.hsv.v };
                     rgb_t default_rgb = rgb_matrix_hsv_to_rgb(default_hsv);
                     rgb_matrix_set_color(g_led_config.matrix_co[row][col], default_rgb.r, default_rgb.g, default_rgb.b);
