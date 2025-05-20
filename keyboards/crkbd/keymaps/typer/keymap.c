@@ -1,9 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "oled.h"
 
-// Forward declaration for the heatmap function
-void process_rgb_matrix_blue_heatmap(uint8_t row, uint8_t col);
-
 enum custom_keycodes {
     BSPC_ENT = SAFE_RANGE,
     CTRL_X,
@@ -84,13 +81,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_LSFT));
             }
             return false;
-
-        default:
-            if (record->event.pressed) {
-                // Call the heatmap function on keypress
-                process_rgb_matrix_blue_heatmap(record->event.key.row, record->event.key.col);
-            }
-            return true;
     }
 }
 
