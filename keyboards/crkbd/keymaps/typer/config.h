@@ -63,6 +63,7 @@
 #ifdef RGB_MATRIX_CUSTOM_USER
 #   define RGB_MATRIX_CUSTOM_EFFECTS
 #   define ENABLE_RGB_MATRIX_TYPER
+#   define DRIVER_LED_TOTAL 54
 #endif
 
 // OLED configuration
