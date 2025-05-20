@@ -1,5 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "oled.h"
+#include "rgb_matrix_user.inc"
 
 // Forward declaration for the heatmap function
 void process_rgb_matrix_blue_heatmap(uint8_t row, uint8_t col);
