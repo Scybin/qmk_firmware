@@ -3,7 +3,9 @@
 // Step 1.
 // Declare custom effects using the RGB_MATRIX_EFFECT macro
 // (note the lack of semicolon after the macro!)
-RGB_MATRIX_EFFECT(BLUE_HEATMAP)
+#ifdef ENABLE_RGB_MATRIX_BLUE_HEATMAP
+    RGB_MATRIX_EFFECT(BLUE_HEATMAP)
+#endif
 
 // Step 2.
 // Define effects inside the `RGB_MATRIX_CUSTOM_EFFECT_IMPLS` ifdef block
