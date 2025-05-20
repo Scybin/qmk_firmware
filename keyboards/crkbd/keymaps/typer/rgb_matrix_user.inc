@@ -2,14 +2,12 @@
 
 // Step 1.
 // Declare custom effects using the RGB_MATRIX_EFFECT macro
-// (note the lack of semicolon after the macro!)
 RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 
 // Step 2.
 // Define effects inside the `RGB_MATRIX_CUSTOM_EFFECT_IMPLS` ifdef block
 #ifdef RGB_MATRIX_CUSTOM_EFFECT_IMPLS
 
-// Configuration for the BLUE_HEATMAP effect
 #ifndef RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP
 #    define RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP 32
 #endif
@@ -26,20 +24,11 @@ RGB_MATRIX_EFFECT(BLUE_HEATMAP)
 #    define RGB_MATRIX_BLUE_HEATMAP_AREA_LIMIT 16
 #endif
 
-// A timer to track the last time we decremented all heatmap values
-static uint16_t blue_heatmap_decrease_timer;
-// Whether we should decrement the heatmap values during the next update
-static bool decrease_blue_heatmap_values;
-
 // Helper function to process the heatmap logic
 static void process_rgb_matrix_blue_heatmap(uint8_t row, uint8_t col)
 {
-#ifdef RGB_MATRIX_BLUE_HEATMAP_SLIM
-    // Limit effect to pressed keys
-    g_rgb_frame_buffer[row][col] = qadd8(g_rgb_frame_buffer[row][col], RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP);
-#else
     if (g_led_config.matrix_co[row][col] == NO_LED)
-    { // Skip if the pressed key doesn't have an LED position
+    {
         return;
     }
     for (uint8_t i_row = 0; i_row < MATRIX_ROWS; i_row++)
@@ -47,7 +36,7 @@ static void process_rgb_matrix_blue_heatmap(uint8_t row, uint8_t col)
         for (uint8_t i_col = 0; i_col < MATRIX_COLS; i_col++)
         {
             if (g_led_config.matrix_co[i_row][i_col] == NO_LED)
-            { // Skip if the target key doesn't have an LED position
+            {
                 continue;
             }
             if (i_row == row && i_col == col)
@@ -71,7 +60,6 @@ static void process_rgb_matrix_blue_heatmap(uint8_t row, uint8_t col)
             }
         }
     }
-#endif
 }
 
 // Main function for the BLUE_HEATMAP effect
@@ -84,19 +72,18 @@ static bool BLUE_HEATMAP(effect_params_t* params)
         memset(g_rgb_frame_buffer, 0, sizeof g_rgb_frame_buffer);
     }
 
-    // The heatmap animation might run in several iterations depending on
-    // `RGB_MATRIX_LED_PROCESS_LIMIT`, so we only update the timer when the animation starts
     if (params->iter == 0) {
+        static uint16_t blue_heatmap_decrease_timer;
+        static bool decrease_blue_heatmap_values;
+
         decrease_blue_heatmap_values = timer_elapsed(blue_heatmap_decrease_timer) >= RGB_MATRIX_BLUE_HEATMAP_DECREASE_DELAY_MS;
 
-        // Restart the timer if we are going to decrease the heatmap this frame
         if (decrease_blue_heatmap_values)
         {
             blue_heatmap_decrease_timer = timer_read();
         }
     }
 
-    // Render heatmap & decrease
     uint8_t count = 0;
     for (uint8_t row = 0; row < MATRIX_ROWS && count < RGB_MATRIX_LED_PROCESS_LIMIT; row++)
     {
@@ -105,18 +92,17 @@ static bool BLUE_HEATMAP(effect_params_t* params)
             if (g_led_config.matrix_co[row][col] >= led_min && g_led_config.matrix_co[row][col] < led_max)
             {
                 count++;
-                uint8_t val = g_rgb_frame_buffer[row][col];
-                if (!HAS_ANY_FLAGS(g_led_config.flags[g_led_config.matrix_co[row][col]], params->flags)) continue;
+                process_rgb_matrix_blue_heatmap(row, col); // Call the helper function here
 
+                uint8_t val = g_rgb_frame_buffer[row][col];
                 hsv_t hsv = { 170, rgb_matrix_config.hsv.s, scale8((qadd8(170, val) - 170) * 3, rgb_matrix_config.hsv.v) };
                 rgb_t rgb = rgb_matrix_hsv_to_rgb(hsv);
                 rgb_matrix_set_color(g_led_config.matrix_co[row][col], rgb.r, rgb.g, rgb.b);
 
-                if (decrease_blue_heatmap_values)
-                {
-                    g_rgb_frame_buffer[row][col] = qsub8(val, 1);
-                }
-            }
+                if (params->iter == 0 && timer_elapsed(blue_heatmap_decrease_timer) >= RGB_MATRIX_BLUE_HEATMAP_DECREASE_DELAY_MS) {
+        g_rgb_frame_buffer[row][col] = qsub8(val, 1);
+    }
+}
         }
     }
 
