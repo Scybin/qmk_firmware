@@ -13,9 +13,6 @@
 #   define SPLIT_TRANSPORT_MIRROR
 #endif
 
-#define ENABLE_RGB_MATRIX_BLUE_HEATMAP
-#define RGB_MATRIX_BLUE_HEATMAP 50
-
 // OLED configuration
 #ifdef OLED_ENABLE
 #   define SPLIT_OLED_ENABLE
