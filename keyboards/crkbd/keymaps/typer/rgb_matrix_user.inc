@@ -4,7 +4,7 @@ RGB_MATRIX_EFFECT(TYPER)
 // Define effects inside the `RGB_MATRIX_CUSTOM_EFFECT_IMPLS` ifdef block
 #ifdef RGB_MATRIX_CUSTOM_EFFECT_IMPLS
 
-static void set_underglow_dark_blue(void)
+static void set_underglow(void)
 {
     for (uint8_t i = 0; i < DRIVER_LED_TOTAL; i++)
     {
@@ -22,7 +22,7 @@ bool TYPER(effect_params_t* params)
     bool result = TYPING_HEATMAP (params);
 
     // Add custom underglow logic
-    set_underglow_dark_blue();
+    set_underglow();
 
     return result;
 }
