@@ -28,39 +28,39 @@ void process_rgb_matrix_blue_heatmap(uint8_t row, uint8_t col)
     g_rgb_frame_buffer[row][col] = qadd8(g_rgb_frame_buffer[row][col], RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP);
 #else
 if (g_led_config.matrix_co[row][col] == NO_LED)
+{
+    return;
+}
+for (uint8_t i_row = 0; i_row < MATRIX_ROWS; i_row++)
+{
+    for (uint8_t i_col = 0; i_col < MATRIX_COLS; i_col++)
     {
-        return;
-    }
-    for (uint8_t i_row = 0; i_row < MATRIX_ROWS; i_row++)
-    {
-        for (uint8_t i_col = 0; i_col < MATRIX_COLS; i_col++)
+        if (g_led_config.matrix_co[i_row][i_col] == NO_LED)
         {
-            if (g_led_config.matrix_co[i_row][i_col] == NO_LED)
+            continue;
+        }
+        if (i_row == row && i_col == col)
+        {
+            g_rgb_frame_buffer[row][col] = qadd8(g_rgb_frame_buffer[row][col], RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP);
+        }
+        else
+        {
+#define LED_DISTANCE(led_a, led_b) sqrt16(((int16_t)(led_a.x - led_b.x) * (int16_t)(led_a.x - led_b.x)) + ((int16_t)(led_a.y - led_b.y) * (int16_t)(led_a.y - led_b.y)))
+            uint8_t distance = LED_DISTANCE(g_led_config.point[g_led_config.matrix_co[row][col]], g_led_config.point[g_led_config.matrix_co[i_row][i_col]]);
+#undef LED_DISTANCE
+            if (distance <= RGB_MATRIX_BLUE_HEATMAP_SPREAD)
             {
-                continue;
-            }
-            if (i_row == row && i_col == col)
-            {
-                g_rgb_frame_buffer[row][col] = qadd8(g_rgb_frame_buffer[row][col], RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP);
-            }
-            else
-            {
-#            define LED_DISTANCE(led_a, led_b) sqrt16(((int16_t)(led_a.x - led_b.x) * (int16_t)(led_a.x - led_b.x)) + ((int16_t)(led_a.y - led_b.y) * (int16_t)(led_a.y - led_b.y)))
-                uint8_t distance = LED_DISTANCE(g_led_config.point[g_led_config.matrix_co[row][col]], g_led_config.point[g_led_config.matrix_co[i_row][i_col]]);
-#            undef LED_DISTANCE
-                if (distance <= RGB_MATRIX_BLUE_HEATMAP_SPREAD)
+                uint8_t amount = qsub8(RGB_MATRIX_BLUE_HEATMAP_SPREAD, distance);
+                if (amount > RGB_MATRIX_BLUE_HEATMAP_AREA_LIMIT)
                 {
-                    uint8_t amount = qsub8(RGB_MATRIX_BLUE_HEATMAP_SPREAD, distance);
-                    if (amount > RGB_MATRIX_BLUE_HEATMAP_AREA_LIMIT)
-                    {
-                        amount = RGB_MATRIX_BLUE_HEATMAP_AREA_LIMIT;
-                    }
-                    g_rgb_frame_buffer[i_row][i_col] = qadd8(g_rgb_frame_buffer[i_row][i_col], amount);
+                    amount = RGB_MATRIX_BLUE_HEATMAP_AREA_LIMIT;
                 }
+                g_rgb_frame_buffer[i_row][i_col] = qadd8(g_rgb_frame_buffer[i_row][i_col], amount);
             }
         }
     }
-#        endif
+}
+#            endif
 }
 
 static uint16_t blue_heatmap_decrease_timer;
@@ -110,5 +110,7 @@ bool BLUE_HEATMAP(effect_params_t* params)
     return rgb_matrix_check_finished_leds(led_max);
 }
 
-#   endif // ENABLE_RGB_MATRIX_BLUE_HEATMAP
+#endif // MATRIX_ROWS && MATRIX_COLS && g_rgb_frame_buffer
+
+#endif // ENABLE_RGB_MATRIX_BLUE_HEATMAP
 #endif     // RGB_MATRIX_CUSTOM_USER
