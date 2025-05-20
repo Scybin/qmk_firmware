@@ -20,7 +20,7 @@ void process_rgb_matrix_blue_heatmap(uint8_t row, uint8_t col)
 {
 # ifdef RGB_MATRIX_BLUE_HEATMAP_SLIM
 // Limit effect to pressed keys
-g_rgb_frame_buffer[row][col] = qadd8(g_rgb_frame_buffer[row][col], RGB_MATRIX_TYPING_HEATMAP_INCREASE_STEP);
+g_rgb_frame_buffer[row][col] = qadd8(g_rgb_frame_buffer[row][col], RGB_MATRIX_BLUE_HEATMAP_INCREASE_STEP);
 #else
 if (g_led_config.matrix_co[row][col] == NO_LED)
 { // skip as pressed key doesn't have an led position
@@ -124,4 +124,4 @@ bool BLUE_HEATMAP(effect_params_t* params)
 }
 
 #    endif // RGB_MATRIX_CUSTOM_EFFECT_IMPLS
-#endif     // defined(RGB_MATRIX_FRAMEBUFFER_EFFECTS) && defined(ENABLE_RGB_MATRIX_TYPING_HEATMAP)
+#endif     // defined(RGB_MATRIX_FRAMEBUFFER_EFFECTS) && defined(ENABLE_RGB_MATRIX_BLUE_HEATMAP)
