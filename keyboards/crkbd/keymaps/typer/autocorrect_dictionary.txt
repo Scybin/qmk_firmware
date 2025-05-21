@@ -123,8 +123,6 @@ ceratin    -> certain
 cheif      -> chief
 cieling    -> ceiling
 circut     -> circuit
-clasic     -> classic
-cmoputer   -> computer
 eligable   -> eligible
 embarass   -> embarrass
 embeded    -> embedded
@@ -152,16 +150,12 @@ perhasp    -> perhaps
 persue     -> pursue
 posess     -> possess
 postion    -> position
-primarly   -> primarily
 privte     -> private
 proccess   -> process
 proeprty   -> property
 realtion   -> relation
-reasearch  -> research
 reccommend -> recommend
 refered    -> referred
-regluar    -> regular
-releated   -> related
 resutl     -> result
 reveiw     -> review
 satisifed  -> satisfied
@@ -179,6 +173,4 @@ tongiht    -> tonight
 tranpose   -> transpose
 typcial    -> typical
 udpate     -> update
-ususally   -> usually
-verticies  -> vertices
 wierd      -> weird
