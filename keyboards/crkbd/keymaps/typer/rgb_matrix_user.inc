@@ -26,7 +26,7 @@ static void set_underglow(void)
         if (g_led_config.flags[i] & LED_FLAG_UNDERGLOW)
         {
             // Set underglow to dark blue (R=0, G=0, B=50)
-            rgb_matrix_set_color(i, 0, 0, 0;
+            rgb_matrix_set_color(i, 0, 0, 0);
         }
     }
 }
