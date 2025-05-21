@@ -26,7 +26,7 @@ static void set_underglow(void)
         if (g_led_config.flags[i] & LED_FLAG_UNDERGLOW)
         {
             // Set underglow to dark blue (R=0, G=0, B=50)
-            rgb_matrix_set_color(i, 0, 0, 50);
+            rgb_matrix_set_color(i, 0, 0, 0;
         }
     }
 }
@@ -42,9 +42,10 @@ bool TYPER(effect_params_t* params)
     // Check if any key is pressed
     for (uint8_t i = 0; i < MATRIX_ROWS; i++)
     {
+        uint8_t row = matrix_get_row(i);
         for (uint8_t j = 0; j < MATRIX_COLS; j++)
         {
-            if (matrix_is_on(i, j))
+            if (row & (1 << j))
             {
                 // Get the LED index for the pressed key
                 uint8_t led_index = g_led_config.matrix_co[i][j];
