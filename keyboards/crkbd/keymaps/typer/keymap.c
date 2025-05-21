@@ -47,7 +47,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
+    if (record->event.pressed) {
+        // Call the custom typing heatmap function with the key's row and column
+        process_custom_typing_heatmap(record->event.key.row, record->event.key.col);
+    }
+switch (keycode) {
         case BSPC_ENT:
             if (record->event.pressed) {
                 if (get_mods() & MOD_MASK_SHIFT) {
