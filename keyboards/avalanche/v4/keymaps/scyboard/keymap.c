@@ -102,7 +102,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                    KC_ESC,         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                          XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,
                    KC_TAB,         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                          XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX,   KC_LCTL,        XXXXXXX, XXXXXXX, XXXXXXX, KC_W,    XXXXXXX,                                          XXXXXXX,   KC_UP,   XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                   XXXXXXX,        XXXXXXX, KC_LSFT, KC_A,    KC_S,    KC_D,      XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, KC_LEFT,   KC_DOWN, KC_RIGHT, XXXXXXX, XXXXXXX, XXXXXXX,
+                   XXXXXXX,        XXXXXXX, KC_E,    KC_A,    KC_S,    KC_D,      XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, KC_LEFT,   KC_DOWN, KC_RIGHT, XXXXXXX, XXXXXXX, XXXXXXX,
                                                      KC_Q,    XXXXXXX, XXXXXXX,   KC_SPC,     KC_SPC,  XXXXXXX, XXXXXXX, XXXXXXX,   DF(BASE),XXXXXXX   
     ),                                                                                                                                                 
     [OSRS] = LAYOUT(                                                                                                                                   
