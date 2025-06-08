@@ -99,11 +99,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                      XXXXXXX, UG_SPDD, UG_SPDU,   RGB_TOG,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX   
     ),                                                                                                                                                 
     [DEV] = LAYOUT(                                                                                                                                    
-                   _______,        _______, _______, _______, _______, _______,                                          _______,   _______, _______,  _______, _______, _______,
-                   _______,        _______, _______, _______, _______, _______,                                          _______,   _______, _______,  _______, _______, _______,
-        _______,   _______,        _______, _______, _______, KC_W,    _______,                                          _______,   KC_UP,   _______,  _______, _______, _______, _______,
-                   _______,        _______, _______, KC_A,    KC_S,    KC_D,      _______,    _______, _______, _______, KC_LEFT,   KC_DOWN, KC_RIGHT, _______, _______, _______,
-                                                     _______, _______, _______,   _______,    _______, _______, _______, _______,   DF(BASE),_______   
+                   KC_ESC,         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                          XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,
+                   KC_TAB,         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                          XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX,   KC_LCTL,        XXXXXXX, XXXXXXX, XXXXXXX, KC_W,    XXXXXXX,                                          XXXXXXX,   KC_UP,   XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                   XXXXXXX,        XXXXXXX, KC_LSFT, KC_A,    KC_S,    KC_D,      XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, KC_LEFT,   KC_DOWN, KC_RIGHT, XXXXXXX, XXXXXXX, XXXXXXX,
+                                                     KC_Q,    XXXXXXX, XXXXXXX,   KC_SPC,     KC_SPC,  XXXXXXX, XXXXXXX, XXXXXXX,   DF(BASE),XXXXXXX   
     ),                                                                                                                                                 
     [OSRS] = LAYOUT(                                                                                                                                   
                    _______,        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                          XXXXXXX,   XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,
